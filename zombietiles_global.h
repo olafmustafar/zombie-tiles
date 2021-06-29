@@ -1,5 +1,4 @@
-#ifndef ZOMBIETILES_GLOBAL_H
-#define ZOMBIETILES_GLOBAL_H
+#pragma once
 
 #include <QtCore/qglobal.h>
 
@@ -8,5 +7,3 @@
 #else
 #  define ZOMBIETILES_EXPORT Q_DECL_IMPORT
 #endif
-
-#endif // ZOMBIETILES_GLOBAL_H

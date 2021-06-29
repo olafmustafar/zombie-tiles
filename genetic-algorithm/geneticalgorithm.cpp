@@ -1,16 +1,20 @@
 #include "geneticalgorithm.h"
 
-GeneticAlgorithm::GeneticAlgorithm(Individual individual, int population_size) : generation(0)
-{
-    for (int i = 0; i < population_size; i++) {
-        this->population.append(new Individual(individual));
-    }
-}
+#include <iostream>
+#include <utils/logger.h>
+
+GeneticAlgorithm::GeneticAlgorithm(QList<Individual *> population)
+    : population(population), generation(0)
+{}
 
 void GeneticAlgorithm::init()
 {
+    Logger::doing("Initializing population");
+
     generation = 0;
     for (Individual *i : population) {
         i->randomize();
     }
+
+    Logger::done();
 }

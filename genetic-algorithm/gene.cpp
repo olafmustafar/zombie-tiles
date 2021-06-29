@@ -2,11 +2,6 @@
 
 #include <QRandomGenerator>
 
-Gene::Gene(const double value, const double upper_bound, const double lower_bound)
-    : value(value), upper_bound(upper_bound), lower_bound(lower_bound)
-{}
+Gene::~Gene() = default;
 
-void Gene::randomize()
-{
-    //    value = QRandomGenerator::global()->ge
-}
+void Gene::randomize() {}

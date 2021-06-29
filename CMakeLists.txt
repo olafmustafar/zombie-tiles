@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(ZombieTiles LANGUAGES CXX)
+project(zombietiles LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
@@ -12,38 +12,48 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
 
-add_library(ZombieTiles SHARED
-  ZombieTiles_global.h
+add_library(zombietiles SHARED
+  zombietiles_global.h
   zombietiles.h
   zombietiles.cpp
+  dungeonconfig.h
+  dungeonconfig.cpp
   tilemap.h
   tilemap.cpp
   tiletexture.h
   tiletexture.cpp
   tile.h
   tile.cpp
+  utils/randomgenerator.h
+  utils/randomgenerator.cpp
+  utils/logger.h
+  utils/logger.cpp
   genetic-algorithm/geneticalgorithm.h
   genetic-algorithm/geneticalgorithm.cpp
   genetic-algorithm/individual.h
   genetic-algorithm/individual.cpp
   genetic-algorithm/gene.h
   genetic-algorithm/gene.cpp
-  zombie-tiles-ga/zombietilesag.h
-  zombie-tiles-ga/zombietilesag.cpp
-  zombie-tiles-ga/zombietilesindividual.h
-  zombie-tiles-ga/zombietilesindividual.cpp
+  zombietiles-ga/zombietilesga.h
+  zombietiles-ga/zombietilesga.cpp
+  zombietiles-ga/zombietilesindividual.h
+  zombietiles-ga/zombietilesindividual.cpp
+  zombietiles-ga/room.h
+  zombietiles-ga/room.cpp
+  zombietiles-ga/roomgene.h
+  zombietiles-ga/roomgene.cpp
 )
 
-set_target_properties(ZombieTiles PROPERTIES PUBLIC_HEADER "zombietiles.h;ZombieTiles_global.h;")
-install( TARGETS ZombieTiles DESTINATION "${CMAKE_BINARY_DIR}/lib" )
-install( FILES zombietiles.h DESTINATION "${CMAKE_BINARY_DIR}/include" )
-#message( STATUS "${CMAKE_INSTALL_PREFIX}" )
-#message( STATUS "${CMAKE_BINARY_DIR}" )
+set_target_properties(zombietiles PROPERTIES PUBLIC_HEADER "zombietiles.h;zombietiles_global.h;tile.h;tiletexture.h;")
+INSTALL(TARGETS zombietiles
+        LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/lib"
+        PUBLIC_HEADER DESTINATION "${CMAKE_BINARY_DIR}/include"
+)
 
-target_include_directories(ZombieTiles PRIVATE .)
+target_include_directories(zombietiles PRIVATE .)
 
-target_link_libraries(ZombieTiles PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(zombietiles PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 
-target_compile_definitions(ZombieTiles PRIVATE ZOMBIETILES_LIBRARY)
+target_compile_definitions(zombietiles PRIVATE ZOMBIETILES_LIBRARY)
 
 

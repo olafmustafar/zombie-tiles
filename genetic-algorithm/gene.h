@@ -3,8 +3,7 @@
 class Gene
 {
 public:
-    Gene();
-    virtual void data();
+    virtual ~Gene();
     virtual void randomize();
 };
 

@@ -5,11 +5,10 @@
 class GeneticAlgorithm
 {
 public:
-    GeneticAlgorithm(Individual individual, int population_size);
+    GeneticAlgorithm(QList<Individual *> population);
     void init();
 
 private:
     QList<Individual *> population;
-    double population_size;
     int generation;
 };

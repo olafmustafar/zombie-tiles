@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ZombieTiles_global.h"
 #include "tile.h"
 #include "tiletexture.h"
+#include "zombietiles_global.h"
 #include <list>
 
 class ZOMBIETILES_EXPORT ZombieTiles

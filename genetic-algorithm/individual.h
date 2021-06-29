@@ -7,12 +7,14 @@ class Individual
 {
 public:
     Individual(QList<Gene> genes);
-
-    void randomize() const;
-    virtual void crossover();
+    virtual ~Individual();
     virtual void mutate();
+    virtual Individual *clone() const;
+    virtual Individual *crossover() const;
+    virtual double evaluate() const;
+    void randomize() const;
 
-private:
+protected:
     QList<Gene> genes;
     double current_fitness;
     double relative_fitness;
