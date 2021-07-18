@@ -3,17 +3,21 @@
 #include <iostream>
 #include <utils/logger.h>
 
-GeneticAlgorithm::GeneticAlgorithm(QList<Individual *> population)
-    : population(population), generation(0)
+GeneticAlgorithm::GeneticAlgorithm(IndividualFactory *individual_factory, int population_size)
+    : individual_factory(individual_factory), population({}), generation(0),
+      population_size(population_size)
 {}
 
 void GeneticAlgorithm::init()
 {
     Logger::doing("Initializing population");
 
-    generation = 0;
-    for (Individual *i : population) {
-        i->randomize();
+    this->generation = 0;
+
+    for (int i = 0; i < this->population_size; ++i) {
+        Individual *individual = this->individual_factory->createIndividual();
+        individual->randomize();
+        this->population.append(individual);
     }
 
     Logger::done();

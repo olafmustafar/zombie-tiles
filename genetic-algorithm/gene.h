@@ -4,6 +4,6 @@ class Gene
 {
 public:
     virtual ~Gene();
-    virtual void randomize();
+    virtual void randomize() = 0;
 };
 

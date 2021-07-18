@@ -6,6 +6,7 @@
 class Individual
 {
 public:
+    Individual();
     Individual(QList<Gene> genes);
     virtual ~Individual();
     virtual void mutate();

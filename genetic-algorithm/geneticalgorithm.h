@@ -1,14 +1,17 @@
 #pragma once
 
 #include "individual.h"
+#include "individualfactory.h"
 
 class GeneticAlgorithm
 {
 public:
-    GeneticAlgorithm(QList<Individual *> population);
+    GeneticAlgorithm(IndividualFactory *individual_factory, int population_size);
     void init();
 
 private:
+    IndividualFactory *individual_factory;
     QList<Individual *> population;
     int generation;
+    int population_size;
 };

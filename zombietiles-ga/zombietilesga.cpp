@@ -3,5 +3,6 @@
 
 ZombieTilesGA::ZombieTilesGA(const DungeonConfig &dungeon_config)
 {
-    GeneticAlgorithm ga();
+    for ()
+        GeneticAlgorithm ga();
 }

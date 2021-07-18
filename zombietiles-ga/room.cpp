@@ -4,52 +4,52 @@ Room::Room(int x, int y, int width, int height, Room::PlacementType placement_ty
     : x(x), y(y), width(width), height(height), placement_type(placement_type)
 {}
 
-int Room::getX() const
+int Room::get_x() const
 {
     return x;
 }
 
-void Room::setX(int value)
+void Room::set_x(int value)
 {
     x = value;
 }
 
-int Room::getY() const
+int Room::get_y() const
 {
     return y;
 }
 
-void Room::setY(int value)
+void Room::set_y(int value)
 {
     y = value;
 }
 
-int Room::getWidth() const
+int Room::get_width() const
 {
     return width;
 }
 
-void Room::setWidth(int value)
+void Room::set_width(int value)
 {
     width = value;
 }
 
-int Room::getHeight() const
+int Room::get_height() const
 {
     return height;
 }
 
-void Room::setHeight(int value)
+void Room::set_height(int value)
 {
     height = value;
 }
 
-Room::PlacementType Room::getPlacement_type() const
+Room::PlacementType Room::get_placement_type() const
 {
     return placement_type;
 }
 
-void Room::setPlacement_type(const PlacementType &value)
+void Room::set_placement_type(const PlacementType &value)
 {
     placement_type = value;
 }

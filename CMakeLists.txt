@@ -32,12 +32,16 @@ add_library(zombietiles SHARED
   genetic-algorithm/geneticalgorithm.cpp
   genetic-algorithm/individual.h
   genetic-algorithm/individual.cpp
+  genetic-algorithm/individualfactory.h
+  genetic-algorithm/individualfactory.cpp
   genetic-algorithm/gene.h
   genetic-algorithm/gene.cpp
   zombietiles-ga/zombietilesga.h
   zombietiles-ga/zombietilesga.cpp
   zombietiles-ga/zombietilesindividual.h
   zombietiles-ga/zombietilesindividual.cpp
+  zombietiles-ga/zombietilesindividualfactory.h
+  zombietiles-ga/zombietilesindividualfactory.cpp
   zombietiles-ga/room.h
   zombietiles-ga/room.cpp
   zombietiles-ga/roomgene.h

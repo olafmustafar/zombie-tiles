@@ -1,5 +1,8 @@
 #include "individual.h"
 
+Individual::Individual() : genes({}), current_fitness(0), relative_fitness(0), cumulative_fitness(0)
+{}
+
 Individual::Individual(QList<Gene> genes)
     : genes(genes), current_fitness(0), relative_fitness(0), cumulative_fitness(0)
 {}
