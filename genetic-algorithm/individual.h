@@ -1,24 +1,25 @@
 #pragma once
 
-#include "gene.h"
+#include "chromosome.h"
 #include <QList>
 
 class Individual
 {
 public:
     Individual();
-    Individual(QList<Gene> genes);
+    void init();
     virtual ~Individual();
-    virtual void mutate();
-    virtual Individual *clone() const;
-    virtual Individual *crossover() const;
     virtual double evaluate() const;
-    void randomize() const;
+
+    Chromosome *get_chromosome() const;
+    void set_chromosome(Chromosome *chromosome);
 
 protected:
-    QList<Gene> genes;
+    Chromosome *chromosome;
     double current_fitness;
     double relative_fitness;
     double cumulative_fitness;
+
+    virtual Chromosome *create_cromossome() const = 0;
 };
 

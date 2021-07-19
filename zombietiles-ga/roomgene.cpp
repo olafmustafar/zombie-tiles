@@ -1,18 +1,28 @@
 #include "roomgene.h"
-
 #include <utils/randomgenerator.h>
 
-//RoomGene::RoomGene() {}
+RoomGene::RoomGene() : room() {}
 
 void RoomGene::randomize()
 {
-    //    Room(int x, int y, int width, int height, PlacementType placement_type);
+    int width = RandomGenerator::random_between<int>(1, dungeon_config->get_width());
+    int height = RandomGenerator::random_between<int>(1, dungeon_config->get_height());
 
-    this->room = Room(RandomGenerator::random_between<int>(0, dungeon_config->getWidth()),
-                      RandomGenerator::random_between<int>(0, dungeon_config->getHeight()),
-                      RandomGenerator::random_between<int>(0, dungeon_config->getWidth()),
-                      RandomGenerator::random_between<int>(0, dungeon_config->getHeight()),
+    this->room = Room(RandomGenerator::random_between<int>(0, dungeon_config->get_width() - width),
+                      RandomGenerator::random_between<int>(0, dungeon_config->get_height() - height),
+                      width,
+                      height,
                       static_cast<Room::PlacementType>(RandomGenerator::random_between<int>(0, 1)));
+}
+
+const Room &RoomGene::get_room() const
+{
+    return room;
+}
+
+void RoomGene::set_room(const Room &room)
+{
+    this->room = room;
 }
 
 DungeonConfig *RoomGene::get_dungeon_config() const

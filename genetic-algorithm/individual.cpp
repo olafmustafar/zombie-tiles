@@ -1,34 +1,28 @@
 #include "individual.h"
 
-Individual::Individual() : genes({}), current_fitness(0), relative_fitness(0), cumulative_fitness(0)
-{}
-
-Individual::Individual(QList<Gene> genes)
-    : genes(genes), current_fitness(0), relative_fitness(0), cumulative_fitness(0)
+Individual::Individual()
+    : chromosome(nullptr), current_fitness(0), relative_fitness(0), cumulative_fitness(0)
 {}
 
 Individual::~Individual() = default;
-
-void Individual::randomize() const
-{
-    for (Gene gene : this->genes) {
-        gene.randomize();
-    }
-}
-
-Individual *Individual::crossover() const
-{
-    return nullptr;
-}
 
 double Individual::evaluate() const
 {
     return 0.0;
 }
 
-Individual *Individual::clone() const
+void Individual::init()
 {
-    return nullptr;
+    this->chromosome = create_cromossome();
+    this->chromosome->randomize();
 }
 
-void Individual::mutate() {}
+Chromosome *Individual::get_chromosome() const
+{
+    return chromosome;
+}
+
+void Individual::set_chromosome(Chromosome *chromosome)
+{
+    this->chromosome = chromosome;
+}

@@ -16,9 +16,14 @@ void GeneticAlgorithm::init()
 
     for (int i = 0; i < this->population_size; ++i) {
         Individual *individual = this->individual_factory->createIndividual();
-        individual->randomize();
+        individual->init();
         this->population.append(individual);
     }
 
     Logger::done();
+}
+
+const QList<Individual *> &GeneticAlgorithm::get_population() const
+{
+    return population;
 }

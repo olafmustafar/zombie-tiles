@@ -1,5 +1,7 @@
 #include "room.h"
 
+Room::Room() : x(0), y(0), width(0), height(0), placement_type(PlacementType::T) {}
+
 Room::Room(int x, int y, int width, int height, Room::PlacementType placement_type)
     : x(x), y(y), width(width), height(height), placement_type(placement_type)
 {}

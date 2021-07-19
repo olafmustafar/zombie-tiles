@@ -7,13 +7,16 @@
 class RoomGene : public Gene
 {
 public:
-    void data();
+    RoomGene();
     void randomize() override;
+
+    const Room &get_room() const;
+    void set_room(const Room &room);
 
     DungeonConfig *get_dungeon_config() const;
     void set_dungeon_config(DungeonConfig *dungeon_config);
 
 private:
-    DungeonConfig *dungeon_config;
     Room room;
+    DungeonConfig *dungeon_config;
 };

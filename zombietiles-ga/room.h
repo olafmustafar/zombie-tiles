@@ -8,6 +8,7 @@ public:
         U, //Under
     };
 
+    Room();
     Room(int x, int y, int width, int height, PlacementType placement_type);
 
     int get_x() const;

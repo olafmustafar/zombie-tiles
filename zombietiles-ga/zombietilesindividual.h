@@ -5,9 +5,8 @@
 class ZombieTilesIndividual : public Individual
 {
 public:
+    ZombieTilesIndividual();
     ~ZombieTilesIndividual();
-    void mutate() override;
-    Individual *clone() const override;
-    Individual *crossover() const override;
     double evaluate() const override;
+    Chromosome *create_cromossome() const override;
 };

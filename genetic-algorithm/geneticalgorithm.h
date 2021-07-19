@@ -9,6 +9,8 @@ public:
     GeneticAlgorithm(IndividualFactory *individual_factory, int population_size);
     void init();
 
+    const QList<Individual *> &get_population() const;
+
 private:
     IndividualFactory *individual_factory;
     QList<Individual *> population;

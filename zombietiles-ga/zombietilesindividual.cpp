@@ -1,26 +1,18 @@
 #include "zombietilesindividual.h"
 
+#include "zombietileschromosome.h"
+
+ZombieTilesIndividual::ZombieTilesIndividual() = default;
+
 ZombieTilesIndividual::~ZombieTilesIndividual() = default;
-
-void ZombieTilesIndividual::mutate()
-{
-    //TODO
-}
-
-Individual *ZombieTilesIndividual::clone() const
-{
-    //TODO
-    return new ZombieTilesIndividual(*this);
-}
-
-Individual *ZombieTilesIndividual::crossover() const
-{
-    //TODO
-    return nullptr;
-}
 
 double ZombieTilesIndividual::evaluate() const
 {
     //TODO
     return 0.00;
+}
+
+Chromosome *ZombieTilesIndividual::create_cromossome() const
+{
+    return new ZombieTilesChromosome;
 }
