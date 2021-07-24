@@ -5,7 +5,8 @@
 class DungeonConfig
 {
 public:
-    DungeonConfig(const u_int width, const u_int height);
+    static DungeonConfig &get_instance(const u_int width, const u_int height);
+    static DungeonConfig &get_instance();
 
     u_int get_width() const;
     void set_width(const u_int &value);
@@ -14,6 +15,10 @@ public:
     void set_height(const u_int &value);
 
 private:
+    DungeonConfig(const u_int width, const u_int height);
+    DungeonConfig() = default;
+
+    static DungeonConfig *instance;
     u_int width;
     u_int height;
 };

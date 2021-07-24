@@ -1,19 +1,24 @@
 #pragma once
 
+#include "dungeonconfig.h"
 #include "individual.h"
 #include "individualfactory.h"
+#include <list>
 
 class GeneticAlgorithm
 {
 public:
-    GeneticAlgorithm(IndividualFactory *individual_factory, int population_size);
+    GeneticAlgorithm(DungeonConfig *dungeon_config,
+                     IndividualFactory *individual_factory,
+                     int population_size);
     void init();
 
-    const QList<Individual *> &get_population() const;
+    const std::list<Individual *> &get_population() const;
 
 private:
+    DungeonConfig *dungeon_config;
     IndividualFactory *individual_factory;
-    QList<Individual *> population;
+    std::list<Individual *> population;
     int generation;
     int population_size;
 };

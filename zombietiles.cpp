@@ -8,7 +8,7 @@
 
 std::list<TileTexture> ZombieTiles::generate_dungeon(const u_int width, const u_int height)
 {
-    DungeonConfig dungeon_config(width, height);
+    DungeonConfig dungeon_config = DungeonConfig::instance();
     ZombieTilesGA zombie_tiles_ga(&dungeon_config);
     zombie_tiles_ga.run();
 

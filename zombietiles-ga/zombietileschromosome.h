@@ -16,6 +16,8 @@ public:
     DungeonConfig *get_dungeon_config() const;
     void set_dungeon_config(DungeonConfig *dungeon_config);
 
+    const std::vector<RoomGene> &get_genes() const;
+
 private:
     DungeonConfig *dungeon_config;
     std::vector<RoomGene> genes;

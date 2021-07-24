@@ -6,6 +6,6 @@ public:
     virtual ~Chromosome();
     virtual void randomize() = 0;
     virtual void mutate() = 0;
-    virtual Chromosome *crossover() const;
+    virtual Chromosome *crossover() const = 0;
 };
 
