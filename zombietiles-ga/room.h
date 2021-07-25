@@ -29,9 +29,9 @@ public:
     void print() const;
 
 private:
-    int x;
-    int y;
-    int width;
-    int height;
-    PlacementType placement_type;
+    int m_x;
+    int m_y;
+    int m_width;
+    int m_height;
+    PlacementType m_placement_type;
 };

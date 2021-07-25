@@ -1,7 +1,7 @@
 #include "individual.h"
 
 Individual::Individual()
-    : chromosome(nullptr), current_fitness(0), relative_fitness(0), cumulative_fitness(0)
+    : m_chromosome(nullptr), m_current_fitness(0), m_relative_fitness(0), m_cumulative_fitness(0)
 {}
 
 Individual::~Individual() = default;
@@ -13,16 +13,16 @@ double Individual::evaluate() const
 
 void Individual::init()
 {
-    this->chromosome = create_cromossome();
-    this->chromosome->randomize();
+    m_chromosome = create_cromossome();
+    m_chromosome->randomize();
 }
 
 Chromosome *Individual::get_chromosome() const
 {
-    return chromosome;
+    return m_chromosome;
 }
 
 void Individual::set_chromosome(Chromosome *chromosome)
 {
-    this->chromosome = chromosome;
+    m_chromosome = chromosome;
 }

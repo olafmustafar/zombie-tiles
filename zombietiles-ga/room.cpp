@@ -1,60 +1,60 @@
 #include "room.h"
 #include <iostream>
 
-Room::Room() : x(0), y(0), width(0), height(0), placement_type(PlacementType::T) {}
+Room::Room() : m_x(0), m_y(0), m_width(0), m_height(0), m_placement_type(PlacementType::T) {}
 
 Room::Room(int x, int y, int width, int height, Room::PlacementType placement_type)
-    : x(x), y(y), width(width), height(height), placement_type(placement_type)
+    : m_x(x), m_y(y), m_width(width), m_height(height), m_placement_type(placement_type)
 {}
 
 int Room::get_x() const
 {
-    return x;
+    return m_x;
 }
 
 void Room::set_x(int value)
 {
-    x = value;
+    m_x = value;
 }
 
 int Room::get_y() const
 {
-    return y;
+    return m_y;
 }
 
 void Room::set_y(int value)
 {
-    y = value;
+    m_y = value;
 }
 
 int Room::get_width() const
 {
-    return width;
+    return m_width;
 }
 
 void Room::set_width(int value)
 {
-    width = value;
+    m_width = value;
 }
 
 int Room::get_height() const
 {
-    return height;
+    return m_height;
 }
 
 void Room::set_height(int value)
 {
-    height = value;
+    m_height = value;
 }
 
 Room::PlacementType Room::get_placement_type() const
 {
-    return placement_type;
+    return m_placement_type;
 }
 
 void Room::set_placement_type(const PlacementType &value)
 {
-    placement_type = value;
+    m_placement_type = value;
 }
 
 void Room::print() const

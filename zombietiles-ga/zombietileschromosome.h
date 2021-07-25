@@ -15,5 +15,5 @@ public:
     const std::vector<RoomGene> &get_genes() const;
 
 private:
-    std::vector<RoomGene> genes;
+    std::vector<RoomGene> m_genes;
 };

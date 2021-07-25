@@ -19,7 +19,7 @@ private:
     DungeonConfig() = default;
 
     static DungeonConfig *m_instance;
-    uint width;
-    uint height;
+    uint m_width;
+    uint m_height;
 };
 

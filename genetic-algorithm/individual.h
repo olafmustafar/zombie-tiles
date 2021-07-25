@@ -15,10 +15,10 @@ public:
     void set_chromosome(Chromosome *chromosome);
 
 protected:
-    Chromosome *chromosome;
-    double current_fitness;
-    double relative_fitness;
-    double cumulative_fitness;
+    Chromosome *m_chromosome;
+    double m_current_fitness;
+    double m_relative_fitness;
+    double m_cumulative_fitness;
 
     virtual Chromosome *create_cromossome() const = 0;
 };

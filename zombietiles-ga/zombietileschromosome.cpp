@@ -3,16 +3,16 @@
 #include <dungeonconfig.h>
 #include <utils/randomgenerator.h>
 
-ZombieTilesChromosome::ZombieTilesChromosome() : genes()
+ZombieTilesChromosome::ZombieTilesChromosome() : m_genes()
 {
     for (int i = 0; i < 5; ++i) {
-        genes.push_back(RoomGene());
+        m_genes.push_back(RoomGene());
     }
 }
 
 void ZombieTilesChromosome::randomize()
 {
-    for (RoomGene &gene : genes) {
+    for (RoomGene &gene : m_genes) {
         gene.randomize();
     }
 }
@@ -26,5 +26,5 @@ Chromosome *ZombieTilesChromosome::crossover() const
 
 const std::vector<RoomGene> &ZombieTilesChromosome::get_genes() const
 {
-    return this->genes;
+    return m_genes;
 }
