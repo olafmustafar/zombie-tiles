@@ -17,6 +17,5 @@ public:
     void set_dungeon_config(DungeonConfig *dungeon_config);
 
 private:
-    Room room;
-    DungeonConfig *dungeon_config;
+    Room m_room;
 };

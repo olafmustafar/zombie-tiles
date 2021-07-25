@@ -18,14 +18,14 @@ struct Line
 class TileMap
 {
 public:
-    TileMap(const u_int width, const u_int height);
+    TileMap(const uint width, const uint height);
     void init();
     void print() const;
     Tile *tile(Point coord) const;
 
 private:
-    u_int width;
-    u_int height;
+    uint width;
+    uint height;
     QList<Line> walls;
     QList<Tile *> tiles;
 };

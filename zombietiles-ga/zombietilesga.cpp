@@ -5,19 +5,23 @@
 #include <genetic-algorithm/geneticalgorithm.h>
 #include <utils/logger.h>
 
+#include <iostream>
+
 ZombieTilesGA::ZombieTilesGA(const DungeonConfig *dungeon_config) : dungeon_config(dungeon_config)
 {}
 
 void ZombieTilesGA::run()
 {
-    GeneticAlgorithm ga(dungeon_config, new ZombieTilesIndividualFactory, 20);
+    GeneticAlgorithm ga(new ZombieTilesIndividualFactory, 20);
     ga.init();
-    for (auto ind : ga.get_population()) {
-        const std::vector<RoomGene> genes
-            = static_cast<ZombieTilesChromosome *>(ind->get_chromosome())->get_genes();
 
+    int index = 0;
+    for (Individual *individual : ga.get_population()) {
+        std::cout << "individuo: " << index << std::endl;
+
+        const std::vector<RoomGene> genes = static_cast<ZombieTilesChromosome *>(individual->get_chromosome())->get_genes();
         for (const auto &gene : genes) {
-            Logger::log(gene.get_room());
+            gene.get_room().print();
         }
     }
 }

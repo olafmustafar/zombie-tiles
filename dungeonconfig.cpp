@@ -1,42 +1,43 @@
 #include "dungeonconfig.h"
 
-DungeonConfig::DungeonConfig(const u_int width, const u_int height) : width(width), height(height)
-{}
+DungeonConfig *DungeonConfig::m_instance;
 
-DungeonConfig &DungeonConfig::get_instance(const u_int width, const u_int height)
+DungeonConfig::DungeonConfig(const uint width, const uint height) : width(width), height(height) {}
+
+DungeonConfig &DungeonConfig::get_instance(const uint width, const uint height)
 {
-    if (!instance) {
-        instance = new DungeonConfig(width, height);
+    if (!m_instance) {
+        m_instance = new DungeonConfig(width, height);
     }
 
-    return *instance;
+    return *m_instance;
 }
 
 DungeonConfig &DungeonConfig::get_instance()
 {
-    if (!instance) {
-        instance = new DungeonConfig();
+    if (!m_instance) {
+        m_instance = new DungeonConfig();
     }
 
-    return *instance;
+    return *m_instance;
 }
 
-u_int DungeonConfig::get_width() const
+uint DungeonConfig::get_width() const
 {
     return width;
 }
 
-void DungeonConfig::set_width(const u_int &value)
+void DungeonConfig::set_width(const uint &value)
 {
     width = value;
 }
 
-u_int DungeonConfig::get_height() const
+uint DungeonConfig::get_height() const
 {
     return height;
 }
 
-void DungeonConfig::set_height(const u_int &value)
+void DungeonConfig::set_height(const uint &value)
 {
     height = value;
 }

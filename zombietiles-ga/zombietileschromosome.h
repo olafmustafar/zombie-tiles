@@ -1,7 +1,6 @@
 #pragma once
 
 #include "roomgene.h"
-#include <dungeonconfig.h>
 #include <genetic-algorithm/chromosome.h>
 #include <vector>
 
@@ -13,12 +12,8 @@ public:
     void mutate() override;
     Chromosome *crossover() const override;
 
-    DungeonConfig *get_dungeon_config() const;
-    void set_dungeon_config(DungeonConfig *dungeon_config);
-
     const std::vector<RoomGene> &get_genes() const;
 
 private:
-    DungeonConfig *dungeon_config;
     std::vector<RoomGene> genes;
 };

@@ -26,6 +26,8 @@ public:
     PlacementType get_placement_type() const;
     void set_placement_type(const PlacementType &value);
 
+    void print() const;
+
 private:
     int x;
     int y;

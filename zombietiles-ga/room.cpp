@@ -1,4 +1,5 @@
 #include "room.h"
+#include <iostream>
 
 Room::Room() : x(0), y(0), width(0), height(0), placement_type(PlacementType::T) {}
 
@@ -54,4 +55,18 @@ Room::PlacementType Room::get_placement_type() const
 void Room::set_placement_type(const PlacementType &value)
 {
     placement_type = value;
+}
+
+void Room::print() const
+{
+    // clang-format off
+    std::cout
+            << "room ("
+            << " width:" << get_width()
+            << " height:" << get_height()
+            << " x:" << get_x()
+            << " y:" << get_y()
+            << " placement:" << static_cast<int>(get_placement_type())
+            << " )" << std::endl;
+    // clang-format on
 }

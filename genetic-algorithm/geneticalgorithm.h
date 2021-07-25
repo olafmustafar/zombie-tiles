@@ -8,17 +8,14 @@
 class GeneticAlgorithm
 {
 public:
-    GeneticAlgorithm(DungeonConfig *dungeon_config,
-                     IndividualFactory *individual_factory,
-                     int population_size);
+    GeneticAlgorithm(IndividualFactory *individual_factory, int population_size);
     void init();
 
     const std::list<Individual *> &get_population() const;
 
 private:
-    DungeonConfig *dungeon_config;
-    IndividualFactory *individual_factory;
-    std::list<Individual *> population;
-    int generation;
-    int population_size;
+    IndividualFactory *m_individual_factory;
+    std::list<Individual *> m_population;
+    int m_generation;
+    int m_population_size;
 };
