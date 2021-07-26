@@ -3,18 +3,19 @@
 #include "chromosome.h"
 #include <QList>
 
-class Individual
+class IndividualImpl
 {
 public:
-    Individual();
+    IndividualImpl();
+    virtual ~IndividualImpl();
+
     void init();
-    virtual ~Individual();
     virtual double evaluate() const;
 
     Chromosome *get_chromosome() const;
-    void set_chromosome(Chromosome *chromosome);
+    void set_chromosome(Chromosome* chromosome);
 
-protected:
+private:
     Chromosome *m_chromosome;
     double m_current_fitness;
     double m_relative_fitness;
@@ -23,3 +24,12 @@ protected:
     virtual Chromosome *create_cromossome() const = 0;
 };
 
+template<typename ChromosomeType> class Individual : IndividualImpl
+{
+public:
+    using IndividualImpl::IndividualImpl;
+    ~Individual() override = default;
+
+private:
+    Chromosome* create_cromossome() const override { return new ChromosomeType; }
+};

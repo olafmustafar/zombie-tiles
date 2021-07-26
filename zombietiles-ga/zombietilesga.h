@@ -5,9 +5,6 @@
 class ZombieTilesGA
 {
 public:
-    ZombieTilesGA(const DungeonConfig *dungeon_config);
+    ZombieTilesGA();
     void run();
-
-private:
-    const DungeonConfig *dungeon_config;
 };

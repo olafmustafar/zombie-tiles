@@ -17,7 +17,10 @@ void ZombieTilesChromosome::randomize()
     }
 }
 
-void ZombieTilesChromosome::mutate() {}
+void ZombieTilesChromosome::mutate()
+{
+    //    const int size = m_genes.size();
+}
 
 Chromosome *ZombieTilesChromosome::crossover() const
 {

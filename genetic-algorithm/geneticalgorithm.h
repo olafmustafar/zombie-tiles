@@ -2,7 +2,6 @@
 
 #include "dungeonconfig.h"
 #include "individual.h"
-#include "individualfactory.h"
 #include <list>
 
 class GeneticAlgorithmImpl
@@ -11,11 +10,11 @@ public:
     GeneticAlgorithmImpl(int population_size);
     void init();
 
-    const std::list<Individual*>& get_population() const;
+    const std::list<IndividualImpl*>& get_population() const;
 
 private:
-    virtual Individual* create_individual() const = 0;
-    std::list<Individual*> m_population;
+    virtual IndividualImpl* create_individual() const = 0;
+    std::list<IndividualImpl*> m_population;
     int m_generation;
     int m_population_size;
 };
@@ -26,5 +25,5 @@ public:
     using GeneticAlgorithmImpl::GeneticAlgorithmImpl;
 
 private:
-    Individual* create_individual() const override { return new IndividualType; };
+    IndividualImpl* create_individual() const override { return new IndividualType; };
 };
