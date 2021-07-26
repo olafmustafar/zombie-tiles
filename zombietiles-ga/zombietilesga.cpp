@@ -7,12 +7,16 @@
 
 #include <iostream>
 
+namespace {
+constexpr int population_size = 20;
+}
+
 ZombieTilesGA::ZombieTilesGA(const DungeonConfig *dungeon_config) : dungeon_config(dungeon_config)
 {}
 
 void ZombieTilesGA::run()
 {
-    GeneticAlgorithm ga(new ZombieTilesIndividualFactory, 20);
+    GeneticAlgorithm<ZombieTilesIndividual> ga(population_size);
     ga.init();
 
     int index = 0;

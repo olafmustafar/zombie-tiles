@@ -5,17 +5,26 @@
 #include "individualfactory.h"
 #include <list>
 
-class GeneticAlgorithm
+class GeneticAlgorithmImpl
 {
 public:
-    GeneticAlgorithm(IndividualFactory *individual_factory, int population_size);
+    GeneticAlgorithmImpl(int population_size);
     void init();
 
-    const std::list<Individual *> &get_population() const;
+    const std::list<Individual*>& get_population() const;
 
 private:
-    IndividualFactory *m_individual_factory;
-    std::list<Individual *> m_population;
+    virtual Individual* create_individual() const = 0;
+    std::list<Individual*> m_population;
     int m_generation;
     int m_population_size;
+};
+
+template<typename IndividualType> class GeneticAlgorithm : public GeneticAlgorithmImpl
+{
+public:
+    using GeneticAlgorithmImpl::GeneticAlgorithmImpl;
+
+private:
+    Individual* create_individual() const override { return new IndividualType; };
 };
