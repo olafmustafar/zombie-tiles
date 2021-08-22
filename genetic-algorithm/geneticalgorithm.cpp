@@ -22,6 +22,15 @@ void GeneticAlgorithmImpl::init()
     Logger::done();
 }
 
+void GeneticAlgorithmImpl::run()
+{
+    //    for (int i = 0; i < m_population_size; ++i) {
+    //        IndividualImpl* individual = create_individual();
+    //        individual->init();
+    //        m_population.push_back(individual);
+    //    }
+}
+
 const std::list<IndividualImpl*>& GeneticAlgorithmImpl::get_population() const
 {
     return m_population;

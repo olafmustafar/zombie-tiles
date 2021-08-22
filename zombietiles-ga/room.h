@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+using namespace std;
+
 class Room
 {
 public:
@@ -27,6 +30,7 @@ public:
     void set_placement_type(const PlacementType &value);
 
     void print() const;
+    string to_string() const;
 
 private:
     int m_x;

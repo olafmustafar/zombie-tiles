@@ -25,3 +25,8 @@ void RoomGene::set_room(const Room &room)
 {
     this->m_room = room;
 }
+
+string RoomGene::to_string() const
+{
+    return this->get_room().to_string();
+}

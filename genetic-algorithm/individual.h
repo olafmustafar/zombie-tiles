@@ -1,7 +1,6 @@
 #pragma once
 
 #include "chromosome.h"
-#include <QList>
 
 class IndividualImpl
 {
@@ -24,11 +23,15 @@ private:
     virtual Chromosome *create_cromossome() const = 0;
 };
 
-template<typename ChromosomeType> class Individual : IndividualImpl
+template<typename ChromosomeType> class Individual : public IndividualImpl
 {
 public:
-    using IndividualImpl::IndividualImpl;
     ~Individual() override = default;
+
+    ChromosomeType* get_chromosome() const
+    {
+        return static_cast<ChromosomeType*>(IndividualImpl::get_chromosome());
+    };
 
 private:
     Chromosome* create_cromossome() const override { return new ChromosomeType; }

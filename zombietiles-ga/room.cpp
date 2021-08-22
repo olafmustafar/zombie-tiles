@@ -70,3 +70,16 @@ void Room::print() const
             << " )" << std::endl;
     // clang-format on
 }
+
+string Room::to_string() const
+{
+    string str = "";
+    str += "room (";
+    str += " width" + std::to_string(get_width());
+    str += " height:" + std::to_string(get_height());
+    str += " x:" + std::to_string(get_x());
+    str += " y:" + std::to_string(get_y());
+    str += " placement:" + std::to_string(static_cast<int>(get_placement_type()));
+    str += " )";
+    return str;
+}

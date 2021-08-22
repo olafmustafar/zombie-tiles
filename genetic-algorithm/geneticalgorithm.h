@@ -24,6 +24,15 @@ template<typename IndividualType> class GeneticAlgorithm : public GeneticAlgorit
 public:
     using GeneticAlgorithmImpl::GeneticAlgorithmImpl;
 
+    std::list<IndividualType*> get_population()
+    {
+        std::list<IndividualType*> individual_list;
+        for (IndividualImpl* individual : GeneticAlgorithmImpl::get_population()) {
+            individual_list.push_back(static_cast<IndividualType*>(individual));
+        }
+        return individual_list;
+    };
+
 private:
     IndividualImpl* create_individual() const override { return new IndividualType; };
 };

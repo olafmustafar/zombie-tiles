@@ -2,12 +2,15 @@
 
 #include "zombietileschromosome.h"
 
-ZombieTilesIndividual::ZombieTilesIndividual() = default;
-
-ZombieTilesIndividual::~ZombieTilesIndividual() = default;
+#include <utils/randomgenerator.h>
 
 double ZombieTilesIndividual::evaluate() const
 {
-    //TODO
+    // TODO
     return 0.00;
+}
+
+string ZombieTilesIndividual::to_string()
+{
+    return Individual<ZombieTilesChromosome>::get_chromosome()->to_string();
 }

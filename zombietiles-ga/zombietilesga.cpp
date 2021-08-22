@@ -1,8 +1,5 @@
 #include "zombietilesga.h"
 #include "zombietileschromosome.h"
-#include "zombietilesindividual.h"
-#include "zombietilesindividualfactory.h"
-#include <genetic-algorithm/geneticalgorithm.h>
 #include <utils/logger.h>
 #include <utils/randomgenerator.h>
 
@@ -12,20 +9,23 @@ namespace {
 constexpr int POPULATION_SIZE = 20;
 }
 
+ZombieTilesGA::ZombieTilesGA() : m_ga(POPULATION_SIZE) { }
+
 void ZombieTilesGA::run()
 {
-    GeneticAlgorithm<ZombieTilesIndividual> ga(POPULATION_SIZE);
-    ga.init();
+    m_ga.init();
+    print();
+}
 
-    //    std::list<int>
+void ZombieTilesGA::print()
+{
+    int index = 0;
+    for (ZombieTilesIndividual* individual : m_ga.get_population()) {
+        std::cout << "individuo: " << index++ << std::endl;
+        std::cout << individual->to_string() << std::endl;
 
-    //    int index = 0;
-    //    for (Individual *individual : ga.get_population()) {
-    //        std::cout << "individuo: " << index << std::endl;
-
-    //        const std::vector<RoomGene> genes = static_cast<ZombieTilesChromosome
-    //        *>(individual->get_chromosome())->get_genes(); for (const auto &gene : genes) {
-    //            gene.get_room().print();
-    //        }
-    //    }
+        //        for (RoomGene& gene : genes)
+        //            gene.get_room().print();
+        //    }
+    }
 }

@@ -31,3 +31,12 @@ const std::vector<RoomGene> &ZombieTilesChromosome::get_genes() const
 {
     return m_genes;
 }
+
+string ZombieTilesChromosome::to_string() const
+{
+    string str = "";
+    for (const RoomGene& gene : m_genes) {
+        str += gene.get_room().to_string() + '\n';
+    }
+    return str;
+}
