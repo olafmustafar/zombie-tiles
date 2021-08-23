@@ -13,7 +13,5 @@ std::list<TileTexture> ZombieTiles::generate_dungeon(const uint width, const uin
 
     zombie_tiles_ga.run();
 
-    Logger::doing("Testando");
-    Logger::done();
     return {};
 }

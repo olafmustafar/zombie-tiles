@@ -6,7 +6,8 @@
 
 double ZombieTilesIndividual::evaluate() const
 {
-    // TODO
+    ZombieTilesChromosome* chromosome = get_chromosome();
+
     return 0.00;
 }
 

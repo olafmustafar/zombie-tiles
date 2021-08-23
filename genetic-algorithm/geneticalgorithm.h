@@ -9,6 +9,7 @@ class GeneticAlgorithmImpl
 public:
     GeneticAlgorithmImpl(int population_size);
     void init();
+    void run(int generations);
 
     const std::list<IndividualImpl*>& get_population() const;
 

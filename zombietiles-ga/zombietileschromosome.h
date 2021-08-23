@@ -16,5 +16,7 @@ public:
     string to_string() const;
 
 private:
+    void count_corridors();
+
     std::vector<RoomGene> m_genes;
 };

@@ -2,17 +2,42 @@
 
 #include <iostream>
 
-void Logger::log(const char *message)
+vector<string> Logger::m_operations = {};
+
+void Logger::log(const char* message)
 {
-    std::cout << message << std::endl;
+    cout << ident() << message << endl;
 }
 
-void Logger::doing(const char *message)
+void Logger::doing(const char* message)
 {
-    std::cout << message << "...";
+    m_operations.push_back(message);
+    cout << ident() << message << "..." << endl;
+}
+
+void Logger::doing(const string& message)
+{
+    doing(message.c_str());
+}
+
+void Logger::doing(const string& message, const function<void()> operation)
+{
+    Logger::doing(message);
+    operation();
+    Logger::done();
 }
 
 void Logger::done()
 {
-    std::cout << "DONE!" << std::endl;
+    cout << ident() << m_operations.back() << " DONE!" << endl;
+    m_operations.pop_back();
+}
+
+string Logger::ident()
+{
+    string identation = "";
+    for (ulong i = 1; i < m_operations.size(); ++i) {
+        cout << "\t";
+    }
+    return identation;
 }

@@ -12,9 +12,6 @@ IndividualImpl::~IndividualImpl()
 
 void IndividualImpl::init()
 {
-    m_current_fitness = 0;
-    m_relative_fitness = 0;
-    m_cumulative_fitness = 0;
     m_chromosome = create_cromossome();
     m_chromosome->randomize();
 }
