@@ -1,31 +1,26 @@
 #pragma once
 
-#include "tile.h"
-#include <QList>
+#include <cstdint>
+#include <vector>
 
-struct Point
-{
-    int x;
-    int y;
-};
+using namespace std;
 
-struct Line
+struct Door
 {
-    Point start;
-    Point end;
+    uint32_t x;
+    uint32_t y;
 };
 
 class TileMap
 {
 public:
-    TileMap(const uint width, const uint height);
-    void init();
-    void print() const;
-    Tile *tile(Point coord) const;
+    TileMap(const uint32_t width, const uint32_t height);
+    ~TileMap();
+    int* operator[](const int index) const;
 
 private:
-    uint width;
-    uint height;
-    QList<Line> walls;
-    QList<Tile *> tiles;
+    const uint32_t m_width;
+    const uint32_t m_height;
+    int** m_map_matrix;
+    vector<Door> m_doors;
 };

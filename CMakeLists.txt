@@ -22,8 +22,6 @@ add_library(zombietiles SHARED
   tilemap.cpp
   tiletexture.h
   tiletexture.cpp
-  tile.h
-  tile.cpp
   utils/randomgenerator.h
   utils/randomgenerator.cpp
   utils/logger.h
@@ -46,7 +44,7 @@ add_library(zombietiles SHARED
   zombietiles-ga/roomgene.cpp
 )
 
-set_target_properties(zombietiles PROPERTIES PUBLIC_HEADER "zombietiles.h;zombietiles_global.h;tile.h;tiletexture.h;")
+set_target_properties(zombietiles PROPERTIES PUBLIC_HEADER "zombietiles.h;zombietiles_global.h;tiletexture.h;")
 INSTALL(TARGETS zombietiles
         LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/lib"
         PUBLIC_HEADER DESTINATION "${CMAKE_BINARY_DIR}/include"

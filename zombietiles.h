@@ -1,6 +1,5 @@
 #pragma once
 
-#include "tile.h"
 #include "tiletexture.h"
 #include "zombietiles_global.h"
 #include <list>

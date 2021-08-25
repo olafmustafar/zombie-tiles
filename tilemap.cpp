@@ -1,31 +1,22 @@
 #include "tilemap.h"
 
-#include <iostream>
-
-TileMap::TileMap(const uint width, const uint height)
-    : width(width), height(height), walls({}), tiles({})
-{}
-
-void TileMap::init()
+TileMap::TileMap(const uint32_t width, const uint32_t height) : m_width(width), m_height(height)
 {
-    for (uint i = 0; i < this->width; i++) {
-        for (uint j = 0; j < this->height; j++) {
-            tiles.append(new Tile(Tile::TileType::Floor));
-        }
+    m_map_matrix = new int*[m_width];
+    for (uint32_t i = 0; i <= width; ++i) {
+        m_map_matrix[i] = new int[height];
     }
 }
 
-void TileMap::print() const
+TileMap::~TileMap()
 {
-    for (uint j = 0; j < this->height; j++) {
-        for (uint i = 0; i < this->width; i++) {
-            std::cout << QString("[%0]").arg(static_cast<int>(tiles[i]->get_type())).toStdString();
-        }
-        std::cout << std::endl;
+    for (uint32_t i = 0; i <= m_width; ++i) {
+        delete[] m_map_matrix[i];
     }
+    delete[] m_map_matrix;
 }
 
-Tile *TileMap::tile(Point coord) const
+int* TileMap::operator[](const int index) const
 {
-    return this->tiles[(this->width * coord.y) + coord.x];
+    return m_map_matrix[index];
 }

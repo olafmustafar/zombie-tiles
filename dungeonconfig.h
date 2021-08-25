@@ -1,25 +1,25 @@
 #pragma once
 
-#include <sys/types.h>
+#include <cstdint>
 
 class DungeonConfig
 {
 public:
-    static DungeonConfig &get_instance(const uint width, const uint height);
-    static DungeonConfig &get_instance();
+    static DungeonConfig& get_instance(const uint32_t width, const uint32_t height);
+    static DungeonConfig& get_instance();
 
-    uint get_width() const;
-    void set_width(const uint &value);
+    uint32_t get_width() const;
+    void set_width(const uint32_t value);
 
-    uint get_height() const;
-    void set_height(const uint &value);
+    uint32_t get_height() const;
+    void set_height(const uint32_t value);
 
 private:
-    DungeonConfig(const uint width, const uint height);
+    DungeonConfig(const uint32_t width, const uint32_t height);
     DungeonConfig() = default;
 
-    static DungeonConfig *m_instance;
-    uint m_width;
-    uint m_height;
+    static DungeonConfig* m_instance;
+    uint32_t m_width;
+    uint32_t m_height;
 };
 
