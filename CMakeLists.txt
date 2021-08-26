@@ -16,16 +16,18 @@ add_library(zombietiles SHARED
   zombietiles_global.h
   zombietiles.h
   zombietiles.cpp
-  dungeonconfig.h
-  dungeonconfig.cpp
-  tilemap.h
-  tilemap.cpp
   tiletexture.h
   tiletexture.cpp
   utils/randomgenerator.h
   utils/randomgenerator.cpp
   utils/logger.h
   utils/logger.cpp
+  dungeonconfig.h
+  dungeonconfig.cpp
+  models/tilemap.h
+  models/tilemap.cpp
+  models/room.h
+  models/room.cpp
   genetic-algorithm/geneticalgorithm.h
   genetic-algorithm/geneticalgorithm.cpp
   genetic-algorithm/individual.h
@@ -38,8 +40,6 @@ add_library(zombietiles SHARED
   zombietiles-ga/zombietilesindividual.cpp
   zombietiles-ga/zombietileschromosome.h
   zombietiles-ga/zombietileschromosome.cpp
-  zombietiles-ga/room.h
-  zombietiles-ga/room.cpp
   zombietiles-ga/roomgene.h
   zombietiles-ga/roomgene.cpp
 )

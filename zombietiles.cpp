@@ -1,6 +1,6 @@
 #include "zombietiles.h"
 #include "dungeonconfig.h"
-#include "tilemap.h"
+#include "models/tilemap.h"
 #include "utils/logger.h"
 #include "utils/randomgenerator.h"
 #include "zombietiles-ga/zombietilesga.h"
