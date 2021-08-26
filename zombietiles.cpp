@@ -5,7 +5,7 @@
 #include "utils/randomgenerator.h"
 #include "zombietiles-ga/zombietilesga.h"
 
-std::list<TileTexture> ZombieTiles::generate_dungeon(const uint width, const uint height)
+std::list<TileTexture> ZombieTiles::generate_dungeon(const uint32_t width, const uint32_t height)
 {
     DungeonConfig dungeon_config = DungeonConfig::get_instance(width, height);
 

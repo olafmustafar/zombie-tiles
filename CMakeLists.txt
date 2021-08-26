@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
+#find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+#find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
 
 add_library(zombietiles SHARED
   zombietiles_global.h
@@ -52,7 +52,7 @@ INSTALL(TARGETS zombietiles
 
 target_include_directories(zombietiles PRIVATE .)
 
-target_link_libraries(zombietiles PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+#target_link_libraries(zombietiles PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 
 target_compile_definitions(zombietiles PRIVATE ZOMBIETILES_LIBRARY)
 
