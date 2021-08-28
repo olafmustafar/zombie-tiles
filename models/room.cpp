@@ -3,46 +3,47 @@
 
 Room::Room() : m_x(0), m_y(0), m_width(0), m_height(0), m_placement_type(PlacementType::T) {}
 
-Room::Room(int x, int y, int width, int height, Room::PlacementType placement_type)
+Room::Room(
+        uint32_t x, uint32_t y, uint32_t width, uint32_t height, Room::PlacementType placement_type)
     : m_x(x), m_y(y), m_width(width), m_height(height), m_placement_type(placement_type)
 {}
 
-int Room::get_x() const
+uint32_t Room::get_x() const
 {
     return m_x;
 }
 
-void Room::set_x(int value)
+void Room::set_x(uint32_t value)
 {
     m_x = value;
 }
 
-int Room::get_y() const
+uint32_t Room::get_y() const
 {
     return m_y;
 }
 
-void Room::set_y(int value)
+void Room::set_y(uint32_t value)
 {
     m_y = value;
 }
 
-int Room::get_width() const
+uint32_t Room::get_width() const
 {
     return m_width;
 }
 
-void Room::set_width(int value)
+void Room::set_width(uint32_t value)
 {
     m_width = value;
 }
 
-int Room::get_height() const
+uint32_t Room::get_height() const
 {
     return m_height;
 }
 
-void Room::set_height(int value)
+void Room::set_height(uint32_t value)
 {
     m_height = value;
 }

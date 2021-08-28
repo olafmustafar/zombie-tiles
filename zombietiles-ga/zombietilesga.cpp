@@ -3,6 +3,8 @@
 #include <utils/logger.h>
 #include <utils/randomgenerator.h>
 
+#include <models/tilemap.h>
+
 #include <iostream>
 
 namespace {
@@ -20,6 +22,10 @@ void ZombieTilesGA::run()
 void ZombieTilesGA::print()
 {
     int index = 0;
+
+    //    TileMap tile(10, 10);
+    //    Room
+
     for (ZombieTilesIndividual* individual : m_ga.get_population()) {
         std::cout << "individuo: " << index++ << std::endl;
         std::cout << individual->to_string() << std::endl;

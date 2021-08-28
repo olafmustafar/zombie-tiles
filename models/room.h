@@ -7,24 +7,24 @@ class Room
 {
 public:
     enum PlacementType : int {
-        T, //Top
-        U, //Under
+        T, // Top
+        U, // Under
     };
 
     Room();
-    Room(int x, int y, int width, int height, PlacementType placement_type);
+    Room(uint32_t x, uint32_t y, uint32_t width, uint32_t height, PlacementType placement_type);
 
-    int get_x() const;
-    void set_x(int value);
+    uint32_t get_x() const;
+    void set_x(uint32_t value);
 
-    int get_y() const;
-    void set_y(int value);
+    uint32_t get_y() const;
+    void set_y(uint32_t value);
 
-    int get_width() const;
-    void set_width(int value);
+    uint32_t get_width() const;
+    void set_width(uint32_t value);
 
-    int get_height() const;
-    void set_height(int value);
+    uint32_t get_height() const;
+    void set_height(uint32_t value);
 
     PlacementType get_placement_type() const;
     void set_placement_type(const PlacementType &value);
@@ -33,9 +33,9 @@ public:
     string to_string() const;
 
 private:
-    int m_x;
-    int m_y;
-    int m_width;
-    int m_height;
+    uint32_t m_x;
+    uint32_t m_y;
+    uint32_t m_width;
+    uint32_t m_height;
     PlacementType m_placement_type;
 };
