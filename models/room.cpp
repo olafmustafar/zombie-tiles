@@ -76,7 +76,7 @@ string Room::to_string() const
 {
     string str = "";
     str += "room (";
-    str += " width" + std::to_string(get_width());
+    str += " width:" + std::to_string(get_width());
     str += " height:" + std::to_string(get_height());
     str += " x:" + std::to_string(get_x());
     str += " y:" + std::to_string(get_y());

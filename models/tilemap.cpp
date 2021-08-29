@@ -1,5 +1,7 @@
 #include "tilemap.h"
 
+#include <iostream>
+
 namespace {
 constexpr int EMPTY_ROOM = 0;
 }
@@ -40,4 +42,30 @@ void TileMap::addRoom(const Room& room)
             }
         }
     }
+}
+
+string TileMap::to_string() const
+{
+    string str = "";
+
+    for (uint32_t j = 0; j < m_height; ++j) {
+        for (uint32_t i = 0; i < m_width; ++i) {
+
+            if (m_map_matrix[i][j] == EMPTY_ROOM) {
+                if (i == 0) {
+                    str += "|  ";
+                } else if (i == m_width - 1) {
+                    str += "  |";
+                } else {
+                    str += "   ";
+                }
+                continue;
+            }
+
+            str += "[" + std::to_string(m_map_matrix[i][j]) + "]";
+        }
+
+        str += "\n";
+    }
+    return str;
 }

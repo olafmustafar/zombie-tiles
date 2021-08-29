@@ -3,7 +3,10 @@
 #include <dungeonconfig.h>
 #include <utils/randomgenerator.h>
 
-ZombieTilesChromosome::ZombieTilesChromosome() : m_genes()
+ZombieTilesChromosome::ZombieTilesChromosome()
+    : m_genes(),
+      m_tilemap(
+              DungeonConfig::get_instance().get_width(), DungeonConfig::get_instance().get_height())
 {
     for (int i = 0; i < 5; ++i) {
         m_genes.push_back(RoomGene());
@@ -14,6 +17,7 @@ void ZombieTilesChromosome::randomize()
 {
     for (RoomGene &gene : m_genes) {
         gene.randomize();
+        m_tilemap.addRoom(gene.get_room());
     }
 }
 
@@ -38,5 +42,8 @@ string ZombieTilesChromosome::to_string() const
     for (const RoomGene& gene : m_genes) {
         str += gene.get_room().to_string() + '\n';
     }
+
+    str += m_tilemap.to_string();
+
     return str;
 }

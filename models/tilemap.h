@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 #include "room.h"
 
 using namespace std;
@@ -20,6 +21,8 @@ public:
     int* operator[](const int index) const;
 
     void addRoom(const Room& room);
+
+    string to_string() const;
 
 private:
     const uint32_t m_width;

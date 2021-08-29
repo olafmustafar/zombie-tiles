@@ -1,8 +1,9 @@
 #pragma once
 
-#include "roomgene.h"
-#include <genetic-algorithm/chromosome.h>
 #include <vector>
+#include <models/tilemap.h>
+#include <genetic-algorithm/chromosome.h>
+#include "roomgene.h"
 
 class ZombieTilesChromosome : public Chromosome
 {
@@ -16,7 +17,8 @@ public:
     string to_string() const;
 
 private:
-    void count_corridors();
-
     std::vector<RoomGene> m_genes;
+    TileMap m_tilemap;
+
+    void corridors_count();
 };
