@@ -1,12 +1,24 @@
 #include "room.h"
 #include <iostream>
 
-Room::Room() : m_x(0), m_y(0), m_width(0), m_height(0), m_placement_type(PlacementType::T) {}
+Room::Room()
+    : m_x(0)
+    , m_y(0)
+    , m_width(0)
+    , m_height(0)
+    , m_placement_type(PlacementType::T)
+{
+}
 
 Room::Room(
-        uint32_t x, uint32_t y, uint32_t width, uint32_t height, Room::PlacementType placement_type)
-    : m_x(x), m_y(y), m_width(width), m_height(height), m_placement_type(placement_type)
-{}
+    uint32_t x, uint32_t y, uint32_t width, uint32_t height, Room::PlacementType placement_type)
+    : m_x(x)
+    , m_y(y)
+    , m_width(width)
+    , m_height(height)
+    , m_placement_type(placement_type)
+{
+}
 
 uint32_t Room::get_x() const
 {
@@ -53,23 +65,21 @@ Room::PlacementType Room::get_placement_type() const
     return m_placement_type;
 }
 
-void Room::set_placement_type(const PlacementType &value)
+void Room::set_placement_type(const PlacementType& value)
 {
     m_placement_type = value;
 }
 
 void Room::print() const
 {
-    // clang-format off
     std::cout
-            << "room ("
-            << " width:" << get_width()
-            << " height:" << get_height()
-            << " x:" << get_x()
-            << " y:" << get_y()
-            << " placement:" << static_cast<int>(get_placement_type())
-            << " )" << std::endl;
-    // clang-format on
+        << "room ("
+        << " width:" << get_width()
+        << " height:" << get_height()
+        << " x:" << get_x()
+        << " y:" << get_y()
+        << " placement:" << static_cast<int>(get_placement_type())
+        << " )" << std::endl;
 }
 
 string Room::to_string() const

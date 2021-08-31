@@ -3,8 +3,7 @@
 #include <string>
 using namespace std;
 
-class Room
-{
+class Room {
 public:
     enum PlacementType : int {
         T, // Top
@@ -27,7 +26,7 @@ public:
     void set_height(uint32_t value);
 
     PlacementType get_placement_type() const;
-    void set_placement_type(const PlacementType &value);
+    void set_placement_type(const PlacementType& value);
 
     void print() const;
     string to_string() const;

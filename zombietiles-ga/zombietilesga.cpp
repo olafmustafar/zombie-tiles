@@ -16,6 +16,7 @@ ZombieTilesGA::ZombieTilesGA() : m_ga(POPULATION_SIZE) { }
 void ZombieTilesGA::run()
 {
     m_ga.init();
+    // m_ga.run( 1 );
     print();
     //    m_ga.run(20);
 }
