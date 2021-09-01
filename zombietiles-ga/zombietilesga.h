@@ -1,7 +1,7 @@
 #pragma once
 
 #include <genetic-algorithm/geneticalgorithm.h>
-#include <dungeonconfig.h>
+#include <models/dungeonconfig.h>
 #include "zombietilesindividual.h"
 
 class ZombieTilesGA

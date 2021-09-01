@@ -1,6 +1,6 @@
 #include "zombietileschromosome.h"
 
-#include <dungeonconfig.h>
+#include <models/dungeonconfig.h>
 #include <utils/randomgenerator.h>
 
 ZombieTilesChromosome::ZombieTilesChromosome()

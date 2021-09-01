@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dungeonconfig.h"
+#include <models/dungeonconfig.h>
 #include "individual.h"
 #include <list>
 
