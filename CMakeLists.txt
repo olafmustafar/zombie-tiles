@@ -26,6 +26,8 @@ add_library(zombietiles SHARED
   models/tilemap.cpp
   models/room.h
   models/room.cpp
+  helpers/tilemaphelper.h
+  helpers/tilemaphelper.cpp
   genetic-algorithm/geneticalgorithm.h
   genetic-algorithm/geneticalgorithm.cpp
   genetic-algorithm/individual.h
