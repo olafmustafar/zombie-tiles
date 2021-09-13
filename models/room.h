@@ -25,6 +25,9 @@ public:
     uint32_t get_height() const;
     void set_height(uint32_t value);
 
+    uint32_t get_x2() const;
+    uint32_t get_y2() const;
+
     PlacementType get_placement_type() const;
     void set_placement_type(const PlacementType& value);
 
