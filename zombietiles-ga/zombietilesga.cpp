@@ -21,10 +21,10 @@ void ZombieTilesGA::run()
 {
     TileMap map = TileMapHelper::create_tilemap();
     map.addRoom(Room(4, 0, 20, 20, Room::PlacementType::U));
-    // map.addRoom(Room(4, 0, 3, 3, Room::PlacementType::T));
     map.addRoom(Room(8, 0, 3, 19, Room::PlacementType::T));
-    // map.addRoom(Room(12, 0, 3, 20, Room::PlacementType::U));
-    // map.addRoom(Room(4, 0, 3, 10, Room::PlacementType::T));
+    map.addRoom(Room(4, 0, 3, 3, Room::PlacementType::T));
+    map.addRoom(Room(12, 0, 3, 20, Room::PlacementType::U));
+    map.addRoom(Room(4, 0, 3, 10, Room::PlacementType::T));
     std::cout << map.to_string() << endl;
     int n = TileMapHelper::count_rooms(map);
     std::cout << "Room count: " << n << endl;

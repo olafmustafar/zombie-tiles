@@ -1,6 +1,4 @@
 #include "tilemap.h"
-#include <algorithm>
-#include <functional>
 #include <helpers/roomhelper.h>
 #include <iostream>
 
@@ -24,21 +22,20 @@ TileMap::~TileMap()
 
 int* TileMap::operator[](const int index) const { return m_map_matrix[index]; }
 
-void TileMap::addRoom(const Room& newRoom)
+void TileMap::addRoom(const Room& new_room)
 {
-    auto overlaps_with_new_room = bind(&RoomHelper::check_if_2_rooms_overlap, placeholders::_1, newRoom);
-    if (m_rooms.size() && !any_of(m_rooms.cbegin(), m_rooms.cend(), overlaps_with_new_room)) {
+    if( !RoomHelper::check_if_can_add( new_room, m_rooms ) ){
         return;
     }
 
-    m_rooms.push_back(newRoom);
+    m_rooms.push_back(new_room);
     int index = m_rooms.size();
 
-    for (uint32_t i = 0; i < newRoom.get_width(); ++i) {
-        for (uint32_t j = 0; j < newRoom.get_height(); ++j) {
-            int& current = m_map_matrix[i + newRoom.get_x()][j + newRoom.get_y()];
+    for (uint32_t i = 0; i < new_room.get_width(); ++i) {
+        for (uint32_t j = 0; j < new_room.get_height(); ++j) {
+            int& current = m_map_matrix[i + new_room.get_x()][j + new_room.get_y()];
 
-            if (current == EMPTY_ROOM || newRoom.get_placement_type() == Room::PlacementType::T) {
+            if (current == EMPTY_ROOM || new_room.get_placement_type() == Room::PlacementType::T) {
                 current = index;
             }
         }
