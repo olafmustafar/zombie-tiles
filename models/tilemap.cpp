@@ -24,7 +24,7 @@ int* TileMap::operator[](const int index) const { return m_map_matrix[index]; }
 
 void TileMap::addRoom(const Room& new_room)
 {
-    if( !RoomHelper::check_if_can_add( new_room, m_rooms ) ){
+    if (!RoomHelper::check_if_can_add(new_room, m_rooms)) {
         return;
     }
 
@@ -69,22 +69,35 @@ const vector<Room>& TileMap::get_rooms() const
 
 string TileMap::to_string() const
 {
-    string str = "";
+    string str = "     ";
+    {
+        string linha = "     ";
+        for (uint32_t i = 0; i < m_width; ++i) {
+            char buffer[255];
+            sprintf(buffer, "%3d", i);
+            str += buffer;
+            linha += "___";
+        }
+        str += "\n" + linha + "\n";
+    }
 
     for (uint32_t j = 0; j < m_height; ++j) {
         for (uint32_t i = 0; i < m_width; ++i) {
-            if (m_map_matrix[i][j] == EMPTY_ROOM) {
-                if (i == 0) {
-                    str += "|  ";
-                } else if (i == m_width - 1) {
-                    str += "  |";
-                } else {
-                    str += "   ";
-                }
-                continue;
+            if (i == 0) {
+                char buffer[255];
+                sprintf(buffer, "% 3d |", j);
+                str += buffer;
             }
 
-            str += "[" + std::to_string(m_map_matrix[i][j]) + "]";
+            if (m_map_matrix[i][j] == EMPTY_ROOM) {
+                str += "   ";
+            } else {
+                str += "[" + std::to_string(m_map_matrix[i][j]) + "]";
+            }
+
+            if (i == m_width - 1) {
+                str += "|";
+            }
         }
 
         str += "\n";
