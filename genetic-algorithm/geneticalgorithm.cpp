@@ -1,7 +1,7 @@
-#include "geneticalgorithm.h"
+#include "geneticalgorithm.hpp"
 
 #include <string>
-#include <utils/logger.h>
+#include <utils/logger.hpp>
 
 GeneticAlgorithmImpl::GeneticAlgorithmImpl(int population_size)
     : m_population({}), m_generation(0), m_population_size(population_size)

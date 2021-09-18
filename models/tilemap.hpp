@@ -1,6 +1,6 @@
 #pragma once
 
-#include "room.h"
+#include "room.hpp"
 #include <cstdint>
 #include <string>
 #include <vector>

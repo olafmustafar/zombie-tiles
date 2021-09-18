@@ -1,7 +1,7 @@
-#include "zombietileschromosome.h"
+#include "zombietileschromosome.hpp"
 
-#include <models/dungeonconfig.h>
-#include <utils/randomgenerator.h>
+#include <models/dungeonconfig.hpp>
+#include <utils/randomgenerator.hpp>
 
 ZombieTilesChromosome::ZombieTilesChromosome()
     : m_genes(),

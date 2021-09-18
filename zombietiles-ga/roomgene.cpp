@@ -1,5 +1,5 @@
-#include "roomgene.h"
-#include <utils/randomgenerator.h>
+#include "roomgene.hpp"
+#include <utils/randomgenerator.hpp>
 
 RoomGene::RoomGene() : m_room() {}
 

@@ -1,6 +1,6 @@
 #pragma once
 
-//#include <QtCore/qglobal.h>
+//#include <QtCore/qglobal.hpp>
 
 //#if defined(ZOMBIETILES_LIBRARY)
 //#define ZOMBIETILES_EXPORT Q_DECL_EXPORT

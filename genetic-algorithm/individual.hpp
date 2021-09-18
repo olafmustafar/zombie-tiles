@@ -1,6 +1,6 @@
 #pragma once
 
-#include "chromosome.h"
+#include "chromosome.hpp"
 
 class IndividualImpl
 {

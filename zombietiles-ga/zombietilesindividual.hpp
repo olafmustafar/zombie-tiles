@@ -1,7 +1,7 @@
 #pragma once
 
-#include "zombietileschromosome.h"
-#include <genetic-algorithm/individual.h>
+#include "zombietileschromosome.hpp"
+#include <genetic-algorithm/individual.hpp>
 
 class ZombieTilesIndividual : public Individual<ZombieTilesChromosome> {
 public:

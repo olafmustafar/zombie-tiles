@@ -1,5 +1,5 @@
-#include "tilemap.h"
-#include <helpers/roomhelper.h>
+#include "tilemap.hpp"
+#include <helpers/roomhelper.hpp>
 #include <iostream>
 
 TileMap::TileMap(const uint32_t width, const uint32_t height)

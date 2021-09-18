@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include <models/tilemap.h>
-#include <genetic-algorithm/chromosome.h>
-#include "roomgene.h"
+#include <models/tilemap.hpp>
+#include <genetic-algorithm/chromosome.hpp>
+#include "roomgene.hpp"
 
 class ZombieTilesChromosome : public Chromosome
 {

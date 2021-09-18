@@ -1,17 +1,17 @@
-#include "zombietiles.h"
-#include "models/dungeonconfig.h"
-#include "models/tilemap.h"
-#include "utils/logger.h"
-#include "utils/randomgenerator.h"
-#include "zombietiles-ga/zombietilesga.h"
+#include "zombietiles.hpp"
+#include "models/dungeonconfig.hpp"
+#include "models/tilemap.hpp"
+#include "utils/logger.hpp"
+#include "utils/randomgenerator.hpp"
+#include "zombietiles-ga/zombietilesga.hpp"
 
 void ZombieTiles::generate_dungeon(const uint32_t width, const uint32_t height)
 {
     DungeonConfig dungeon_config = DungeonConfig::get_instance(width, height);
 
-    ZombieTilesGA zombie_tiles_ga;
+    ZombieTilesGA ga;
 
-    zombie_tiles_ga.run();
+    ga.run();
 
     return;
 }

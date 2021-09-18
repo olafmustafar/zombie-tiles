@@ -1,6 +1,6 @@
 #pragma once
 
-#include "zombietiles_global.h"
+#include "zombietiles_global.hpp"
 #include <list>
 #include <cstdint>
 

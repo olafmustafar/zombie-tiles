@@ -1,4 +1,4 @@
-#include "dungeonconfig.h"
+#include "dungeonconfig.hpp"
 
 DungeonConfig *DungeonConfig::m_instance;
 

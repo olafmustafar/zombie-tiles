@@ -1,7 +1,7 @@
 #pragma once
 
-#include <models/room.h>
-#include <models/dungeonconfig.h>
+#include <models/room.hpp>
+#include <models/dungeonconfig.hpp>
 
 class RoomGene
 {

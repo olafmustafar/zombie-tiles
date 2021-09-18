@@ -1,9 +1,9 @@
-#include "zombietilesga.h"
-#include "zombietileschromosome.h"
-#include <helpers/tilemaphelper.h>
-#include <models/tilemap.h>
-#include <utils/logger.h>
-#include <utils/randomgenerator.h>
+#include "zombietilesga.hpp"
+#include "zombietileschromosome.hpp"
+#include <helpers/tilemaphelper.hpp>
+#include <models/tilemap.hpp>
+#include <utils/logger.hpp>
+#include <utils/randomgenerator.hpp>
 
 #include <iostream>
 
@@ -19,19 +19,9 @@ ZombieTilesGA::ZombieTilesGA()
 
 void ZombieTilesGA::run()
 {
-    TileMap map = TileMapHelper::create_tilemap();
-    map.addRoom(Room(0, 0, 30, 1, Room::PlacementType::U));
-    map.addRoom(Room(4, 1, 20, 20, Room::PlacementType::T));
-    // map.addRoom(Room(8, 0, 3, 19, Room::PlacementType::T));
-    // map.addRoom(Room(20, 20, 3, 3, Room::PlacementType::T));
-    // map.addRoom(Room(12, 0, 3, 20, Room::PlacementType::U));
-    // map.addRoom(Room(4, 0, 3, 10, Room::PlacementType::T));
-    std::cout << map.to_string() << endl;
-    int n = TileMapHelper::count_rooms(map);
-    std::cout << "Room count: " << n << endl;
-    // m_ga.init();
-    // m_ga.run(GENERATION_SIZE);
-    // print();
+    m_ga.init();
+    m_ga.run(GENERATION_SIZE);
+    print();
 }
 
 void ZombieTilesGA::print()

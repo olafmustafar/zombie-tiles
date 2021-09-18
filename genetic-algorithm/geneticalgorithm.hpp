@@ -1,7 +1,7 @@
 #pragma once
 
-#include <models/dungeonconfig.h>
-#include "individual.h"
+#include <models/dungeonconfig.hpp>
+#include "individual.hpp"
 #include <list>
 
 class GeneticAlgorithmImpl

@@ -1,3 +1,3 @@
-#include "chromosome.h"
+#include "chromosome.hpp"
 
 Chromosome::~Chromosome() = default;

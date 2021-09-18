@@ -1,4 +1,4 @@
-#include "individual.h"
+#include "individual.hpp"
 
 IndividualImpl::IndividualImpl()
     : m_chromosome(nullptr), m_current_fitness(0), m_relative_fitness(0), m_cumulative_fitness(0)

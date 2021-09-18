@@ -9,52 +9,47 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-#find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
-
 add_library(zombietiles SHARED
-  zombietiles_global.h
-  zombietiles.h
+  zombietiles_global.hpp
+  zombietiles.hpp
   zombietiles.cpp
-  utils/randomgenerator.h
+  utils/randomgenerator.hpp
   utils/randomgenerator.cpp
-  utils/logger.h
+  utils/logger.hpp
   utils/logger.cpp
-  models/dungeonconfig.h
+  models/dungeonconfig.hpp
   models/dungeonconfig.cpp
-  models/tilemap.h
+  models/tilemap.hpp
   models/tilemap.cpp
-  models/room.h
+  models/room.hpp
   models/room.cpp
-  helpers/tilemaphelper.h
+  helpers/tilemaphelper.hpp
   helpers/tilemaphelper.cpp
-  helpers/roomhelper.h
+  helpers/roomhelper.hpp
   helpers/roomhelper.cpp
-  genetic-algorithm/geneticalgorithm.h
+  genetic-algorithm/geneticalgorithm.hpp
   genetic-algorithm/geneticalgorithm.cpp
-  genetic-algorithm/individual.h
+  genetic-algorithm/individual.hpp
   genetic-algorithm/individual.cpp
-  genetic-algorithm/chromosome.h
+  genetic-algorithm/chromosome.hpp
   genetic-algorithm/chromosome.cpp
-  zombietiles-ga/zombietilesga.h
+  zombietiles-ga/zombietilesga.hpp
   zombietiles-ga/zombietilesga.cpp
-  zombietiles-ga/zombietilesindividual.h
+  zombietiles-ga/zombietilesindividual.hpp
   zombietiles-ga/zombietilesindividual.cpp
-  zombietiles-ga/zombietileschromosome.h
+  zombietiles-ga/zombietileschromosome.hpp
   zombietiles-ga/zombietileschromosome.cpp
-  zombietiles-ga/roomgene.h
+  zombietiles-ga/roomgene.hpp
   zombietiles-ga/roomgene.cpp
 )
 
-set_target_properties(zombietiles PROPERTIES PUBLIC_HEADER "zombietiles.h;zombietiles_global.h;")
+set_target_properties(zombietiles PROPERTIES PUBLIC_HEADER "zombietiles.hpp;zombietiles_global.hpp;")
 INSTALL(TARGETS zombietiles
         LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/lib"
         PUBLIC_HEADER DESTINATION "${CMAKE_BINARY_DIR}/include"
 )
 
 target_include_directories(zombietiles PRIVATE .)
-
-#target_link_libraries(zombietiles PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 
 target_compile_definitions(zombietiles PRIVATE ZOMBIETILES_LIBRARY)
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <models/room.h>
+#include <models/room.hpp>
 #include <vector>
 
 using namespace std;
