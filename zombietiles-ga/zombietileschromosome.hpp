@@ -1,12 +1,11 @@
 #pragma once
 
-#include <vector>
-#include <models/tilemap.hpp>
-#include <genetic-algorithm/chromosome.hpp>
 #include "roomgene.hpp"
+#include <genetic-algorithm/chromosome.hpp>
+#include <models/tilemap.hpp>
+#include <vector>
 
-class ZombieTilesChromosome : public Chromosome
-{
+class ZombieTilesChromosome : public Chromosome {
 public:
     ZombieTilesChromosome();
     void randomize() override;
@@ -18,7 +17,4 @@ public:
 
 private:
     std::vector<RoomGene> m_genes;
-    TileMap m_tilemap;
-
-    void corridors_count();
 };

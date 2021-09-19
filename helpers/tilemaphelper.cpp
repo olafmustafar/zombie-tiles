@@ -4,14 +4,14 @@
 #include <queue>
 #include <utility>
 
-void TileMapHelper::print_map( const TileMap& tilemap ){
+string TileMapHelper::to_painted_map_string( const TileMap& tilemap ){
     const uint32_t w = tilemap.get_width();
     const uint32_t h = tilemap.get_height();
     
-    string str = "     ";
+    string str = "\n     ";
     {
         string linha = "     ";
-        for (uint32_t i = 0; i < 2; ++i) {
+        for (uint32_t i = 0; i < w; ++i) {
             char buffer[255];
             sprintf(buffer, "%3d", i);
             str += buffer;
@@ -41,7 +41,7 @@ void TileMapHelper::print_map( const TileMap& tilemap ){
 
         str += "\n";
     }
-    cout << str << endl;
+    return str;
 }
 
 TileMap TileMapHelper::create_tilemap()

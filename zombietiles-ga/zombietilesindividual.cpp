@@ -1,6 +1,7 @@
 #include "zombietilesindividual.hpp"
 
 #include "zombietileschromosome.hpp"
+#include <algorithm>
 #include <cstdint>
 #include <helpers/tilemaphelper.hpp>
 #include <models/tilemap.hpp>
@@ -10,13 +11,24 @@ double ZombieTilesIndividual::evaluate() const
 {
     double value = 0.00;
 
-    TileMap map = TileMapHelper::create_tilemap();
-    if (map.get_rooms().size() != TileMapHelper::count_rooms(map)) {
-        //Comparando o tamanho das salas inseridas com o contador das salas
-        Logger::warn( map.to_string() );
+    TileMap tilemap = TileMapHelper::create_tilemap();
+
+    ZombieTilesChromosome* chromosome = get_chromosome();
+    const vector<RoomGene>& genes = chromosome->get_genes();
+
+    for (const RoomGene& gene : genes) {
+        tilemap.addRoom(gene.get_room());
     }
-    
-    const double n_rooms = map.get_rooms().size();
+
+    if (tilemap.get_rooms().size() != TileMapHelper::count_rooms(tilemap)) {
+        //Comparando o tamanho das salas inseridas com o contador das salas
+        Logger::warn(string("tamanho espearado: ") + std::to_string(TileMapHelper::count_rooms(tilemap)));
+        Logger::warn(string("tamanho obtido: ") + std::to_string(tilemap.get_rooms().size()));
+        Logger::warn(chromosome->to_string());
+        Logger::warn(tilemap.to_string());
+    }
+
+    // const double n_rooms = map.get_rooms().size();
     // const double diameter = ,
     // const double n_tiny = count_tiny_rooms(map);
 

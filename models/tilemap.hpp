@@ -20,7 +20,7 @@ public:
     ~TileMap();
     int* operator[](const int index) const;
 
-    void addRoom(const Room& room);
+    void addRoom(const Room room);
     void clear();
 
     uint32_t get_width() const;
