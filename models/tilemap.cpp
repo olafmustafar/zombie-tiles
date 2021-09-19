@@ -5,6 +5,9 @@
 TileMap::TileMap(const uint32_t width, const uint32_t height)
     : m_width(width)
     , m_height(height)
+    , m_map_matrix(nullptr)
+    , m_doors {}
+    , m_rooms {}
 {
     m_map_matrix = new int*[m_width];
     for (uint32_t i = 0; i <= m_width; ++i) {

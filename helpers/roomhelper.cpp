@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <functional>
 #include <utility>
+#include <utils/logger.hpp>
 #include <vector>
-
 using namespace std;
 
 bool RoomHelper::check_if_can_add(const Room& new_room, const vector<Room>& rooms)
@@ -20,7 +20,7 @@ bool RoomHelper::check_if_can_add(const Room& new_room, const vector<Room>& room
     auto new_room_hides = bind(&check_if_hides_or_is_hidden, new_room, placeholders::_1);
     if (any_of(rooms.cbegin(), rooms.cend(), new_room_hides)) {
         return false;
-    }
+    };
 
     auto new_room_divides = bind(&check_if_divides_room, new_room, placeholders::_1);
     if (any_of(rooms.cbegin(), rooms.cend(), new_room_divides)) {
@@ -87,11 +87,11 @@ bool RoomHelper::check_if_divides_room(const Room& room, const Room& another)
                 && room.get_x2() > another.get_x2())) {
 
             if (room.get_y() >= another.get_y()
-                && room.get_y() <= another.get_y2()) {
+                && room.get_y() < another.get_y2()) {
                 return true;
             }
 
-            if (room.get_y2() >= another.get_y()
+            if (room.get_y2() > another.get_y()
                 && room.get_y2() <= another.get_y2()) {
                 return true;
             }
@@ -107,11 +107,11 @@ bool RoomHelper::check_if_divides_room(const Room& room, const Room& another)
                 && room.get_y2() > another.get_y2())) {
 
             if (room.get_x() >= another.get_x()
-                && room.get_x() <= another.get_x2()) {
+                && room.get_x() < another.get_x2()) {
                 return true;
             }
 
-            if (room.get_x2() >= another.get_x()
+            if (room.get_x2() > another.get_x()
                 && room.get_x2() <= another.get_x2()) {
                 return true;
             }

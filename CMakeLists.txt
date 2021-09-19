@@ -23,10 +23,13 @@ add_library(zombietiles SHARED
   models/tilemap.cpp
   models/room.hpp
   models/room.cpp
+  models/graph.hpp
   helpers/tilemaphelper.hpp
   helpers/tilemaphelper.cpp
   helpers/roomhelper.hpp
   helpers/roomhelper.cpp
+  helpers/graphhelper.hpp
+  helpers/graphhelper.cpp
   genetic-algorithm/geneticalgorithm.hpp
   genetic-algorithm/geneticalgorithm.cpp
   genetic-algorithm/individual.hpp

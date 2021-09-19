@@ -20,9 +20,9 @@ double ZombieTilesIndividual::evaluate() const
         tilemap.addRoom(gene.get_room());
     }
 
-    if (tilemap.get_rooms().size() != TileMapHelper::count_rooms(tilemap)) {
+    if (tilemap.get_rooms().size() != TileMapHelper::rooms_count_of(tilemap)) {
         //Comparando o tamanho das salas inseridas com o contador das salas
-        Logger::warn(string("tamanho espearado: ") + std::to_string(TileMapHelper::count_rooms(tilemap)));
+        Logger::warn(string("tamanho espearado: ") + std::to_string(TileMapHelper::rooms_count_of(tilemap)));
         Logger::warn(string("tamanho obtido: ") + std::to_string(tilemap.get_rooms().size()));
         Logger::warn(chromosome->to_string());
         Logger::warn(tilemap.to_string());

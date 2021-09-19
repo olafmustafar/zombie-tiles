@@ -9,6 +9,12 @@ void Logger::log(const char* message)
     cout << ident() << message << endl;
 }
 
+void Logger::log(const string& message)
+{
+    cout << ident() << message << endl;
+}
+
+
 void Logger::doing(const char* message)
 {
     m_operations.push_back(message);

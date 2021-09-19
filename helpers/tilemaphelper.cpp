@@ -1,13 +1,17 @@
 #include "tilemaphelper.hpp"
 #include "models/dungeonconfig.hpp"
+#include <algorithm>
 #include <iostream>
 #include <queue>
 #include <utility>
 
-string TileMapHelper::to_painted_map_string( const TileMap& tilemap ){
+using namespace std;
+
+string TileMapHelper::to_painted_map_string(const TileMap& tilemap)
+{
     const uint32_t w = tilemap.get_width();
     const uint32_t h = tilemap.get_height();
-    
+
     string str = "\n     ";
     {
         string linha = "     ";
@@ -51,7 +55,7 @@ TileMap TileMapHelper::create_tilemap()
     return tilemap;
 }
 
-int TileMapHelper::count_rooms(const TileMap& tilemap)
+int TileMapHelper::rooms_count_of(const TileMap& tilemap)
 {
     const int w = tilemap.get_width();
     const int h = tilemap.get_height();
@@ -95,45 +99,57 @@ int TileMapHelper::count_rooms(const TileMap& tilemap)
     return room_index - 1;
 }
 
-// vector<int, vector<int>> TileMapHelper::generate_graph(const TileMap& tilemap)
-// {
-//     const int w = tilemap.get_width();
-//     const int h = tilemap.get_height();
+Graph TileMapHelper::to_graph(const TileMap& tilemap)
+{
+    const int w = tilemap.get_width();
+    const int h = tilemap.get_height();
+    const size_t size = tilemap.get_rooms().size();
 
-//     int visited[w][h] {};
-//     vector<int> graph;
+    int visited[w][h] {};
+    for (int i = 0; i < w; ++i) {
+        fill_n(visited[i], h, -1);
+    }
+
+    vector<vector<int>> graph(size, vector<int>(size, -1));
     
-//     int room_index = 1;
+    int room_index = 0;
 
-//     for (int i = 0; i < w; ++i) {
-//         for (int j = 0; j < h; ++j) {
-//             if (tilemap[i][j] == TileMap::EMPTY_ROOM || visited[i][j] != 0) {
-//                 continue;
-//             }
+    for (int i = 0; i < w; ++i) {
+        for (int j = 0; j < h; ++j) {
+            if (tilemap[i][j] == TileMap::EMPTY_ROOM || visited[i][j] != -1) {
+                continue;
+            }
 
-//             queue<pair<int, int>> to_visit {};
-//             to_visit.emplace(i, j);
-//             int current_room = tilemap[i][j];
+            int current_room = tilemap[i][j];
 
-//             while (!to_visit.empty()) {
-//                 pair<int, int> pos = to_visit.front();
-//                 to_visit.pop();
+            queue<pair<int, int>> to_visit {};
+            to_visit.emplace(i, j);
 
-//                 if (pos.first < 0 || pos.second < 0 || pos.first >= w || pos.second >= h) {
-//                     continue;
-//                 }
+            while (!to_visit.empty()) {
+                pair<int, int> pos = to_visit.front();
+                to_visit.pop();
 
-//                 if (tilemap[pos.first][pos.second] == current_room
-//                     && visited[pos.first][pos.second] != room_index) {
+                const int x = pos.first;
+                const int y = pos.second;
 
-//                     visited[pos.first][pos.second] = room_index;
-//                     to_visit.emplace(pos.first + 1, pos.second);
-//                     to_visit.emplace(pos.first - 1, pos.second);
-//                     to_visit.emplace(pos.first, pos.second + 1);
-//                     to_visit.emplace(pos.first, pos.second - 1);
-//                 }
-//             }
-//             ++room_index;
-//         }
-//     }
-// }
+                if (x < 0 || y < 0 || x >= w || y >= h) {
+                    continue;
+                }
+
+                graph[current_room-1][tilemap[x][y]] = 1;
+
+                if (tilemap[x][y] == current_room
+                    && visited[x][y] != room_index) {
+
+                    visited[x][y] = room_index;
+                    to_visit.emplace(x + 1, y);
+                    to_visit.emplace(x - 1, y);
+                    to_visit.emplace(x, y + 1);
+                    to_visit.emplace(x, y - 1);
+                }
+            }
+            ++room_index;
+        }
+    }
+    return graph;
+}
