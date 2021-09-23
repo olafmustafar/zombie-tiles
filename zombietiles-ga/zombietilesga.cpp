@@ -1,7 +1,7 @@
 #include "zombietilesga.hpp"
 #include "zombietileschromosome.hpp"
-#include <helpers/tilemaphelper.hpp>
 #include <helpers/graphhelper.hpp>
+#include <helpers/tilemaphelper.hpp>
 #include <models/tilemap.hpp>
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
@@ -32,13 +32,14 @@ void ZombieTilesGA::run()
     tilemap.addRoom(Room(4, 2, 1, 1, Room::PlacementType::U));
     tilemap.addRoom(Room(3, 0, 1, 1, Room::PlacementType::U));
     tilemap.addRoom(Room(3, 1, 1, 1, Room::PlacementType::T));
-    
+
     Logger::log(TileMapHelper::to_painted_map_string(tilemap));
 
     Graph graph = TileMapHelper::to_graph(tilemap);
 
-    int diameter = GraphHelper::diameter_of( graph );
+    int diameter = GraphHelper::diameter_of(graph);
 
+    Logger::warn(std::to_string(GraphHelper::average_degree_of(graph)));
 }
 
 void ZombieTilesGA::print()

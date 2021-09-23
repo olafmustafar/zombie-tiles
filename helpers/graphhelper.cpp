@@ -40,3 +40,16 @@ int GraphHelper::diameter_of(const Graph& graph)
 
     return diameter;
 }
+
+double GraphHelper::average_degree_of(const Graph& graph)
+{
+    double total = 0.00;
+    for (size_t i = 0; i < graph.size(); ++i) {
+        for (size_t j = 0; j < graph[i].size(); ++j) {
+            if (i != j && graph[i][j] != -1) {
+                total += 1.00;
+            }
+        }
+    }
+    return total / graph.size();
+}

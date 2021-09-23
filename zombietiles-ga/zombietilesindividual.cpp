@@ -2,8 +2,11 @@
 
 #include "zombietileschromosome.hpp"
 #include <algorithm>
+#include <cmath>
 #include <cstdint>
+#include <helpers/graphhelper.hpp>
 #include <helpers/tilemaphelper.hpp>
+#include <models/graph.hpp>
 #include <models/tilemap.hpp>
 #include <utils/logger.hpp>
 
@@ -28,7 +31,7 @@ double ZombieTilesIndividual::evaluate() const
         Logger::warn(tilemap.to_string());
     }
 
-    // const double n_rooms = map.get_rooms().size();
+    const double n_rooms = map.get_rooms().size();
     // const double diameter = ,
     // const double n_tiny = count_tiny_rooms(map);
 
