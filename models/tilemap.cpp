@@ -1,6 +1,9 @@
 #include "tilemap.hpp"
+#include <algorithm>
 #include <helpers/roomhelper.hpp>
 #include <iostream>
+
+using namespace std;
 
 TileMap::TileMap(const uint32_t width, const uint32_t height)
     : m_width(width)
@@ -12,6 +15,7 @@ TileMap::TileMap(const uint32_t width, const uint32_t height)
     m_map_matrix = new int*[m_width];
     for (uint32_t i = 0; i <= m_width; ++i) {
         m_map_matrix[i] = new int[m_height] {};
+        std::fill_n(m_map_matrix[i], m_height, -1);
     }
 }
 
@@ -32,7 +36,7 @@ void TileMap::addRoom(const Room new_room)
     }
 
     m_rooms.push_back(new_room);
-    int index = m_rooms.size();
+    int index = m_rooms.size() - 1;
 
     for (uint32_t i = new_room.get_x(); i < new_room.get_x2(); ++i) {
         for (uint32_t j = new_room.get_y(); j < new_room.get_y2(); ++j) {

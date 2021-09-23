@@ -1,4 +1,7 @@
 #include "graphhelper.hpp"
+#include <iostream>
+#include <vector>
+using namespace std;
 
 int GraphHelper::diameter_of(const Graph& graph)
 {
@@ -7,7 +10,7 @@ int GraphHelper::diameter_of(const Graph& graph)
     int distances[size][size] {};
 
     for (int i = 0; i < size; ++i) {
-        for (int j = 0; i < size; ++j) {
+        for (int j = 0; j < size; ++j) {
             distances[i][j] = graph[i][j];
         }
     }

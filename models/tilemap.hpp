@@ -14,7 +14,7 @@ struct Door {
 
 class TileMap {
 public:
-    static constexpr int EMPTY_ROOM = 0;
+    static constexpr int EMPTY_ROOM = -1;
 
     TileMap(const uint32_t width, const uint32_t height);
     ~TileMap();

@@ -105,23 +105,17 @@ Graph TileMapHelper::to_graph(const TileMap& tilemap)
     const int h = tilemap.get_height();
     const size_t size = tilemap.get_rooms().size();
 
-    int visited[w][h] {};
-    for (int i = 0; i < w; ++i) {
-        fill_n(visited[i], h, -1);
-    }
+    bool visited[w][h] {};
 
-    vector<vector<int>> graph(size, vector<int>(size, -1));
-    
-    int room_index = 0;
+    Graph graph(size, vector<int>(size, -1));
 
     for (int i = 0; i < w; ++i) {
         for (int j = 0; j < h; ++j) {
-            if (tilemap[i][j] == TileMap::EMPTY_ROOM || visited[i][j] != -1) {
+            if (tilemap[i][j] == TileMap::EMPTY_ROOM || visited[i][j]) {
                 continue;
             }
 
             int current_room = tilemap[i][j];
-
             queue<pair<int, int>> to_visit {};
             to_visit.emplace(i, j);
 
@@ -132,23 +126,23 @@ Graph TileMapHelper::to_graph(const TileMap& tilemap)
                 const int x = pos.first;
                 const int y = pos.second;
 
-                if (x < 0 || y < 0 || x >= w || y >= h) {
+                if (x < 0 || y < 0 || x >= w || y >= h
+                    || tilemap[x][y] == TileMap::EMPTY_ROOM) {
                     continue;
                 }
 
-                graph[current_room-1][tilemap[x][y]] = 1;
+                graph[current_room][tilemap[x][y]] = 1;
 
                 if (tilemap[x][y] == current_room
-                    && visited[x][y] != room_index) {
+                    && !visited[x][y]) {
 
-                    visited[x][y] = room_index;
+                    visited[x][y] = true;
                     to_visit.emplace(x + 1, y);
                     to_visit.emplace(x - 1, y);
                     to_visit.emplace(x, y + 1);
                     to_visit.emplace(x, y - 1);
                 }
             }
-            ++room_index;
         }
     }
     return graph;

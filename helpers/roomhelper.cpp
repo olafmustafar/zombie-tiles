@@ -78,43 +78,39 @@ bool RoomHelper::check_if_hides_or_is_hidden(const Room& room, const Room& anoth
 
 bool RoomHelper::check_if_divides_room(const Room& room, const Room& another)
 {
-    if (room.get_width() >= another.get_width()) {
-        if ((room.get_placement_type() == Room::PlacementType::T
-                && room.get_x() <= another.get_x()
-                && room.get_x2() >= another.get_x2())
-            || (room.get_placement_type() == Room::PlacementType::U
-                && room.get_x() < another.get_x()
-                && room.get_x2() > another.get_x2())) {
+    if (room.get_placement_type() == Room::PlacementType::T) {
+        if (room.get_height() >= another.get_height()
+            && room.get_x() > another.get_x()
+            && room.get_y() <= another.get_y()
+            && room.get_x2() < another.get_x2()
+            && room.get_y2() >= another.get_y2()) {
+            return true;
+        }
 
-            if (room.get_y() >= another.get_y()
-                && room.get_y() < another.get_y2()) {
-                return true;
-            }
-
-            if (room.get_y2() > another.get_y()
-                && room.get_y2() <= another.get_y2()) {
-                return true;
-            }
+        if (room.get_width() >= another.get_width()
+            && room.get_x() <= another.get_x()
+            && room.get_y() > another.get_y()
+            && room.get_x2() >= another.get_x2()
+            && room.get_y2() < another.get_y2()) {
+            return true;
         }
     }
 
-    if (room.get_height() >= another.get_height()) {
-        if ((room.get_placement_type() == Room::PlacementType::T
-                && room.get_y() <= another.get_y()
-                && room.get_y2() >= another.get_y2())
-            || (room.get_placement_type() == Room::PlacementType::U
-                && room.get_y() < another.get_y()
-                && room.get_y2() > another.get_y2())) {
+    if (room.get_placement_type() == Room::PlacementType::U) {
+        if (room.get_height() >= another.get_height()
+            && room.get_x() > another.get_x()
+            && room.get_y() < another.get_y()
+            && room.get_x2() < another.get_x2()
+            && room.get_y2() > another.get_y2()) {
+            return true;
+        }
 
-            if (room.get_x() >= another.get_x()
-                && room.get_x() < another.get_x2()) {
-                return true;
-            }
-
-            if (room.get_x2() > another.get_x()
-                && room.get_x2() <= another.get_x2()) {
-                return true;
-            }
+        if (room.get_width() >= another.get_width()
+            && room.get_x() < another.get_x()
+            && room.get_y() > another.get_y()
+            && room.get_x2() > another.get_x2()
+            && room.get_y2() < another.get_y2()) {
+            return true;
         }
     }
 

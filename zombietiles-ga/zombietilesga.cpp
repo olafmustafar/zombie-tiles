@@ -1,6 +1,7 @@
 #include "zombietilesga.hpp"
 #include "zombietileschromosome.hpp"
 #include <helpers/tilemaphelper.hpp>
+#include <helpers/graphhelper.hpp>
 #include <models/tilemap.hpp>
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
@@ -23,18 +24,21 @@ void ZombieTilesGA::run()
     // m_ga.run(GENERATION_SIZE);
 
     TileMap tilemap = TileMapHelper::create_tilemap();
-    tilemap.addRoom(Room(0, 0, 1, 1, Room::PlacementType::T));
-    tilemap.addRoom(Room(1, 0, 1, 1, Room::PlacementType::T));
-    tilemap.addRoom(Room(0, 1, 2, 1, Room::PlacementType::T));
-    tilemap.addRoom(Room(2, 0, 1, 2, Room::PlacementType::T));
+    tilemap.addRoom(Room(0, 1, 4, 1, Room::PlacementType::U));
+    tilemap.addRoom(Room(2, 1, 1, 1, Room::PlacementType::U));
+    tilemap.addRoom(Room(1, 2, 2, 1, Room::PlacementType::U));
+    tilemap.addRoom(Room(1, 0, 2, 1, Room::PlacementType::U));
+    tilemap.addRoom(Room(3, 2, 1, 1, Room::PlacementType::U));
+    tilemap.addRoom(Room(4, 2, 1, 1, Room::PlacementType::U));
+    tilemap.addRoom(Room(3, 0, 1, 1, Room::PlacementType::U));
+    tilemap.addRoom(Room(3, 1, 1, 1, Room::PlacementType::T));
+    
     Logger::log(TileMapHelper::to_painted_map_string(tilemap));
 
     Graph graph = TileMapHelper::to_graph(tilemap);
-    // for (vector<int>& vec : graph) {
-    //     for (int val : vec) {
-    //         Logger::log(std::to_string(val));
-    //     }
-    // }
+
+    int diameter = GraphHelper::diameter_of( graph );
+
 }
 
 void ZombieTilesGA::print()
