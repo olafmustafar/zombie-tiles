@@ -24,22 +24,15 @@ void ZombieTilesGA::run()
     // m_ga.run(GENERATION_SIZE);
 
     TileMap tilemap = TileMapHelper::create_tilemap();
-    tilemap.addRoom(Room(0, 1, 4, 1, Room::PlacementType::U));
-    tilemap.addRoom(Room(2, 1, 1, 1, Room::PlacementType::U));
-    tilemap.addRoom(Room(1, 2, 2, 1, Room::PlacementType::U));
-    tilemap.addRoom(Room(1, 0, 2, 1, Room::PlacementType::U));
-    tilemap.addRoom(Room(3, 2, 1, 1, Room::PlacementType::U));
-    tilemap.addRoom(Room(4, 2, 1, 1, Room::PlacementType::U));
-    tilemap.addRoom(Room(3, 0, 1, 1, Room::PlacementType::U));
-    tilemap.addRoom(Room(3, 1, 1, 1, Room::PlacementType::T));
-
+    TileMapHelper::add_room_to(tilemap, Room(2, 4, 23, 15, Room::PlacementType::T));
+    TileMapHelper::add_room_to(tilemap, Room(2, 4, 23, 15, Room::PlacementType::T));
+    TileMapHelper::add_room_to(tilemap, Room(1, 14, 5, 15, Room::PlacementType::U));
+    TileMapHelper::add_room_to(tilemap, Room(2, 4, 28, 16, Room::PlacementType::U));
+    TileMapHelper::add_room_to(tilemap, Room(1, 21, 15, 8, Room::PlacementType::T));
+    TileMapHelper::add_room_to(tilemap, Room(7, 17, 16, 12, Room::PlacementType::T));
     Logger::log(TileMapHelper::to_painted_map_string(tilemap));
 
-    Graph graph = TileMapHelper::to_graph(tilemap);
-
-    int diameter = GraphHelper::diameter_of(graph);
-
-    Logger::warn(std::to_string(GraphHelper::average_degree_of(graph)));
+    Logger::warn(std::to_string(tilemap.get_rooms().size()));
 }
 
 void ZombieTilesGA::print()

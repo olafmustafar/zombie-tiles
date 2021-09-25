@@ -31,8 +31,18 @@ double ZombieTilesIndividual::evaluate() const
         Logger::warn(tilemap.to_string());
     }
 
-    const double n_rooms = map.get_rooms().size();
-    // const double diameter = ,
+    Graph graph = TileMapHelper::to_graph(tilemap);
+    const size_t n_rooms = tilemap.get_rooms().size();
+    const int diameter = GraphHelper::diameter_of(graph);
+    const double average_degree = GraphHelper::average_degree_of(graph);
+    const int n_narrow = TileMapHelper::narrow_rooms_of(tilemap);
+    const int n_tiny = TileMapHelper::tiny_rooms_of(tilemap);
+
+    const double exp_degree = pow(M_E, -(pow(average_degree - 2, 2.00)));
+
+    const double fitness
+        = (exp_degree * n_rooms * log(diameter))
+        / (log(M_E + n_narrow) * pow(10, n_tiny));
     // const double n_tiny = count_tiny_rooms(map);
 
     // for (uint32_t i = 0; i < map.get_width(); ++i) {
@@ -46,6 +56,8 @@ double ZombieTilesIndividual::evaluate() const
     //         }
     //     }
     // }
+
+    Logger::log( std::to_string(fitness) );
 
     return 0.00;
 }

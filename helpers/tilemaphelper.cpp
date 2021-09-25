@@ -7,52 +7,28 @@
 
 using namespace std;
 
-string TileMapHelper::to_painted_map_string(const TileMap& tilemap)
-{
-    const uint32_t w = tilemap.get_width();
-    const uint32_t h = tilemap.get_height();
-
-    string str = "\n     ";
-    {
-        string linha = "     ";
-        for (uint32_t i = 0; i < w; ++i) {
-            char buffer[255];
-            sprintf(buffer, "%3d", i);
-            str += buffer;
-            linha += "___";
-        }
-        str += "\n" + linha + "\n";
-    }
-
-    for (uint32_t j = 0; j < h; ++j) {
-        for (uint32_t i = 0; i < w; ++i) {
-            if (i == 0) {
-                char buffer[255];
-                sprintf(buffer, "% 3d |", j);
-                str += buffer;
-            }
-
-            if (tilemap[i][j] == TileMap::EMPTY_ROOM) {
-                str += "   ";
-            } else {
-                str += "[" + std::to_string(tilemap[i][j]) + "]";
-            }
-
-            if (i == w - 1) {
-                str += "|";
-            }
-        }
-
-        str += "\n";
-    }
-    return str;
-}
-
 TileMap TileMapHelper::create_tilemap()
 {
     DungeonConfig dungeon_config = DungeonConfig::get_instance();
     TileMap tilemap(dungeon_config.get_width(), dungeon_config.get_height());
     return tilemap;
+}
+
+void TileMapHelper::add_room_to(TileMap& tilemap, const Room& room)
+{
+    int original_size = tilemap.get_rooms().size();
+    
+    if( original_size == 0 ){
+        tilemap.addRoom( room );
+        return;
+    }
+
+    TileMap copy(tilemap);
+    copy.addRoom(room);
+
+    if (rooms_count_of(copy) == original_size + 1){
+        tilemap = std::move(copy);
+    }
 }
 
 int TileMapHelper::rooms_count_of(const TileMap& tilemap)
@@ -97,6 +73,64 @@ int TileMapHelper::rooms_count_of(const TileMap& tilemap)
     }
 
     return room_index - 1;
+}
+
+int TileMapHelper::narrow_rooms_of(const TileMap& tilemap)
+{
+    int narrow_rooms_count = 0;
+    for (const Room& room : tilemap.get_rooms()) {
+        if ((room.get_width() == 1 && room.get_height() != 1)
+            || (room.get_width() != 1 && room.get_height() == 1)) {
+            ++narrow_rooms_count;
+        }
+    }
+    return narrow_rooms_count;
+}
+
+int TileMapHelper::tiny_rooms_of(const TileMap& tilemap)
+{
+    int tiny_rooms_count = 0;
+    vector<bool> counted(tilemap.get_rooms().size(), false);
+
+    for (uint32_t x = 0; x < tilemap.get_width(); ++x) {
+        for (uint32_t y = 0; y < tilemap.get_height(); ++y) {
+            int current_room = tilemap[x][y];
+            if (current_room == TileMap::EMPTY_ROOM || counted[current_room]) {
+                continue;
+            };
+
+            if (x > 0) {
+                if (tilemap[x - 1][y] == current_room) {
+                    counted[current_room] = true;
+                    continue;
+                }
+            }
+
+            if (y > 0) {
+                if (tilemap[x][y - 1] == current_room) {
+                    counted[current_room] = true;
+                    continue;
+                }
+            }
+
+            if (x < tilemap.get_width() - 1) {
+                if (tilemap[x + 1][y] == current_room) {
+                    counted[current_room] = true;
+                    continue;
+                }
+            }
+
+            if (y < tilemap.get_width() - 1) {
+                if (tilemap[x][y + 1] == current_room) {
+                    counted[current_room] = true;
+                    continue;
+                }
+            }
+
+            ++tiny_rooms_count;
+        }
+    }
+    return tiny_rooms_count;
 }
 
 Graph TileMapHelper::to_graph(const TileMap& tilemap)
@@ -146,4 +180,45 @@ Graph TileMapHelper::to_graph(const TileMap& tilemap)
         }
     }
     return graph;
+}
+
+string TileMapHelper::to_painted_map_string(const TileMap& tilemap)
+{
+    const uint32_t w = tilemap.get_width();
+    const uint32_t h = tilemap.get_height();
+
+    string str = "\n     ";
+    {
+        string linha = "     ";
+        for (uint32_t i = 0; i < w; ++i) {
+            char buffer[255];
+            sprintf(buffer, "%3d", i);
+            str += buffer;
+            linha += "___";
+        }
+        str += "\n" + linha + "\n";
+    }
+
+    for (uint32_t j = 0; j < h; ++j) {
+        for (uint32_t i = 0; i < w; ++i) {
+            if (i == 0) {
+                char buffer[255];
+                sprintf(buffer, "% 3d |", j);
+                str += buffer;
+            }
+
+            if (tilemap[i][j] == TileMap::EMPTY_ROOM) {
+                str += "   ";
+            } else {
+                str += "[" + std::to_string(tilemap[i][j]) + "]";
+            }
+
+            if (i == w - 1) {
+                str += "|";
+            }
+        }
+
+        str += "\n";
+    }
+    return str;
 }

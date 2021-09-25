@@ -17,7 +17,11 @@ public:
     static constexpr int EMPTY_ROOM = -1;
 
     TileMap(const uint32_t width, const uint32_t height);
+    TileMap( const TileMap& other );
     ~TileMap();
+    
+    TileMap& operator=(const TileMap& other);
+    TileMap& operator=(TileMap&& other) noexcept;
     int* operator[](const int index) const;
 
     void addRoom(const Room room);
@@ -30,9 +34,12 @@ public:
     string to_string() const;
 
 private:
-    const uint32_t m_width;
-    const uint32_t m_height;
+    uint32_t m_width;
+    uint32_t m_height;
     int** m_map_matrix;
     vector<Door> m_doors;
     vector<Room> m_rooms;
+
+    void initialize_matrix();
+    void delete_matrix();
 };
