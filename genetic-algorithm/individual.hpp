@@ -9,7 +9,11 @@ public:
     virtual ~IndividualImpl();
 
     void init();
-    virtual double evaluate() const;
+    void evaluate();
+
+    void get_fitness() const;
+    void set_relative_fitness();
+    void set_cumulative_fitness();
 
     Chromosome *get_chromosome() const;
     void set_chromosome(Chromosome* chromosome);
@@ -20,6 +24,7 @@ private:
     double m_relative_fitness;
     double m_cumulative_fitness;
 
+    virtual double calculate_fitness() const = 0;
     virtual Chromosome *create_cromossome() const = 0;
 };
 

@@ -32,33 +32,10 @@ bool RoomHelper::check_if_can_add(const Room& new_room, const vector<Room>& room
 
 bool RoomHelper::check_if_overlaps(const Room& room, const Room& another)
 {
-    vector<pair<const Room&, const Room&>> compare { { room, another }, { another, room } };
-
-    for (pair<const Room&, const Room&> rooms : compare) {
-
-        const Room& a = rooms.first;
-        const Room& b = rooms.second;
-        vector<pair<int, int>> edges({
-            { a.get_x(), a.get_y() },
-            { a.get_x2(), a.get_y() },
-            { a.get_x(), a.get_y2() },
-            { a.get_x2(), a.get_y2() },
-        });
-
-        for (pair<int, int> edge : edges) {
-            const int x = edge.first;
-            const int y = edge.second;
-
-            if (x >= b.get_x()
-                && x <= b.get_x2()
-                && y >= b.get_y()
-                && y <= b.get_y2()) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    return room.get_x() <= another.get_x2()
+        && room.get_x2() >= another.get_x()
+        && room.get_y() <= another.get_y2()
+        && room.get_y2() >= another.get_y();
 }
 
 bool RoomHelper::check_if_hides_or_is_hidden(const Room& room, const Room& another)

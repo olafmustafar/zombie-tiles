@@ -20,19 +20,17 @@ ZombieTilesGA::ZombieTilesGA()
 
 void ZombieTilesGA::run()
 {
-    // m_ga.init();
-    // m_ga.run(GENERATION_SIZE);
+    m_ga.init();
+    m_ga.run(GENERATION_SIZE);
 
-    TileMap tilemap = TileMapHelper::create_tilemap();
-    TileMapHelper::add_room_to(tilemap, Room(2, 4, 23, 15, Room::PlacementType::T));
-    TileMapHelper::add_room_to(tilemap, Room(2, 4, 23, 15, Room::PlacementType::T));
-    TileMapHelper::add_room_to(tilemap, Room(1, 14, 5, 15, Room::PlacementType::U));
-    TileMapHelper::add_room_to(tilemap, Room(2, 4, 28, 16, Room::PlacementType::U));
-    TileMapHelper::add_room_to(tilemap, Room(1, 21, 15, 8, Room::PlacementType::T));
-    TileMapHelper::add_room_to(tilemap, Room(7, 17, 16, 12, Room::PlacementType::T));
-    Logger::log(TileMapHelper::to_painted_map_string(tilemap));
-
-    Logger::warn(std::to_string(tilemap.get_rooms().size()));
+    // TileMap tilemap = TileMapHelper::create_tilemap();
+    // TileMapHelper::add_room_to(tilemap, Room(15, 10, 13, 3, Room::PlacementType::U));
+    // TileMapHelper::add_room_to(tilemap, Room(13, 0, 4, 30, Room::PlacementType::T));
+    // TileMapHelper::add_room_to(tilemap, Room(5, 0, 24, 29, Room::PlacementType::T));
+    // TileMapHelper::add_room_to(tilemap, Room(12, 5, 15, 23, Room::PlacementType::U));
+    // TileMapHelper::add_room_to(tilemap, Room(18, 13, 2, 7, Room::PlacementType::T));
+    // Logger::log(TileMapHelper::to_painted_map_string(tilemap));
+    // Logger::warn(std::to_string(tilemap.get_rooms().size()));
 }
 
 void ZombieTilesGA::print()

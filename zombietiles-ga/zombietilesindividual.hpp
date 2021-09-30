@@ -5,7 +5,7 @@
 
 class ZombieTilesIndividual : public Individual<ZombieTilesChromosome> {
 public:
-    double evaluate() const override;
+    double calculate_fitness() const override;
     string to_string();
 
 private:

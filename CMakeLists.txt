@@ -8,7 +8,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+add_compile_options(-Wall -Wextra -pedantic)
+ 
 add_library(zombietiles SHARED
   zombietiles_global.hpp
   zombietiles.hpp

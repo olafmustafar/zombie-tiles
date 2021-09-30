@@ -1,6 +1,8 @@
 #include "tilemaphelper.hpp"
 #include "models/dungeonconfig.hpp"
+#include "roomhelper.hpp"
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <queue>
 #include <utility>
@@ -17,16 +19,21 @@ TileMap TileMapHelper::create_tilemap()
 void TileMapHelper::add_room_to(TileMap& tilemap, const Room& room)
 {
     int original_size = tilemap.get_rooms().size();
-    
-    if( original_size == 0 ){
-        tilemap.addRoom( room );
+
+    if (original_size == 0) {
+        tilemap.addRoom(room);
+        return;
+    }
+
+    vector<Room> rooms = tilemap.get_rooms();
+    auto new_room_overlaps = bind(&RoomHelper::check_if_overlaps, room, placeholders::_1);
+    if (!any_of(rooms.cbegin(), rooms.cend(), new_room_overlaps)) {
         return;
     }
 
     TileMap copy(tilemap);
     copy.addRoom(room);
-
-    if (rooms_count_of(copy) == original_size + 1){
+    if (rooms_count_of(copy) == original_size + 1) {
         tilemap = std::move(copy);
     }
 }

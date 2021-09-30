@@ -34,7 +34,6 @@ TileMap::~TileMap()
 
 TileMap& TileMap::operator=(const TileMap& other)
 {
-    cout << "copy op" << endl;
     if (this == &other) {
         return *this;
     }
@@ -60,7 +59,6 @@ TileMap& TileMap::operator=(const TileMap& other)
 
 TileMap& TileMap::operator=(TileMap&& other) noexcept
 {
-    cout << "move op" << endl;
     if (this == &other) {
         return *this;
     }

@@ -68,12 +68,12 @@ Room::PlacementType Room::get_placement_type() const
 uint32_t Room::get_x2() const
 {
     return m_x + m_width;
-};
+}
 
 uint32_t Room::get_y2() const
 {
     return m_y + m_height;
-};
+}
 
 void Room::set_placement_type(const PlacementType& value)
 {
