@@ -38,14 +38,14 @@ void TileMapHelper::add_room_to(TileMap& tilemap, const Room& room)
     }
 }
 
-int TileMapHelper::rooms_count_of(const TileMap& tilemap)
+size_t TileMapHelper::rooms_count_of(const TileMap& tilemap)
 {
-    const int w = tilemap.get_width();
-    const int h = tilemap.get_height();
+    const uint32_t w = tilemap.get_width();
+    const uint32_t h = tilemap.get_height();
 
     int visited[w][h] {};
 
-    int room_index = 1;
+    size_t room_index = 1;
 
     for (int i = 0; i < w; ++i) {
         for (int j = 0; j < h; ++j) {

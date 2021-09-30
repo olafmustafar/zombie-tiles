@@ -13,10 +13,6 @@ constexpr int POPULATION_SIZE = 20;
 constexpr int GENERATION_SIZE = 20;
 }
 
-ZombieTilesGA::ZombieTilesGA()
-    : m_ga(POPULATION_SIZE)
-{
-}
 
 void ZombieTilesGA::run()
 {
@@ -33,11 +29,10 @@ void ZombieTilesGA::run()
     // Logger::warn(std::to_string(tilemap.get_rooms().size()));
 }
 
-void ZombieTilesGA::print()
-{
+void ZombieTilesGA::print() {
     int index = 0;
 
-    for (ZombieTilesIndividual* individual : m_ga.get_population()) {
+    for ( ZombieTilesIndividual* individual : m_ga.get_population() ) {
         std::cout << "individuo: " << index++ << std::endl;
         std::cout << individual->to_string() << std::endl;
     }

@@ -81,7 +81,7 @@ TileMap& TileMap::operator=(TileMap&& other) noexcept
 
 int* TileMap::operator[](const int index) const { return m_map_matrix[index]; }
 
-void TileMap::addRoom(const Room new_room)
+void TileMap::addRoom(const Room& new_room)
 {
     m_rooms.push_back(new_room);
     int index = m_rooms.size() - 1;

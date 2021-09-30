@@ -17,14 +17,14 @@ public:
     static constexpr int EMPTY_ROOM = -1;
 
     TileMap(const uint32_t width, const uint32_t height);
-    TileMap( const TileMap& other );
+    TileMap(const TileMap& other);
     ~TileMap();
-    
+
     TileMap& operator=(const TileMap& other);
     TileMap& operator=(TileMap&& other) noexcept;
     int* operator[](const int index) const;
 
-    void addRoom(const Room room);
+    void addRoom(const Room& room);
     void clear();
 
     uint32_t get_width() const;
