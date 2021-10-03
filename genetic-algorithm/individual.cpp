@@ -1,4 +1,5 @@
 #include "individual.hpp"
+#include <sstream>
 
 IndividualImpl::IndividualImpl()
     : m_chromosome(nullptr)
@@ -28,10 +29,12 @@ double IndividualImpl::get_fitness() const
 {
     return m_current_fitness;
 }
+
 void IndividualImpl::set_relative_fitness(double relative_fitness)
 {
     m_relative_fitness = relative_fitness;
 }
+
 void IndividualImpl::set_cumulative_fitness(double cumulative_fitness)
 {
     m_cumulative_fitness = cumulative_fitness;
@@ -45,4 +48,15 @@ Chromosome* IndividualImpl::get_chromosome() const
 void IndividualImpl::set_chromosome(Chromosome* chromosome)
 {
     m_chromosome = chromosome;
+}
+
+string IndividualImpl::to_string() const
+{
+    ostringstream sstream;
+    sstream << "Individual( "
+            << "m_current_fitness:" << m_current_fitness << "\n"
+            << "m_relative_fitness:" << m_relative_fitness << "\n"
+            << "m_cumulative_fitness:" << m_cumulative_fitness << "\n"
+            << "m_chromosome:" << m_chromosome->to_string() << " )";
+    return sstream.str();
 }

@@ -35,9 +35,9 @@ const std::vector<RoomGene>& ZombieTilesChromosome::get_genes() const
 
 string ZombieTilesChromosome::to_string() const
 {
-    string str = "chromosome( \n";
+    string str = "chromosome( ";
     for (const RoomGene& gene : m_genes) {
-        str += gene.get_room().to_string() + '\n';
+        str += '\n' + gene.get_room().to_string();
     }
     str += " )";
     return str;

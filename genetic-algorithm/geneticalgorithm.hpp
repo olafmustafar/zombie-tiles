@@ -1,27 +1,31 @@
 #pragma once
 
-#include <models/dungeonconfig.hpp>
 #include "individual.hpp"
 #include <list>
+#include <models/dungeonconfig.hpp>
 
-class GeneticAlgorithmImpl
-{
+class GeneticAlgorithmImpl {
 public:
     GeneticAlgorithmImpl(int population_size);
     void init();
     void run(int generations);
-
     const std::list<IndividualImpl*>& get_population() const;
 
 private:
-    virtual IndividualImpl* create_individual() const = 0;
-    std::list<IndividualImpl*> m_population;
     int m_generation;
     int m_population_size;
+    std::list<IndividualImpl*> m_population;
+    IndividualImpl* m_best;
+
+    virtual IndividualImpl* create_individual() const = 0;
+    virtual IndividualImpl* create_individual(const IndividualImpl* individual) const = 0;
+
+    void evaluate();
+    void keep_best();
 };
 
-template<typename IndividualType> class GeneticAlgorithm : public GeneticAlgorithmImpl
-{
+template <typename IndividualType>
+class GeneticAlgorithm : public GeneticAlgorithmImpl {
 public:
     using GeneticAlgorithmImpl::GeneticAlgorithmImpl;
 
@@ -35,5 +39,13 @@ public:
     };
 
 private:
-    IndividualImpl* create_individual() const override { return new IndividualType; };
+    IndividualImpl* create_individual() const override
+    {
+        return new IndividualType;
+    };
+
+    IndividualImpl* create_individual(const IndividualImpl* individual) const override
+    {
+        return new IndividualType(*static_cast<const IndividualType*>(individual));
+    };
 };

@@ -1,19 +1,9 @@
 #include "logger.hpp"
 
+#include <algorithm>
 #include <iostream>
 
 vector<string> Logger::m_operations = {};
-
-void Logger::log(const char* message)
-{
-    cout << ident() << message << endl;
-}
-
-void Logger::log(const string& message)
-{
-    cout << ident() << message << endl;
-}
-
 
 void Logger::doing(const char* message)
 {
@@ -41,11 +31,11 @@ void Logger::done()
 
 string Logger::ident()
 {
-    string identation = "";
+    ostringstream identation;
     for (ulong i = 1; i < m_operations.size(); ++i) {
-        cout << "\t";
+        identation << "\t";
     }
-    return identation;
+    return identation.str();
 }
 
 void Logger::warn(const char* message)
@@ -55,5 +45,20 @@ void Logger::warn(const char* message)
 
 void Logger::warn(const string& message)
 {
-    cout << ident() << "\033[1;33m" << message  << "\033[0m" << endl;
+    cout << ident() << "\033[1;33m" << message << "\033[0m" << endl;
+}
+
+Logger::log::~log()
+{
+    string str = m_str_stream.str();
+
+    size_t start_pos = 0;
+    string from { "\n" };
+    string to { "\n\t\t" + ident() };
+    while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length();
+    }
+
+    cout << ident() << "\t" << str << endl;
 }

@@ -8,7 +8,6 @@
 #include <helpers/tilemaphelper.hpp>
 #include <models/graph.hpp>
 #include <models/tilemap.hpp>
-#include <utils/logger.hpp>
 
 double ZombieTilesIndividual::calculate_fitness() const
 {
@@ -34,12 +33,5 @@ double ZombieTilesIndividual::calculate_fitness() const
         = (exp_degree * n_rooms * log(diameter))
         / (log(M_E + n_narrow) * pow(10, n_tiny));
 
-    Logger::log("fitness:" + std::to_string(fitness));
-
     return fitness;
-}
-
-string ZombieTilesIndividual::to_string()
-{
-    return Individual<ZombieTilesChromosome>::get_chromosome()->to_string();
 }

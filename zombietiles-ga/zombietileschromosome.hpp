@@ -13,7 +13,7 @@ public:
     Chromosome* crossover() const override;
     const std::vector<RoomGene>& get_genes() const;
 
-    string to_string() const;
+    string to_string() const override;
 
 private:
     std::vector<RoomGene> m_genes;
