@@ -30,6 +30,11 @@ double IndividualImpl::get_fitness() const
     return m_current_fitness;
 }
 
+double IndividualImpl::get_relative_fitness() const
+{
+    return m_relative_fitness;
+}
+
 void IndividualImpl::set_relative_fitness(double relative_fitness)
 {
     m_relative_fitness = relative_fitness;
@@ -38,6 +43,11 @@ void IndividualImpl::set_relative_fitness(double relative_fitness)
 void IndividualImpl::set_cumulative_fitness(double cumulative_fitness)
 {
     m_cumulative_fitness = cumulative_fitness;
+}
+
+double IndividualImpl::get_cumulative_fitness() const
+{
+    return m_cumulative_fitness;
 }
 
 Chromosome* IndividualImpl::get_chromosome() const

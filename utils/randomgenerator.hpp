@@ -2,15 +2,14 @@
 
 #include <random>
 
-class RandomGenerator
-{
+class RandomGenerator {
 public:
     RandomGenerator();
     int random();
 
     bool randomBool();
 
-    template<typename T>
+    template <typename T>
     static T random_between(T min, T max);
 
 private:

@@ -15,7 +15,9 @@ public:
 
     double get_fitness() const;
     void set_relative_fitness(double relative_fitness);
+    double get_relative_fitness() const;
     void set_cumulative_fitness(double cumulative_fitness);
+    double get_cumulative_fitness() const;
 
     Chromosome* get_chromosome() const;
     void set_chromosome(Chromosome* chromosome);
