@@ -36,10 +36,15 @@ void GeneticAlgorithmImpl::run(int generations)
     evaluate();
     keep_best();
 
-    for (int i = 0; i < generations; ++i) {
-        Logger::log() << "---------generation:" << i << "---------";
-        select();
-    }
+    //    for (int i = 0; i < generations; ++i) {
+    //        Logger::log() << "---------generation:" << i << "---------";
+    select();
+    crossover();
+    //    mutate(seed);
+    //    report(generation);
+    //    evaluate();
+    //    elitist();
+    //    }
 
     Logger::done();
 }
@@ -89,10 +94,6 @@ void GeneticAlgorithmImpl::select()
         return total + individual->get_fitness();
     });
 
-    //    for (const IndividualImpl* individual : m_population) {
-    //        total += individual->get_fitness();
-    //    }
-
     for (size_t i = 0; i < m_population_size; ++i) {
         IndividualImpl* individual = m_population[i];
         individual->set_relative_fitness(individual->get_fitness() / total);
@@ -103,22 +104,47 @@ void GeneticAlgorithmImpl::select()
         }
     }
 
-    vector<IndividualImpl*> new_population { m_population };
+    vector<IndividualImpl*> new_population(m_population.size());
 
     for (size_t i = 0; i < m_population_size; ++i) {
         double p = RandomGenerator::random_between(0.0, 1.0);
-        if (p < m_population[0]->get_cumulative_fitness()) {
-            new_population[i] = m_population[0];
+
+        if (p < m_population.front()->get_cumulative_fitness()) {
+            new_population[i] = create_individual(m_population[0]);
         } else {
-            for (size_t j = 0; j < m_population_size; j++) {
+            for (size_t j = 0; j < m_population_size - 1; ++j) {
                 if (m_population[j]->get_cumulative_fitness() <= p && p < m_population[j + 1]->get_cumulative_fitness()) {
-                    new_population[i] = m_population[j + 1];
+                    new_population[i] = create_individual(m_population[j + 1]);
                 }
             }
         }
     }
 
-    m_population = new_population;
+    for (IndividualImpl* individual : m_population) {
+        delete individual;
+    }
+
+    m_population = std::move(new_population);
 
     Logger::done();
+}
+
+void GeneticAlgorithmImpl::crossover()
+{
+    const double crossover_chance = 0.8;
+
+    IndividualImpl* first = nullptr;
+
+    for (IndividualImpl* second : m_population) {
+        double x = RandomGenerator::random_between(0.0, 1.0);
+
+        if (x < crossover_chance) {
+            if (first) {
+                first->crossover(second);
+                first = nullptr;
+            } else {
+                first = second;
+            }
+        }
+    }
 }

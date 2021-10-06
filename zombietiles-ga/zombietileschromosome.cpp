@@ -1,7 +1,10 @@
 #include "zombietileschromosome.hpp"
 
+#include <algorithm>
 #include <models/dungeonconfig.hpp>
 #include <utils/randomgenerator.hpp>
+
+using namespace std;
 
 ZombieTilesChromosome::ZombieTilesChromosome()
     : m_genes()
@@ -23,9 +26,21 @@ void ZombieTilesChromosome::mutate()
     //    const int size = m_genes.size();
 }
 
-Chromosome* ZombieTilesChromosome::crossover() const
+void ZombieTilesChromosome::crossover(Chromosome* other)
 {
-    return nullptr;
+    ZombieTilesChromosome* other_ = static_cast<ZombieTilesChromosome*>(other);
+    for (int i = 0; i < 3; ++i) {
+        if (i % 2 == 0) {
+            swap(m_genes[i], other_->m_genes[i]);
+        }
+    }
+
+    for (size_t i = 3; i < m_genes.size(); ++i) {
+        double swap_c = RandomGenerator::random_between(0.0, 1.0);
+        if (swap_c < 0.5) {
+            swap(m_genes[i], other_->m_genes[i]);
+        }
+    }
 }
 
 const std::vector<RoomGene>& ZombieTilesChromosome::get_genes() const

@@ -10,7 +10,7 @@ public:
     ZombieTilesChromosome();
     void randomize() override;
     void mutate() override;
-    Chromosome* crossover() const override;
+    void crossover(Chromosome* other) override;
     const std::vector<RoomGene>& get_genes() const;
 
     string to_string() const override;

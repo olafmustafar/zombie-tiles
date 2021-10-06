@@ -5,8 +5,9 @@
 
 class ZombieTilesIndividual : public Individual<ZombieTilesChromosome> {
 public:
-    double calculate_fitness() const override;
+    void crossover(IndividualImpl* other) override;
 
 private:
+    double calculate_fitness() const override;
     TileMap get_map() const;
 };

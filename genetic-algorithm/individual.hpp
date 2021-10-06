@@ -22,6 +22,7 @@ public:
     Chromosome* get_chromosome() const;
     void set_chromosome(Chromosome* chromosome);
     virtual string to_string() const;
+    virtual void crossover(IndividualImpl* other) = 0;
 
 private:
     Chromosome* m_chromosome;
@@ -51,5 +52,6 @@ public:
     }
 
 private:
+    virtual void crossover(IndividualImpl* other) = 0;
     Chromosome* create_cromossome() const override { return new ChromosomeType; }
 };

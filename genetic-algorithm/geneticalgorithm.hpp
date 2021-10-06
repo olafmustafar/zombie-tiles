@@ -23,6 +23,7 @@ private:
     void evaluate();
     void keep_best();
     void select();
+    void crossover();
 };
 
 template <typename IndividualType>

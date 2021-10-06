@@ -9,6 +9,11 @@
 #include <models/graph.hpp>
 #include <models/tilemap.hpp>
 
+void ZombieTilesIndividual::crossover(IndividualImpl* other)
+{
+    get_chromosome()->crossover(static_cast<ZombieTilesIndividual*>(other)->get_chromosome());
+}
+
 double ZombieTilesIndividual::calculate_fitness() const
 {
     TileMap tilemap = TileMapHelper::create_tilemap();
