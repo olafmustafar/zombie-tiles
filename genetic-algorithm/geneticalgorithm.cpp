@@ -40,7 +40,7 @@ void GeneticAlgorithmImpl::run(int generations)
     //        Logger::log() << "---------generation:" << i << "---------";
     select();
     crossover();
-    //    mutate(seed);
+    mutate();
     //    report(generation);
     //    evaluate();
     //    elitist();
@@ -147,4 +147,18 @@ void GeneticAlgorithmImpl::crossover()
             }
         }
     }
+}
+
+void GeneticAlgorithmImpl::mutate()
+{
+    Logger::doing("Mutating individuals");
+    for (IndividualImpl* individual : m_population) {
+        double mutation_chance = RandomGenerator::random_between(0.0, 1.0);
+        if (mutation_chance < 0.1) {
+            Logger::log() << "Mutating individual:" << individual->to_string();
+            individual->mutate();
+            Logger::log() << "Result:" << individual->to_string();
+        }
+    }
+    Logger::done();
 }

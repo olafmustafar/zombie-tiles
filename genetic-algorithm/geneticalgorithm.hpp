@@ -24,6 +24,7 @@ private:
     void keep_best();
     void select();
     void crossover();
+    void mutate();
 };
 
 template <typename IndividualType>

@@ -23,7 +23,8 @@ void ZombieTilesChromosome::randomize()
 
 void ZombieTilesChromosome::mutate()
 {
-    //    const int size = m_genes.size();
+    size_t index = RandomGenerator::random_between<size_t>(0, m_genes.size());
+    m_genes[index].randomize();
 }
 
 void ZombieTilesChromosome::crossover(Chromosome* other)
