@@ -25,6 +25,7 @@ private:
     void select();
     void crossover();
     void mutate();
+    void elitist();
 };
 
 template <typename IndividualType>

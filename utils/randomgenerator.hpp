@@ -21,8 +21,4 @@ private:
 };
 
 template <>
-double RandomGenerator::random_between<double>(double min, double max)
-{
-    std::uniform_real_distribution<double> uniform_dist(min, max);
-    return uniform_dist(random_engine);
-}
+double RandomGenerator::random_between(double min, double max);

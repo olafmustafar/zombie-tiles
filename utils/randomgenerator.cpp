@@ -13,3 +13,10 @@ bool RandomGenerator::randomBool()
 {
     return std::uniform_int_distribution<int>(0, 1)(random_engine);
 }
+
+template <>
+double RandomGenerator::random_between<double>(double min, double max)
+{
+    std::uniform_real_distribution<double> uniform_dist(min, max);
+    return uniform_dist(random_engine);
+}
