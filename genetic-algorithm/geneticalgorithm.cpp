@@ -5,33 +5,29 @@
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
 
-GeneticAlgorithmImpl::GeneticAlgorithmImpl(size_t population_size)
-    : m_generation(0)
-    , m_population_size(population_size)
-    , m_population({})
-    , m_best(nullptr)
-{
-}
+GeneticAlgorithmImpl::GeneticAlgorithmImpl( size_t population_size ) :
+    m_generation( 0 ),
+    m_population_size( population_size ),
+    m_population( {} )
+    , m_best( nullptr ) {}
 
-void GeneticAlgorithmImpl::init()
-{
-    Logger::doing("Initializing population");
+void GeneticAlgorithmImpl::init() {
+    Logger::doing( "Initializing population" );
 
     m_generation = 0;
-    m_population.reserve(m_population_size);
+    m_population.reserve( m_population_size );
 
-    for (size_t i = 0; i < m_population_size; ++i) {
+    for ( size_t i = 0; i < m_population_size; ++i ) {
         IndividualImpl* individual = create_individual();
         individual->init();
-        m_population.push_back(individual);
+        m_population.push_back( individual );
     }
 
     Logger::done();
 }
 
-void GeneticAlgorithmImpl::run(int generations)
-{
-    Logger::doing("Running for " + std::to_string(generations) + " generations");
+void GeneticAlgorithmImpl::run( int generations ) {
+    Logger::doing( "Running for " + std::to_string( generations ) + " generations" );
 
     evaluate();
     keep_best();
@@ -49,100 +45,99 @@ void GeneticAlgorithmImpl::run(int generations)
     Logger::done();
 }
 
-const vector<IndividualImpl*>& GeneticAlgorithmImpl::get_population() const
-{
+const vector<IndividualImpl*>& GeneticAlgorithmImpl::get_population() const {
     return m_population;
 }
 
-void GeneticAlgorithmImpl::evaluate()
-{
-    Logger::doing("Evaluating individuals");
+void GeneticAlgorithmImpl::evaluate() {
+    Logger::doing( "Evaluating individuals" );
 
-    for (IndividualImpl* individual : m_population) {
+    for ( IndividualImpl* individual : m_population ) {
         individual->evaluate();
-        Logger::log() << "[" << individual << "]'s fitness: " + std::to_string(individual->get_fitness());
+        Logger::log() << "[" << individual << "]'s fitness: " + std::to_string( individual->get_fitness() );
     }
 
     Logger::done();
 }
 
-void GeneticAlgorithmImpl::keep_best()
-{
-    Logger::doing("Keeping best individual");
+void GeneticAlgorithmImpl::keep_best() {
+    Logger::doing( "Keeping best individual" );
     IndividualImpl* best = nullptr;
 
-    for (IndividualImpl* individual : m_population) {
-        if (!best || best->get_fitness() < individual->get_fitness()) {
+    for ( IndividualImpl* individual : m_population ) {
+        if ( !best || best->get_fitness() < individual->get_fitness() ) {
             best = individual;
         }
     }
 
     delete m_best;
-    m_best = create_individual(best);
+    m_best = create_individual( best );
 
-    Logger::log() << "best [" << m_best << "]:" << m_best->to_string();
+    Logger::log() << "Best: [" << m_best << "]";
+    Logger::log() << m_best->to_string();
 
     Logger::done();
     return;
 }
 
-void GeneticAlgorithmImpl::select()
-{
-    Logger::doing("Selecting");
+void GeneticAlgorithmImpl::select() {
+    Logger::doing( "Selecting" );
 
-    double total = accumulate(m_population.cbegin(), m_population.cend(), 0.00, [&](const double& total, const IndividualImpl* individual) {
+    double total = accumulate( m_population.cbegin(), m_population.cend(), 0.00, [&]( const double& total, const IndividualImpl* individual ) {
         return total + individual->get_fitness();
-    });
+    } );
 
-    for (size_t i = 0; i < m_population_size; ++i) {
+    for ( size_t i = 0; i < m_population_size; ++i ) {
         IndividualImpl* individual = m_population[i];
-        individual->set_relative_fitness(individual->get_fitness() / total);
-        if (i == 0) {
-            individual->set_cumulative_fitness(individual->get_relative_fitness());
+        individual->set_relative_fitness( individual->get_fitness() / total );
+        if ( i == 0 ) {
+            individual->set_cumulative_fitness( individual->get_relative_fitness() );
         } else {
-            individual->set_cumulative_fitness(m_population[i - 1]->get_cumulative_fitness() + individual->get_relative_fitness());
+            individual->set_cumulative_fitness( m_population[i - 1]->get_cumulative_fitness() + individual->get_relative_fitness() );
         }
     }
 
-    vector<IndividualImpl*> new_population(m_population.size());
+    vector<IndividualImpl*> new_population( m_population.size() );
 
-    for (size_t i = 0; i < m_population_size; ++i) {
-        double p = RandomGenerator::random_between(0.0, 1.0);
+    for ( size_t i = 0; i < m_population_size; ++i ) {
+        double p = RandomGenerator::random_between( 0.0, 1.0 );
 
-        if (p < m_population.front()->get_cumulative_fitness()) {
-            new_population[i] = create_individual(m_population[0]);
+        if ( p < m_population.front()->get_cumulative_fitness() ) {
+            new_population[i] = create_individual( m_population[0] );
         } else {
-            for (size_t j = 0; j < m_population_size - 1; ++j) {
-                if (m_population[j]->get_cumulative_fitness() <= p && p < m_population[j + 1]->get_cumulative_fitness()) {
-                    new_population[i] = create_individual(m_population[j + 1]);
+            for ( size_t j = 0; j < m_population_size - 1; ++j ) {
+                if ( m_population[j]->get_cumulative_fitness() <= p && p < m_population[j + 1]->get_cumulative_fitness() ) {
+                    new_population[i] = create_individual( m_population[j + 1] );
                 }
             }
         }
     }
 
-    for (IndividualImpl* individual : m_population) {
+    for ( IndividualImpl* individual : m_population ) {
         delete individual;
     }
 
-    m_population = std::move(new_population);
+    for ( IndividualImpl* individual : m_population ) {
+        Logger::log() << "New individual: [" << individual << "]";
+    }
+    m_population = std::move( new_population );
 
     Logger::done();
 }
 
-void GeneticAlgorithmImpl::crossover()
-{
-    Logger::doing("Crossing individuals");
+void GeneticAlgorithmImpl::crossover() {
+    Logger::doing( "Crossing individuals" );
     const double crossover_chance = 0.8;
 
     IndividualImpl* first = nullptr;
 
-    for (IndividualImpl* second : m_population) {
-        double x = RandomGenerator::random_between(0.0, 1.0);
+    for ( IndividualImpl* second : m_population ) {
+        double x = RandomGenerator::random_between( 0.0, 1.0 );
 
-        if (x < crossover_chance) {
-            if (first) {
-                first->crossover(second);
-                Logger::log() << "Crossing over:[" << first << "] X [" << second << "]";
+        if ( x < crossover_chance ) {
+            if ( first ) {
+                first->crossover( second );
+                Logger::log() << "Crossing over: [" << first << "] X [" << second << "]";
                 first = nullptr;
             } else {
                 first = second;
@@ -152,12 +147,11 @@ void GeneticAlgorithmImpl::crossover()
     Logger::done();
 }
 
-void GeneticAlgorithmImpl::mutate()
-{
-    Logger::doing("Mutating individuals");
-    for (IndividualImpl* individual : m_population) {
-        double mutation_chance = RandomGenerator::random_between(0.0, 1.0);
-        if (mutation_chance < 0.1) {
+void GeneticAlgorithmImpl::mutate() {
+    Logger::doing( "Mutating individuals" );
+    for ( IndividualImpl* individual : m_population ) {
+        double mutation_chance = RandomGenerator::random_between( 0.0, 1.0 );
+        if ( mutation_chance < 0.1 ) {
             Logger::log() << "Mutating individual:[" << individual << "]";
             individual->mutate();
         }
@@ -165,28 +159,29 @@ void GeneticAlgorithmImpl::mutate()
     Logger::done();
 }
 
-void GeneticAlgorithmImpl::elitist()
-{
-    Logger::doing("Keeping best individual");
+void GeneticAlgorithmImpl::elitist() {
+    Logger::doing( "Keeping best individual" );
 
     IndividualImpl* worst = nullptr;
     IndividualImpl* best = nullptr;
 
-    for (IndividualImpl* individual : m_population) {
-        if (!worst || worst->get_fitness() > individual->get_fitness()) {
+    for ( IndividualImpl* individual : m_population ) {
+        if ( !worst || worst->get_fitness() > individual->get_fitness() ) {
             worst = individual;
         }
 
-        if (!best || best->get_fitness() < individual->get_fitness()) {
+        if ( !best || best->get_fitness() < individual->get_fitness() ) {
             best = individual;
         }
     }
 
-    if (best->get_fitness() > m_best->get_fitness()) {
+    if ( best->get_fitness() > m_best->get_fitness() ) {
         delete m_best;
-        m_best = create_individual(best);
+        Logger::log() << "Replacing best individual [" << m_best << "] individual with the best of the current genration [" << best << "]";
+        m_best = create_individual( best );
     } else {
-        replace(m_population.begin(), m_population.end(), worst, m_best);
+        replace( m_population.begin(), m_population.end(), worst, m_best );
+        Logger::log() << "Replacing worst [" << worst << "] individual with the best of the previous genration [" << m_best << "]";
         delete worst;
     }
 
