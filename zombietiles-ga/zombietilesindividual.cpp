@@ -10,6 +10,8 @@
 #include <models/tilemap.hpp>
 #include <utils/randomgenerator.hpp>
 
+#include <utils/logger.hpp>
+
 void ZombieTilesIndividual::crossover(IndividualImpl* other)
 {
     get_chromosome()->crossover(static_cast<ZombieTilesIndividual*>(other)->get_chromosome());
@@ -22,6 +24,7 @@ void ZombieTilesIndividual::mutate()
 
 double ZombieTilesIndividual::calculate_fitness() const
 {
+    Logger::warn("calculate_fitness()");
     TileMap tilemap = TileMapHelper::create_tilemap();
 
     ZombieTilesChromosome* chromosome = get_chromosome();

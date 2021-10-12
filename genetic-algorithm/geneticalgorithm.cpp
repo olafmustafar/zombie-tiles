@@ -1,6 +1,7 @@
 #include "geneticalgorithm.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <string>
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
@@ -32,15 +33,15 @@ void GeneticAlgorithmImpl::run( int generations ) {
     evaluate();
     keep_best();
 
-    //    for (int i = 0; i < generations; ++i) {
-    //        Logger::log() << "---------generation:" << i << "---------";
-    select();
-    crossover();
-    mutate();
-    //    report(generation);
-    evaluate();
-    elitist();
-    //    }
+    for (int i = 0; i < generations; ++i) {
+        Logger::log() << "---------generation:" << i << "---------";
+        select();
+        crossover();
+        mutate();
+        //    report(generation);
+        evaluate();
+        elitist();
+    }
 
     Logger::done();
 }
@@ -162,28 +163,35 @@ void GeneticAlgorithmImpl::mutate() {
 void GeneticAlgorithmImpl::elitist() {
     Logger::doing( "Keeping best individual" );
 
-    IndividualImpl* worst = nullptr;
     IndividualImpl* best = nullptr;
+    IndividualImpl* worst = nullptr;
 
-    for ( IndividualImpl* individual : m_population ) {
-        if ( !worst || worst->get_fitness() > individual->get_fitness() ) {
-            worst = individual;
+    for (IndividualImpl* individual : m_population) {
+        if (!best || best->get_fitness() < individual->get_fitness()) {
+            best = individual;
         }
 
-        if ( !best || best->get_fitness() < individual->get_fitness() ) {
-            best = individual;
+        if (!worst || worst->get_fitness() > individual->get_fitness()) {
+            worst = individual;
         }
     }
 
-    if ( best->get_fitness() > m_best->get_fitness() ) {
+    assert(best);
+    assert(worst);
+
+    if (best->get_fitness() > m_best->get_fitness()) {
+        Logger::log() << "Replacing best [" << m_best << "] with better individual of current population[" << best << "]";
         delete m_best;
         Logger::log() << "Replacing best individual [" << m_best << "] individual with the best of the current genration [" << best << "]";
         m_best = create_individual( best );
     } else {
-        replace( m_population.begin(), m_population.end(), worst, m_best );
-        Logger::log() << "Replacing worst [" << worst << "] individual with the best of the previous genration [" << m_best << "]";
+        Logger::log() << "Replacing worst individual of current population [" << worst << "] with best of the previous [" << best << "]";
+        replace(m_population.begin(), m_population.end(), worst, m_best);
         delete worst;
     }
 
     Logger::done();
 }
+//tempo do feijão
+//21:41
+//22:10
