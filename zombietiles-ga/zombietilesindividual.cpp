@@ -24,7 +24,6 @@ void ZombieTilesIndividual::mutate()
 
 double ZombieTilesIndividual::calculate_fitness() const
 {
-    Logger::warn("calculate_fitness()");
     TileMap tilemap = TileMapHelper::create_tilemap();
 
     ZombieTilesChromosome* chromosome = get_chromosome();

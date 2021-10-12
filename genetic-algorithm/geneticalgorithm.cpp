@@ -124,11 +124,7 @@ void GeneticAlgorithmImpl::select()
 
     for (size_t i = 0; i < m_population.size(); ++i) {
         delete m_population[i];
-        m_population[i] = nullptr;
     }
-    //    for (IndividualImpl* individual : m_population) {
-    //        delete individual;
-    //    }
 
     m_population = std::move(new_population);
 

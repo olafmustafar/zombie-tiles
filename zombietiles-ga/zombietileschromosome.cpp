@@ -23,7 +23,7 @@ void ZombieTilesChromosome::randomize()
 
 void ZombieTilesChromosome::mutate()
 {
-    size_t index = RandomGenerator::random_between<size_t>(0, m_genes.size());
+    size_t index = RandomGenerator::random_between<size_t>(0, m_genes.size() - 1);
     m_genes[index].randomize();
 }
 

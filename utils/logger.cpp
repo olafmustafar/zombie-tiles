@@ -41,11 +41,11 @@ string Logger::ident() {
 
 void Logger::warn(const char* message)
 {
-    cout << ident() << YELLOW_BEGIN << message << COLOR_END << endl;
+    cout << ident() << ident() << YELLOW_BEGIN << message << COLOR_END << endl;
 }
 
 void Logger::warn( const string& message ) {
-    cout << ident() << YELLOW_BEGIN << message << COLOR_END << endl;
+    cout << ident() << ident() << YELLOW_BEGIN << message << COLOR_END << endl;
 }
 
 Logger::log::~log() {
