@@ -47,6 +47,13 @@ public:
         set_chromosome(new ChromosomeType(*other.get_chromosome()));
     }
 
+    Individual(Individual<ChromosomeType>&& other)
+        : IndividualImpl(std::move(other))
+    {
+        set_chromosome(other.get_chromosome());
+        other.set_chromosome(nullptr);
+    }
+
     ChromosomeType* get_chromosome() const
     {
         return static_cast<ChromosomeType*>(IndividualImpl::get_chromosome());

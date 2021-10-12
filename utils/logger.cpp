@@ -39,7 +39,8 @@ string Logger::ident() {
     return identation.str();
 }
 
-void Logger::warn( const char* message ) {
+void Logger::warn(const char* message)
+{
     cout << ident() << YELLOW_BEGIN << message << COLOR_END << endl;
 }
 
