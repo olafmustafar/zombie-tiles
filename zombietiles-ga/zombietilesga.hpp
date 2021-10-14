@@ -12,5 +12,6 @@ public:
     void print();
 
 private:
+    DungeonConfig config;
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
 };

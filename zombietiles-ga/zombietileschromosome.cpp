@@ -9,7 +9,7 @@ using namespace std;
 ZombieTilesChromosome::ZombieTilesChromosome()
     : m_genes()
 {
-    for (int i = 0; i < 5; ++i) {
+    for (uint32_t i = 0; i < DungeonConfig::get_instance().get_rooms_count(); ++i) {
         m_genes.push_back(RoomGene());
     }
 }

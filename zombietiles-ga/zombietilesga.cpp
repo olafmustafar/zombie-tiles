@@ -9,19 +9,24 @@
 #include <iostream>
 
 namespace {
+constexpr size_t CROMOSSOME_SIZE = 20;
 constexpr int POPULATION_SIZE = 20;
-constexpr int GENERATION_SIZE = 20;
+constexpr int GENERATION_SIZE = 100;
 }
 
 ZombieTilesGA::ZombieTilesGA()
-    : m_ga(POPULATION_SIZE)
+    : config(DungeonConfig::get_instance())
 {
 }
 
 void ZombieTilesGA::run()
 {
-    m_ga.init();
-    m_ga.run(GENERATION_SIZE);
+
+    //    DungeonConfig dungeon_config = DungeonConfig::get_instance(width, height);
+
+    //    m_ga(POPULATION_SIZE);
+    //    m_ga.initialize();
+    //    m_ga.run(GENERATION_SIZE);
 
     //    TileMap tilemap = TileMapHelper::create_tilemap();
     //    TileMapHelper::add_room_to(tilemap, Room(15, 10, 13, 3, Room::PlacementType::U));

@@ -6,9 +6,8 @@
 
 class GeneticAlgorithmImpl {
 public:
-    GeneticAlgorithmImpl(size_t population_size);
-    void init();
-    void run(int generations);
+    GeneticAlgorithmImpl();
+    void run();
     const vector<IndividualImpl*>& get_population() const;
 
 private:
@@ -20,12 +19,14 @@ private:
     virtual IndividualImpl* create_individual() const = 0;
     virtual IndividualImpl* create_individual(const IndividualImpl* individual) const = 0;
 
+    void initialize();
     void evaluate();
     void keep_best();
     void select();
     void crossover();
     void mutate();
     void elitist();
+    void report(int generation) const;
 };
 
 template <typename IndividualType>

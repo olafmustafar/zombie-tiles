@@ -6,18 +6,48 @@
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
 
-GeneticAlgorithmImpl::GeneticAlgorithmImpl(size_t population_size)
+GeneticAlgorithmImpl::GeneticAlgorithmImpl()
     : m_generation(0)
-    , m_population_size(population_size)
+    , m_population_size(0)
     , m_population({})
     , m_best(nullptr)
 {
 }
 
-void GeneticAlgorithmImpl::init()
+void GeneticAlgorithmImpl::run()
+
+{
+    uint32_t generations = DungeonConfig::get_instance().get_generations();
+
+    Logger::log() << "Running for " << generations << " generations";
+
+    initialize();
+    evaluate();
+    keep_best();
+
+    for (uint32_t i = 0; i < generations; ++i) {
+        Logger::log() << "---------generation:" << i << "---------";
+        select();
+        crossover();
+        mutate();
+        report(i);
+        evaluate();
+        elitist();
+    }
+
+    Logger::log() << "Best: " << m_best->to_string();
+}
+
+const vector<IndividualImpl*>& GeneticAlgorithmImpl::get_population() const
+{
+    return m_population;
+}
+
+void GeneticAlgorithmImpl::initialize()
 {
     Logger::doing("Initializing population");
 
+    m_population_size = DungeonConfig::get_instance().get_population_size();
     m_generation = 0;
     m_population.reserve(m_population_size);
 
@@ -28,31 +58,6 @@ void GeneticAlgorithmImpl::init()
     }
 
     Logger::done();
-}
-
-void GeneticAlgorithmImpl::run(int generations)
-{
-    Logger::doing("Running for " + std::to_string(generations) + " generations");
-
-    evaluate();
-    keep_best();
-
-    for (int i = 0; i < generations; ++i) {
-        Logger::log() << "---------generation:" << i << "---------";
-        select();
-        crossover();
-        mutate();
-        //    report(generation);
-        evaluate();
-        elitist();
-    }
-
-    Logger::done();
-}
-
-const vector<IndividualImpl*>& GeneticAlgorithmImpl::get_population() const
-{
-    return m_population;
 }
 
 void GeneticAlgorithmImpl::evaluate()
@@ -204,6 +209,11 @@ void GeneticAlgorithmImpl::elitist()
 
     Logger::done();
 }
-//tempo do feijão
-//21:41
-//22:10
+
+void GeneticAlgorithmImpl::report(int generation) const
+{
+    Logger::doing("Reporting");
+    cout << "generation: " << generation << "| best: " << m_best->get_fitness() << endl;
+
+    Logger::done();
+}

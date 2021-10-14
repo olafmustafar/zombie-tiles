@@ -12,12 +12,13 @@ constexpr const char* COLOR_END = "\033[0m";
 vector<string> Logger::m_operations = {};
 
 void Logger::doing( const char* message ) {
-    m_operations.push_back( message );
+    m_operations.push_back(message);
     cout << GREEN_BEGIN << ident() << message << "..." << COLOR_END << endl;
 }
 
-void Logger::doing( const string& message ) {
-    doing( message.c_str() );
+void Logger::doing(const string& message)
+{
+    doing(message.c_str());
 }
 
 void Logger::doing( const string& message, const function<void()> operation ) {
@@ -27,7 +28,7 @@ void Logger::doing( const string& message, const function<void()> operation ) {
 }
 
 void Logger::done() {
-//    cout << GREEN_BEGIN << ident() << m_operations.back() << " DONE!" << COLOR_END << endl;
+    //    cout << GREEN_BEGIN << ident() << m_operations.back() << " DONE!" << COLOR_END << endl;
     m_operations.pop_back();
 }
 
