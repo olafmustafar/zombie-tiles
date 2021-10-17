@@ -7,8 +7,9 @@ class ZombieTilesIndividual : public Individual<ZombieTilesChromosome> {
 public:
     void crossover(IndividualImpl* other) override;
     void mutate() override;
+    string to_string() const override;
+    RoomMap get_map() const;
 
 private:
     double calculate_fitness() const override;
-    TileMap get_map() const;
 };

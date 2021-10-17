@@ -7,11 +7,13 @@
 class GeneticAlgorithmImpl {
 public:
     GeneticAlgorithmImpl();
+    ~GeneticAlgorithmImpl();
     void run();
     const vector<IndividualImpl*>& get_population() const;
 
+    IndividualImpl* get_best() const;
+
 private:
-    int m_generation;
     size_t m_population_size;
     vector<IndividualImpl*> m_population;
     IndividualImpl* m_best;
@@ -41,6 +43,11 @@ public:
             individual_list.push_back(static_cast<IndividualType*>(individual));
         }
         return individual_list;
+    }
+
+    IndividualType* get_best() const
+    {
+        return static_cast<IndividualType*>(GeneticAlgorithmImpl::get_best());
     }
 
 private:

@@ -5,9 +5,9 @@
 #include <cmath>
 #include <cstdint>
 #include <helpers/graphhelper.hpp>
-#include <helpers/tilemaphelper.hpp>
+#include <helpers/roommaphelper.hpp>
 #include <models/graph.hpp>
-#include <models/tilemap.hpp>
+#include <models/roommap.hpp>
 #include <utils/randomgenerator.hpp>
 
 #include <utils/logger.hpp>
@@ -22,23 +22,51 @@ void ZombieTilesIndividual::mutate()
     get_chromosome()->mutate();
 }
 
-double ZombieTilesIndividual::calculate_fitness() const
+string ZombieTilesIndividual::to_string() const
 {
-    TileMap tilemap = TileMapHelper::create_tilemap();
+    RoomMap tilemap = RoomMapHelper::create_tilemap();
 
     ZombieTilesChromosome* chromosome = get_chromosome();
     const vector<RoomGene>& genes = chromosome->get_genes();
 
     for (const RoomGene& gene : genes) {
-        TileMapHelper::add_room_to(tilemap, gene.get_room());
+        RoomMapHelper::add_room_to(tilemap, gene.get_room());
     }
 
-    Graph graph = TileMapHelper::to_graph(tilemap);
+    return RoomMapHelper::to_painted_map_string(tilemap);
+}
+
+RoomMap ZombieTilesIndividual::get_map() const
+{
+    RoomMap tilemap = RoomMapHelper::create_tilemap();
+
+    ZombieTilesChromosome* chromosome = get_chromosome();
+    const vector<RoomGene>& genes = chromosome->get_genes();
+
+    for (const RoomGene& gene : genes) {
+        RoomMapHelper::add_room_to(tilemap, gene.get_room());
+    }
+
+    return tilemap;
+}
+
+double ZombieTilesIndividual::calculate_fitness() const
+{
+    RoomMap tilemap = RoomMapHelper::create_tilemap();
+
+    ZombieTilesChromosome* chromosome = get_chromosome();
+    const vector<RoomGene>& genes = chromosome->get_genes();
+
+    for (const RoomGene& gene : genes) {
+        RoomMapHelper::add_room_to(tilemap, gene.get_room());
+    }
+
+    Graph graph = RoomMapHelper::to_graph(tilemap);
     const double n_rooms = static_cast<double>(tilemap.get_rooms().size());
     const double diameter = GraphHelper::diameter_of(graph);
     const double average_degree = GraphHelper::average_degree_of(graph);
-    const double n_narrow = TileMapHelper::narrow_rooms_of(tilemap);
-    const double n_tiny = TileMapHelper::tiny_rooms_of(tilemap);
+    const double n_narrow = RoomMapHelper::narrow_rooms_of(tilemap);
+    const double n_tiny = RoomMapHelper::tiny_rooms_of(tilemap);
 
     const double exp_degree = pow(M_E, -(pow(average_degree - 2, 2.00)));
 

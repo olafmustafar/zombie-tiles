@@ -20,13 +20,13 @@ add_library(zombietiles SHARED
   utils/logger.cpp
   models/dungeonconfig.hpp
   models/dungeonconfig.cpp
-  models/tilemap.hpp
-  models/tilemap.cpp
+  models/roommap.hpp
+  models/roommap.cpp
   models/room.hpp
   models/room.cpp
   models/graph.hpp
-  helpers/tilemaphelper.hpp
-  helpers/tilemaphelper.cpp
+  helpers/roommaphelper.hpp
+  helpers/roommaphelper.cpp
   helpers/roomhelper.hpp
   helpers/roomhelper.cpp
   helpers/graphhelper.hpp

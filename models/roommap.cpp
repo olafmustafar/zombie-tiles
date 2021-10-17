@@ -1,10 +1,10 @@
-#include "tilemap.hpp"
+#include "roommap.hpp"
 #include <algorithm>
 #include <helpers/roomhelper.hpp>
 #include <iostream>
 using namespace std;
 
-TileMap::TileMap(const uint32_t width, const uint32_t height)
+RoomMap::RoomMap(const uint32_t width, const uint32_t height)
     : m_width(width)
     , m_height(height)
     , m_map_matrix(nullptr)
@@ -14,13 +14,13 @@ TileMap::TileMap(const uint32_t width, const uint32_t height)
     initialize_matrix();
 }
 
-TileMap::TileMap(const TileMap& other)
-    : TileMap(other.get_width(), other.get_height())
+RoomMap::RoomMap(const RoomMap& other)
+    : RoomMap(other.get_width(), other.get_height())
 {
     *this = other;
 }
 
-TileMap::~TileMap()
+RoomMap::~RoomMap()
 {
     if (!m_map_matrix) {
         return;
@@ -32,7 +32,7 @@ TileMap::~TileMap()
     delete[] m_map_matrix;
 }
 
-TileMap& TileMap::operator=(const TileMap& other)
+RoomMap& RoomMap::operator=(const RoomMap& other)
 {
     if (this == &other) {
         return *this;
@@ -57,7 +57,7 @@ TileMap& TileMap::operator=(const TileMap& other)
     return *this;
 }
 
-TileMap& TileMap::operator=(TileMap&& other) noexcept
+RoomMap& RoomMap::operator=(RoomMap&& other) noexcept
 {
     if (this == &other) {
         return *this;
@@ -79,9 +79,9 @@ TileMap& TileMap::operator=(TileMap&& other) noexcept
     return *this;
 }
 
-int* TileMap::operator[](const int index) const { return m_map_matrix[index]; }
+int* RoomMap::operator[](const int index) const { return m_map_matrix[index]; }
 
-void TileMap::addRoom(const Room& new_room)
+void RoomMap::addRoom(const Room& new_room)
 {
     m_rooms.push_back(new_room);
     int index = m_rooms.size() - 1;
@@ -97,7 +97,7 @@ void TileMap::addRoom(const Room& new_room)
     }
 }
 
-void TileMap::clear()
+void RoomMap::clear()
 {
     for (uint32_t j = 0; j < m_height; ++j) {
         for (uint32_t i = 0; i < m_width; ++i) {
@@ -107,22 +107,22 @@ void TileMap::clear()
     m_rooms.clear();
 }
 
-uint32_t TileMap::get_width() const
+uint32_t RoomMap::get_width() const
 {
     return m_width;
 }
 
-uint32_t TileMap::get_height() const
+uint32_t RoomMap::get_height() const
 {
     return m_height;
 }
 
-const vector<Room>& TileMap::get_rooms() const
+const vector<Room>& RoomMap::get_rooms() const
 {
     return m_rooms;
 }
 
-string TileMap::to_string() const
+string RoomMap::to_string() const
 {
     string str = "map( \n";
     for (const Room& room : m_rooms) {
@@ -132,7 +132,7 @@ string TileMap::to_string() const
     return str;
 }
 
-void TileMap::initialize_matrix()
+void RoomMap::initialize_matrix()
 {
     m_map_matrix = new int*[m_width];
     for (uint32_t i = 0; i <= m_width; ++i) {
@@ -141,7 +141,7 @@ void TileMap::initialize_matrix()
     }
 }
 
-void TileMap::delete_matrix()
+void RoomMap::delete_matrix()
 {
     for (uint32_t i = 0; i <= m_width; ++i) {
         delete[] m_map_matrix[i];

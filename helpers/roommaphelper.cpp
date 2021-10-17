@@ -1,4 +1,4 @@
-#include "tilemaphelper.hpp"
+#include "roommaphelper.hpp"
 #include "models/dungeonconfig.hpp"
 #include "roomhelper.hpp"
 #include <algorithm>
@@ -9,14 +9,14 @@
 
 using namespace std;
 
-TileMap TileMapHelper::create_tilemap()
+RoomMap RoomMapHelper::create_tilemap()
 {
     DungeonConfig dungeon_config = DungeonConfig::get_instance();
-    TileMap tilemap(dungeon_config.get_width(), dungeon_config.get_height());
+    RoomMap tilemap(dungeon_config.get_width(), dungeon_config.get_height());
     return tilemap;
 }
 
-void TileMapHelper::add_room_to(TileMap& tilemap, const Room& room)
+void RoomMapHelper::add_room_to(RoomMap& tilemap, const Room& room)
 {
     int original_size = tilemap.get_rooms().size();
 
@@ -31,14 +31,14 @@ void TileMapHelper::add_room_to(TileMap& tilemap, const Room& room)
         return;
     }
 
-    TileMap copy(tilemap);
+    RoomMap copy(tilemap);
     copy.addRoom(room);
     if (rooms_count_of(copy) == original_size + 1) {
         tilemap = std::move(copy);
     }
 }
 
-size_t TileMapHelper::rooms_count_of(const TileMap& tilemap)
+size_t RoomMapHelper::rooms_count_of(const RoomMap& tilemap)
 {
     const uint32_t w = tilemap.get_width();
     const uint32_t h = tilemap.get_height();
@@ -49,7 +49,7 @@ size_t TileMapHelper::rooms_count_of(const TileMap& tilemap)
 
     for (int i = 0; i < w; ++i) {
         for (int j = 0; j < h; ++j) {
-            if (tilemap[i][j] == TileMap::EMPTY_ROOM || visited[i][j] != 0) {
+            if (tilemap[i][j] == RoomMap::EMPTY_ROOM || visited[i][j] != 0) {
                 continue;
             }
 
@@ -82,7 +82,7 @@ size_t TileMapHelper::rooms_count_of(const TileMap& tilemap)
     return room_index - 1;
 }
 
-int TileMapHelper::narrow_rooms_of(const TileMap& tilemap)
+int RoomMapHelper::narrow_rooms_of(const RoomMap& tilemap)
 {
     int narrow_rooms_count = 0;
     for (const Room& room : tilemap.get_rooms()) {
@@ -94,7 +94,7 @@ int TileMapHelper::narrow_rooms_of(const TileMap& tilemap)
     return narrow_rooms_count;
 }
 
-int TileMapHelper::tiny_rooms_of(const TileMap& tilemap)
+int RoomMapHelper::tiny_rooms_of(const RoomMap& tilemap)
 {
     int tiny_rooms_count = 0;
     vector<bool> counted(tilemap.get_rooms().size(), false);
@@ -102,7 +102,7 @@ int TileMapHelper::tiny_rooms_of(const TileMap& tilemap)
     for (uint32_t x = 0; x < tilemap.get_width(); ++x) {
         for (uint32_t y = 0; y < tilemap.get_height(); ++y) {
             int current_room = tilemap[x][y];
-            if (current_room == TileMap::EMPTY_ROOM || counted[current_room]) {
+            if (current_room == RoomMap::EMPTY_ROOM || counted[current_room]) {
                 continue;
             };
 
@@ -140,7 +140,7 @@ int TileMapHelper::tiny_rooms_of(const TileMap& tilemap)
     return tiny_rooms_count;
 }
 
-Graph TileMapHelper::to_graph(const TileMap& tilemap)
+Graph RoomMapHelper::to_graph(const RoomMap& tilemap)
 {
     const int w = tilemap.get_width();
     const int h = tilemap.get_height();
@@ -152,7 +152,7 @@ Graph TileMapHelper::to_graph(const TileMap& tilemap)
 
     for (int i = 0; i < w; ++i) {
         for (int j = 0; j < h; ++j) {
-            if (tilemap[i][j] == TileMap::EMPTY_ROOM || visited[i][j]) {
+            if (tilemap[i][j] == RoomMap::EMPTY_ROOM || visited[i][j]) {
                 continue;
             }
 
@@ -168,7 +168,7 @@ Graph TileMapHelper::to_graph(const TileMap& tilemap)
                 const int y = pos.second;
 
                 if (x < 0 || y < 0 || x >= w || y >= h
-                    || tilemap[x][y] == TileMap::EMPTY_ROOM) {
+                    || tilemap[x][y] == RoomMap::EMPTY_ROOM) {
                     continue;
                 }
 
@@ -189,7 +189,7 @@ Graph TileMapHelper::to_graph(const TileMap& tilemap)
     return graph;
 }
 
-string TileMapHelper::to_painted_map_string(const TileMap& tilemap)
+string RoomMapHelper::to_painted_map_string(const RoomMap& tilemap)
 {
     const uint32_t w = tilemap.get_width();
     const uint32_t h = tilemap.get_height();
@@ -214,7 +214,7 @@ string TileMapHelper::to_painted_map_string(const TileMap& tilemap)
                 str += buffer;
             }
 
-            if (tilemap[i][j] == TileMap::EMPTY_ROOM) {
+            if (tilemap[i][j] == RoomMap::EMPTY_ROOM) {
                 str += "   ";
             } else {
                 str += "[" + std::to_string(tilemap[i][j]) + "]";

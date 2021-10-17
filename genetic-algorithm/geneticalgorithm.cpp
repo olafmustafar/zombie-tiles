@@ -7,11 +7,19 @@
 #include <utils/randomgenerator.hpp>
 
 GeneticAlgorithmImpl::GeneticAlgorithmImpl()
-    : m_generation(0)
-    , m_population_size(0)
+    : m_population_size(0)
     , m_population({})
     , m_best(nullptr)
 {
+}
+
+GeneticAlgorithmImpl::~GeneticAlgorithmImpl()
+{
+    for (IndividualImpl* individual : m_population) {
+        delete individual;
+    }
+
+    delete m_best;
 }
 
 void GeneticAlgorithmImpl::run()
@@ -43,12 +51,16 @@ const vector<IndividualImpl*>& GeneticAlgorithmImpl::get_population() const
     return m_population;
 }
 
+IndividualImpl* GeneticAlgorithmImpl::get_best() const
+{
+    return m_best;
+}
+
 void GeneticAlgorithmImpl::initialize()
 {
     Logger::doing("Initializing population");
 
     m_population_size = DungeonConfig::get_instance().get_population_size();
-    m_generation = 0;
     m_population.reserve(m_population_size);
 
     for (size_t i = 0; i < m_population_size; ++i) {

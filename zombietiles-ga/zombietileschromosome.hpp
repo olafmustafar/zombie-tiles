@@ -2,7 +2,7 @@
 
 #include "roomgene.hpp"
 #include <genetic-algorithm/chromosome.hpp>
-#include <models/tilemap.hpp>
+#include <models/roommap.hpp>
 #include <vector>
 
 class ZombieTilesChromosome : public Chromosome {

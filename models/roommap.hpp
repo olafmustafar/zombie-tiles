@@ -12,16 +12,16 @@ struct Door {
     uint32_t y;
 };
 
-class TileMap {
+class RoomMap {
 public:
     static constexpr int EMPTY_ROOM = -1;
 
-    TileMap(const uint32_t width, const uint32_t height);
-    TileMap(const TileMap& other);
-    ~TileMap();
+    RoomMap(const uint32_t width, const uint32_t height);
+    RoomMap(const RoomMap& other);
+    ~RoomMap();
 
-    TileMap& operator=(const TileMap& other);
-    TileMap& operator=(TileMap&& other) noexcept;
+    RoomMap& operator=(const RoomMap& other);
+    RoomMap& operator=(RoomMap&& other) noexcept;
     int* operator[](const int index) const;
 
     void addRoom(const Room& room);

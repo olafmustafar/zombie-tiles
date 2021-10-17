@@ -1,8 +1,8 @@
 #include "zombietilesga.hpp"
 #include "zombietileschromosome.hpp"
 #include <helpers/graphhelper.hpp>
-#include <helpers/tilemaphelper.hpp>
-#include <models/tilemap.hpp>
+#include <helpers/roommaphelper.hpp>
+#include <models/roommap.hpp>
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
 

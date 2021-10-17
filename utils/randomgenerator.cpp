@@ -1,6 +1,6 @@
 #include "randomgenerator.hpp"
 
-std::default_random_engine RandomGenerator::random_engine = std::default_random_engine();
+std::default_random_engine RandomGenerator::random_engine = std::default_random_engine(0123456);
 
 RandomGenerator::RandomGenerator() { }
 
