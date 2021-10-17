@@ -9,11 +9,11 @@
 
 using namespace std;
 
-RoomMap RoomMapHelper::create_tilemap()
+RoomMap RoomMapHelper::create_roommap()
 {
     DungeonConfig dungeon_config = DungeonConfig::get_instance();
-    RoomMap tilemap(dungeon_config.get_width(), dungeon_config.get_height());
-    return tilemap;
+    RoomMap roommap(dungeon_config.get_width(), dungeon_config.get_height());
+    return roommap;
 }
 
 void RoomMapHelper::add_room_to(RoomMap& tilemap, const Room& room)

@@ -8,7 +8,7 @@
 
 class RoomMapHelper {
 public:
-    static RoomMap create_tilemap();
+    static RoomMap create_roommap();
     static void add_room_to(RoomMap& tilemap, const Room& room);
     static size_t rooms_count_of(const RoomMap& tilemap);
     static int narrow_rooms_of(const RoomMap& tilemap);
