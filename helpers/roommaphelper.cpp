@@ -16,32 +16,32 @@ RoomMap RoomMapHelper::create_roommap()
     return roommap;
 }
 
-void RoomMapHelper::add_room_to(RoomMap& tilemap, const Room& room)
+void RoomMapHelper::add_room_to(RoomMap& roommap, const Room& room)
 {
-    int original_size = tilemap.get_rooms().size();
+    int original_size = roommap.get_rooms().size();
 
     if (original_size == 0) {
-        tilemap.addRoom(room);
+        roommap.addRoom(room);
         return;
     }
 
-    vector<Room> rooms = tilemap.get_rooms();
+    vector<Room> rooms = roommap.get_rooms();
     auto new_room_overlaps = bind(&RoomHelper::check_if_overlaps, room, placeholders::_1);
     if (!any_of(rooms.cbegin(), rooms.cend(), new_room_overlaps)) {
         return;
     }
 
-    RoomMap copy(tilemap);
+    RoomMap copy(roommap);
     copy.addRoom(room);
     if (rooms_count_of(copy) == original_size + 1) {
-        tilemap = std::move(copy);
+        roommap = std::move(copy);
     }
 }
 
-size_t RoomMapHelper::rooms_count_of(const RoomMap& tilemap)
+size_t RoomMapHelper::rooms_count_of(const RoomMap& roommap)
 {
-    const uint32_t w = tilemap.get_width();
-    const uint32_t h = tilemap.get_height();
+    const uint32_t w = roommap.get_width();
+    const uint32_t h = roommap.get_height();
 
     int visited[w][h] {};
 
@@ -49,13 +49,13 @@ size_t RoomMapHelper::rooms_count_of(const RoomMap& tilemap)
 
     for (int i = 0; i < w; ++i) {
         for (int j = 0; j < h; ++j) {
-            if (tilemap[i][j] == RoomMap::EMPTY_ROOM || visited[i][j] != 0) {
+            if (roommap[i][j] == RoomMap::EMPTY_ROOM || visited[i][j] != 0) {
                 continue;
             }
 
             queue<pair<int, int>> to_visit {};
             to_visit.emplace(i, j);
-            int current_room = tilemap[i][j];
+            int current_room = roommap[i][j];
 
             while (!to_visit.empty()) {
                 pair<int, int> pos = to_visit.front();
@@ -65,7 +65,7 @@ size_t RoomMapHelper::rooms_count_of(const RoomMap& tilemap)
                     continue;
                 }
 
-                if (tilemap[pos.first][pos.second] == current_room
+                if (roommap[pos.first][pos.second] == current_room
                     && visited[pos.first][pos.second] != room_index) {
 
                     visited[pos.first][pos.second] = room_index;
@@ -82,10 +82,10 @@ size_t RoomMapHelper::rooms_count_of(const RoomMap& tilemap)
     return room_index - 1;
 }
 
-int RoomMapHelper::narrow_rooms_of(const RoomMap& tilemap)
+int RoomMapHelper::narrow_rooms_of(const RoomMap& roommap)
 {
     int narrow_rooms_count = 0;
-    for (const Room& room : tilemap.get_rooms()) {
+    for (const Room& room : roommap.get_rooms()) {
         if ((room.get_width() == 1 && room.get_height() != 1)
             || (room.get_width() != 1 && room.get_height() == 1)) {
             ++narrow_rooms_count;
@@ -94,41 +94,41 @@ int RoomMapHelper::narrow_rooms_of(const RoomMap& tilemap)
     return narrow_rooms_count;
 }
 
-int RoomMapHelper::tiny_rooms_of(const RoomMap& tilemap)
+int RoomMapHelper::tiny_rooms_of(const RoomMap& roommap)
 {
     int tiny_rooms_count = 0;
-    vector<bool> counted(tilemap.get_rooms().size(), false);
+    vector<bool> counted(roommap.get_rooms().size(), false);
 
-    for (uint32_t x = 0; x < tilemap.get_width(); ++x) {
-        for (uint32_t y = 0; y < tilemap.get_height(); ++y) {
-            int current_room = tilemap[x][y];
+    for (uint32_t x = 0; x < roommap.get_width(); ++x) {
+        for (uint32_t y = 0; y < roommap.get_height(); ++y) {
+            int current_room = roommap[x][y];
             if (current_room == RoomMap::EMPTY_ROOM || counted[current_room]) {
                 continue;
             };
 
             if (x > 0) {
-                if (tilemap[x - 1][y] == current_room) {
+                if (roommap[x - 1][y] == current_room) {
                     counted[current_room] = true;
                     continue;
                 }
             }
 
             if (y > 0) {
-                if (tilemap[x][y - 1] == current_room) {
+                if (roommap[x][y - 1] == current_room) {
                     counted[current_room] = true;
                     continue;
                 }
             }
 
-            if (x < tilemap.get_width() - 1) {
-                if (tilemap[x + 1][y] == current_room) {
+            if (x < roommap.get_width() - 1) {
+                if (roommap[x + 1][y] == current_room) {
                     counted[current_room] = true;
                     continue;
                 }
             }
 
-            if (y < tilemap.get_width() - 1) {
-                if (tilemap[x][y + 1] == current_room) {
+            if (y < roommap.get_width() - 1) {
+                if (roommap[x][y + 1] == current_room) {
                     counted[current_room] = true;
                     continue;
                 }
@@ -140,11 +140,64 @@ int RoomMapHelper::tiny_rooms_of(const RoomMap& tilemap)
     return tiny_rooms_count;
 }
 
-Graph RoomMapHelper::to_graph(const RoomMap& tilemap)
+vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap)
 {
-    const int w = tilemap.get_width();
-    const int h = tilemap.get_height();
-    const size_t size = tilemap.get_rooms().size();
+    vector<Wall> walls {};
+
+    for (size_t x = 0; x < roommap.get_width(); ++x) {
+        for (size_t y = 0; y <= roommap.get_height(); ++y) {
+
+            int before = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
+            int current = y != roommap.get_height() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+
+            if (before != current) {
+                Point a { static_cast<int>(x), static_cast<int>(y) };
+                Point b { static_cast<int>(x), static_cast<int>(y) };
+
+                for (++x; x <= roommap.get_width(); ++x) {
+                    before = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
+                    current = y != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+
+                    if (before == current || x == roommap.get_height()) {
+                        walls.push_back({ a, b });
+                        break;
+                    }
+                    ++b.x;
+                }
+            }
+        }
+    }
+
+    for (size_t y; y < roommap.get_height(); ++y) {
+        for (size_t x; x <= roommap.get_width(); ++x) {
+
+            int before = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
+            int current = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+
+            if (before != current) {
+                Point a { static_cast<int>(x), static_cast<int>(y) };
+                Point b { static_cast<int>(x), static_cast<int>(y) };
+
+                for (++y; y <= roommap.get_height(); ++y) {
+                    int before = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
+                    int current = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+
+                    if (before == current || x == roommap.get_width()) {
+                        walls.push_back({ a, b });
+                        break;
+                    }
+                    ++b.y;
+                }
+            }
+        }
+    }
+}
+
+Graph RoomMapHelper::to_graph(const RoomMap& roommap)
+{
+    const int w = roommap.get_width();
+    const int h = roommap.get_height();
+    const size_t size = roommap.get_rooms().size();
 
     bool visited[w][h] {};
 
@@ -152,11 +205,11 @@ Graph RoomMapHelper::to_graph(const RoomMap& tilemap)
 
     for (int i = 0; i < w; ++i) {
         for (int j = 0; j < h; ++j) {
-            if (tilemap[i][j] == RoomMap::EMPTY_ROOM || visited[i][j]) {
+            if (roommap[i][j] == RoomMap::EMPTY_ROOM || visited[i][j]) {
                 continue;
             }
 
-            int current_room = tilemap[i][j];
+            int current_room = roommap[i][j];
             queue<pair<int, int>> to_visit {};
             to_visit.emplace(i, j);
 
@@ -168,13 +221,13 @@ Graph RoomMapHelper::to_graph(const RoomMap& tilemap)
                 const int y = pos.second;
 
                 if (x < 0 || y < 0 || x >= w || y >= h
-                    || tilemap[x][y] == RoomMap::EMPTY_ROOM) {
+                    || roommap[x][y] == RoomMap::EMPTY_ROOM) {
                     continue;
                 }
 
-                graph[current_room][tilemap[x][y]] = 1;
+                graph[current_room][roommap[x][y]] = 1;
 
-                if (tilemap[x][y] == current_room
+                if (roommap[x][y] == current_room
                     && !visited[x][y]) {
 
                     visited[x][y] = true;
@@ -189,10 +242,10 @@ Graph RoomMapHelper::to_graph(const RoomMap& tilemap)
     return graph;
 }
 
-string RoomMapHelper::to_painted_map_string(const RoomMap& tilemap)
+string RoomMapHelper::to_painted_map_string(const RoomMap& roommap)
 {
-    const uint32_t w = tilemap.get_width();
-    const uint32_t h = tilemap.get_height();
+    const uint32_t w = roommap.get_width();
+    const uint32_t h = roommap.get_height();
 
     string str = "\n     ";
     {
@@ -214,10 +267,10 @@ string RoomMapHelper::to_painted_map_string(const RoomMap& tilemap)
                 str += buffer;
             }
 
-            if (tilemap[i][j] == RoomMap::EMPTY_ROOM) {
+            if (roommap[i][j] == RoomMap::EMPTY_ROOM) {
                 str += "   ";
             } else {
-                str += "[" + std::to_string(tilemap[i][j]) + "]";
+                str += "[" + std::to_string(roommap[i][j]) + "]";
             }
 
             if (i == w - 1) {

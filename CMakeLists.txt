@@ -25,6 +25,11 @@ add_library(zombietiles SHARED
   models/room.hpp
   models/room.cpp
   models/graph.hpp
+  models/line.hpp
+  models/line.cpp
+  models/wall.hpp
+  models/point.hpp
+  models/point.cpp
   helpers/roommaphelper.hpp
   helpers/roommaphelper.cpp
   helpers/roomhelper.hpp
