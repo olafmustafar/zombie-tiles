@@ -58,6 +58,9 @@ INSTALL(TARGETS zombietiles
         PUBLIC_HEADER DESTINATION "${CMAKE_BINARY_DIR}/include"
 )
 
+INSTALL( DIRECTORY "./models" DESTINATION "${CMAKE_BINARY_DIR}/include"
+    FILES_MATCHING PATTERN "*.hpp" )
+
 target_include_directories(zombietiles PRIVATE .)
 
 target_compile_definitions(zombietiles PRIVATE ZOMBIETILES_LIBRARY)
