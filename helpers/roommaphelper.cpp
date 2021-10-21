@@ -144,53 +144,56 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap)
 {
     vector<Wall> walls {};
 
-    for (size_t x = 0; x < roommap.get_width(); ++x) {
+    for (size_t y = 0; y <= roommap.get_height(); ++y) {
+        for (size_t x = 0; x <= roommap.get_width(); ++x) {
+
+            int above_cell = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
+            int current_cell = y != roommap.get_height() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+
+            if (above_cell != current_cell) {
+                Point a { static_cast<int>(x), static_cast<int>(y) };
+                Point b { static_cast<int>(x), static_cast<int>(y) };
+
+                do {
+                    ++x, ++b.x;
+
+                    above_cell = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
+                    current_cell = y != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+
+                    if (above_cell == current_cell || x == roommap.get_height()) {
+                        walls.push_back({ a, b });
+                        break;
+                    }
+                } while (x <= roommap.get_width());
+            }
+        }
+    }
+
+    for (size_t x = 0; x <= roommap.get_width(); ++x) {
         for (size_t y = 0; y <= roommap.get_height(); ++y) {
 
-            int before = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
-            int current = y != roommap.get_height() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+            int left_cell = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
+            int current_cell = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
 
-            if (before != current) {
+            if (left_cell != current_cell) {
                 Point a { static_cast<int>(x), static_cast<int>(y) };
                 Point b { static_cast<int>(x), static_cast<int>(y) };
 
-                for (++x; x <= roommap.get_width(); ++x) {
-                    before = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
-                    current = y != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+                do {
+                    ++y, ++b.y;
+                    left_cell = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
+                    current_cell = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
 
-                    if (before == current || x == roommap.get_height()) {
+                    if (left_cell == current_cell || y == roommap.get_width()) {
                         walls.push_back({ a, b });
                         break;
                     }
-                    ++b.x;
-                }
+                } while (y <= roommap.get_width());
             }
         }
     }
 
-    for (size_t y; y < roommap.get_height(); ++y) {
-        for (size_t x; x <= roommap.get_width(); ++x) {
-
-            int before = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
-            int current = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
-
-            if (before != current) {
-                Point a { static_cast<int>(x), static_cast<int>(y) };
-                Point b { static_cast<int>(x), static_cast<int>(y) };
-
-                for (++y; y <= roommap.get_height(); ++y) {
-                    int before = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
-                    int current = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
-
-                    if (before == current || x == roommap.get_width()) {
-                        walls.push_back({ a, b });
-                        break;
-                    }
-                    ++b.y;
-                }
-            }
-        }
-    }
+    return walls;
 }
 
 Graph RoomMapHelper::to_graph(const RoomMap& roommap)

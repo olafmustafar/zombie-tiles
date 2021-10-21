@@ -31,10 +31,6 @@ void generate_dungeon(const uint32_t width, const uint32_t height)
 void get_wall_array(int& size, Wall*& array)
 {
     vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon);
-    for (auto wall : wall_vector) {
-        cout << "a(" << wall.a.x << ", " << wall.a.y
-             << ") => b(" << wall.b.x << ", " << wall.b.y << ")" << endl;
-    }
 
     size = wall_vector.size();
 
