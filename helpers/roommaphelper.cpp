@@ -142,53 +142,49 @@ int RoomMapHelper::tiny_rooms_of(const RoomMap& roommap)
 
 vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap)
 {
+    constexpr int EMPTY = -1;
     vector<Wall> walls {};
 
     for (size_t y = 0; y <= roommap.get_height(); ++y) {
+        int origin = EMPTY;
         for (size_t x = 0; x <= roommap.get_width(); ++x) {
 
             int above_cell = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
             int current_cell = y != roommap.get_height() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
 
-            if (above_cell != current_cell) {
-                Point a { static_cast<int>(x), static_cast<int>(y) };
-                Point b { static_cast<int>(x), static_cast<int>(y) };
+            if (above_cell != current_cell && origin == EMPTY) {
+                origin = x;
+                continue;
+            }
 
-                do {
-                    ++x, ++b.x;
-
-                    above_cell = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
-                    current_cell = y != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
-
-                    if (above_cell == current_cell || x == roommap.get_height()) {
-                        walls.push_back({ a, b });
-                        break;
-                    }
-                } while (x <= roommap.get_width());
+            if ((above_cell == current_cell || x == roommap.get_width()) && origin != EMPTY) {
+                walls.push_back({
+                    { static_cast<int>(origin), static_cast<int>(y) },
+                    { static_cast<int>(x), static_cast<int>(y) },
+                });
+                origin = EMPTY;
             }
         }
     }
 
     for (size_t x = 0; x <= roommap.get_width(); ++x) {
+        int origin = EMPTY;
         for (size_t y = 0; y <= roommap.get_height(); ++y) {
 
             int left_cell = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
             int current_cell = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
 
-            if (left_cell != current_cell) {
-                Point a { static_cast<int>(x), static_cast<int>(y) };
-                Point b { static_cast<int>(x), static_cast<int>(y) };
+            if (left_cell != current_cell && origin == EMPTY) {
+                origin = y;
+                continue;
+            }
 
-                do {
-                    ++y, ++b.y;
-                    left_cell = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
-                    current_cell = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
-
-                    if (left_cell == current_cell || y == roommap.get_width()) {
-                        walls.push_back({ a, b });
-                        break;
-                    }
-                } while (y <= roommap.get_width());
+            if ((left_cell == current_cell || y == roommap.get_height()) && origin != EMPTY) {
+                walls.push_back({
+                    { static_cast<int>(x), static_cast<int>(origin) },
+                    { static_cast<int>(x), static_cast<int>(y) },
+                });
+                origin = EMPTY;
             }
         }
     }
