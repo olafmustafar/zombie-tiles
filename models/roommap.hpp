@@ -33,10 +33,12 @@ public:
 
     string to_string() const;
 
+    int** get_matrix() const;
+
 private:
     uint32_t m_width;
     uint32_t m_height;
-    int** m_map_matrix;
+    int** m_matrix;
     vector<Door> m_doors;
     vector<Room> m_rooms;
 

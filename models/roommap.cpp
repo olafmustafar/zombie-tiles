@@ -7,7 +7,7 @@ using namespace std;
 RoomMap::RoomMap(const uint32_t width, const uint32_t height)
     : m_width(width)
     , m_height(height)
-    , m_map_matrix(nullptr)
+    , m_matrix(nullptr)
     , m_doors {}
     , m_rooms {}
 {
@@ -22,14 +22,14 @@ RoomMap::RoomMap(const RoomMap& other)
 
 RoomMap::~RoomMap()
 {
-    if (!m_map_matrix) {
+    if (!m_matrix) {
         return;
     }
 
     for (uint32_t i = 0; i <= m_width; ++i) {
-        delete[] m_map_matrix[i];
+        delete[] m_matrix[i];
     }
-    delete[] m_map_matrix;
+    delete[] m_matrix;
 }
 
 RoomMap& RoomMap::operator=(const RoomMap& other)
@@ -50,7 +50,7 @@ RoomMap& RoomMap::operator=(const RoomMap& other)
 
     for (uint32_t i = 0; i < m_width; ++i) {
         for (uint32_t j = 0; j < m_height; ++j) {
-            m_map_matrix[i][j] = other[i][j];
+            m_matrix[i][j] = other[i][j];
         }
     }
 
@@ -69,17 +69,17 @@ RoomMap& RoomMap::operator=(RoomMap&& other) noexcept
     m_height = other.m_height;
     m_rooms = std::move(other.m_rooms);
     m_doors = std::move(other.m_doors);
-    m_map_matrix = other.m_map_matrix;
+    m_matrix = other.m_matrix;
 
     other.m_width = 0;
     other.m_height = 0;
     other.m_rooms = {};
     other.m_doors = {};
-    other.m_map_matrix = nullptr;
+    other.m_matrix = nullptr;
     return *this;
 }
 
-int* RoomMap::operator[](const int index) const { return m_map_matrix[index]; }
+int* RoomMap::operator[](const int index) const { return m_matrix[index]; }
 
 void RoomMap::addRoom(const Room& new_room)
 {
@@ -88,7 +88,7 @@ void RoomMap::addRoom(const Room& new_room)
 
     for (uint32_t i = new_room.get_x(); i < new_room.get_x2(); ++i) {
         for (uint32_t j = new_room.get_y(); j < new_room.get_y2(); ++j) {
-            int& current = m_map_matrix[i][j];
+            int& current = m_matrix[i][j];
 
             if (current == EMPTY_ROOM || new_room.get_placement_type() == Room::PlacementType::T) {
                 current = index;
@@ -101,7 +101,7 @@ void RoomMap::clear()
 {
     for (uint32_t j = 0; j < m_height; ++j) {
         for (uint32_t i = 0; i < m_width; ++i) {
-            m_map_matrix[i][j] = EMPTY_ROOM;
+            m_matrix[i][j] = EMPTY_ROOM;
         }
     }
     m_rooms.clear();
@@ -132,19 +132,24 @@ string RoomMap::to_string() const
     return str;
 }
 
+int** RoomMap::get_matrix() const
+{
+    return m_matrix;
+}
+
 void RoomMap::initialize_matrix()
 {
-    m_map_matrix = new int*[m_width];
+    m_matrix = new int*[m_width];
     for (uint32_t i = 0; i <= m_width; ++i) {
-        m_map_matrix[i] = new int[m_height] {};
-        std::fill_n(m_map_matrix[i], m_height, -1);
+        m_matrix[i] = new int[m_height] {};
+        std::fill_n(m_matrix[i], m_height, -1);
     }
 }
 
 void RoomMap::delete_matrix()
 {
     for (uint32_t i = 0; i <= m_width; ++i) {
-        delete[] m_map_matrix[i];
+        delete[] m_matrix[i];
     }
-    delete[] m_map_matrix;
+    delete[] m_matrix;
 }

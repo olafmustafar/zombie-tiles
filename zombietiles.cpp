@@ -8,11 +8,11 @@
 #include <helpers/roommaphelper.hpp>
 
 namespace {
-RoomMap* dungeon = nullptr;
+//RoomMap* dungeon = nullptr;
 Wall* walls = nullptr;
 }
 
-void generate_dungeon(const uint32_t width, const uint32_t height)
+RoomMap* generate_dungeon(const uint32_t width, const uint32_t height)
 {
     DungeonConfig& dungeon_config = DungeonConfig::get_instance();
     dungeon_config.set_width(width);
@@ -24,11 +24,19 @@ void generate_dungeon(const uint32_t width, const uint32_t height)
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
     m_ga.run();
 
-    delete dungeon;
-    dungeon = new RoomMap(m_ga.get_best()->get_map());
+    //    delete dungeon;
+    //    dungeon = new RoomMap(m_ga.get_best()->get_map());
+    return new RoomMap(m_ga.get_best()->get_map());
 }
 
-void get_wall_array(int& size, Wall*& array)
+void get_dugeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
+{
+    array = dungeon->get_matrix();
+    width = dungeon->get_width();
+    height = dungeon->get_height();
+}
+
+void get_wall_array(RoomMap* dungeon, int& size, Wall*& array)
 {
     vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon);
 

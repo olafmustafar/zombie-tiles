@@ -145,6 +145,7 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap)
     constexpr int EMPTY = -1;
     vector<Wall> walls {};
 
+    //Horizontal walls
     for (size_t y = 0; y <= roommap.get_height(); ++y) {
         int origin = EMPTY;
         for (size_t x = 0; x <= roommap.get_width(); ++x) {
@@ -167,6 +168,7 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap)
         }
     }
 
+    //Vertical walls
     for (size_t x = 0; x <= roommap.get_width(); ++x) {
         int origin = EMPTY;
         for (size_t y = 0; y <= roommap.get_height(); ++y) {
