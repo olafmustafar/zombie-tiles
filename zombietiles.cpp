@@ -24,12 +24,10 @@ RoomMap* generate_dungeon(const uint32_t width, const uint32_t height)
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
     m_ga.run();
 
-    //    delete dungeon;
-    //    dungeon = new RoomMap(m_ga.get_best()->get_map());
     return new RoomMap(m_ga.get_best()->get_map());
 }
 
-void get_dugeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
+void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
 {
     array = dungeon->get_matrix();
     width = dungeon->get_width();
@@ -48,15 +46,4 @@ void get_wall_array(RoomMap* dungeon, int& size, Wall*& array)
 
     std::move(wall_vector.begin(), wall_vector.end(), walls);
     array = walls;
-}
-
-void teste(int& length, Wall*& array)
-{
-
-    array = new Wall[3] {
-        { { 0, 1 }, { 2, 3 } },
-        { { 4, 5 }, { 6, 7 } },
-        { { 8, 9 }, { 10, 11 } }
-    };
-    length = 3;
 }

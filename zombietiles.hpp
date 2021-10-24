@@ -11,6 +11,6 @@ extern "C" RoomMap* generate_dungeon(const uint32_t width, const uint32_t height
 
 extern "C" void get_wall_array(RoomMap* dungeon, int& length, Wall*& array);
 
-extern "C" void get_dugeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array);
+extern "C" void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array);
 
-extern "C" void teste(RoomMap* dungeon, int& length, Wall*& array);
+extern "C" void teste(RoomMap* dungeon, int& width, int& height, int**& array);
