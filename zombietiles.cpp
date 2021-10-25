@@ -9,7 +9,7 @@
 
 namespace {
 //RoomMap* dungeon = nullptr;
-Wall* walls = nullptr;
+//Wall* walls = nullptr;
 }
 
 RoomMap* generate_dungeon(const uint32_t width, const uint32_t height)
@@ -34,16 +34,21 @@ void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
     height = dungeon->get_height();
 }
 
-void get_wall_array(RoomMap* dungeon, int& size, Wall*& array)
+void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array)
 {
     vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon);
 
     size = wall_vector.size();
+    array = new Wall[size]();
+    std::move(wall_vector.begin(), wall_vector.end(), array);
+}
 
-    if (walls == nullptr) {
-        walls = new Wall[size]();
-    }
+void free_dungeon(RoomMap* dungeon)
+{
+    delete dungeon;
+}
 
-    std::move(wall_vector.begin(), wall_vector.end(), walls);
-    array = walls;
+void free_wall_array(Wall* array)
+{
+    delete[] array;
 }
