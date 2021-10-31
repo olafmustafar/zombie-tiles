@@ -7,3 +7,8 @@ Door::Door(const Point& location, Orientation orientation)
     , orientation(orientation)
 {
 }
+
+bool Door::operator==(const Door& other) const
+{
+    return (this->location == other.location && this->orientation == other.orientation);
+}

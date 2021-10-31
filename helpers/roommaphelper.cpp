@@ -5,6 +5,7 @@
 #include <functional>
 #include <iostream>
 #include <queue>
+#include <unordered_set>
 #include <utility>
 
 using namespace std;
@@ -240,9 +241,12 @@ vector<Door> RoomMapHelper::doors_of(const RoomMap& roommap)
     return final_doors;
 }
 
-vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>& /*doors*/)
+vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>& doors)
 {
     constexpr int EMPTY = -1;
+
+    unordered_set<Door> door_set { doors.cbegin(), doors.cend() };
+    //    unordered_set<Door> door_set;
 
     vector<Wall> walls {};
     //Horizontal walls
@@ -258,7 +262,11 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
                 continue;
             }
 
-            if ((above_cell == current_cell || x == roommap.get_width()) && origin != EMPTY) {
+            if (origin != EMPTY
+                && (above_cell == current_cell
+                    || x == roommap.get_width()
+                    || door_set.find({ { static_cast<int>(x), static_cast<int>(y) }, Door::horizontal }) != door_set.end())) {
+
                 walls.push_back({
                     { static_cast<int>(origin), static_cast<int>(y) },
                     { static_cast<int>(x), static_cast<int>(y) },
@@ -281,7 +289,11 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
                 continue;
             }
 
-            if ((left_cell == current_cell || y == roommap.get_height()) && origin != EMPTY) {
+            if (origin != EMPTY
+                && (left_cell == current_cell
+                    || y == roommap.get_height()
+                    || door_set.find({ { static_cast<int>(x), static_cast<int>(y) }, Door::vertical }) != door_set.end())) {
+
                 walls.push_back({
                     { static_cast<int>(x), static_cast<int>(origin) },
                     { static_cast<int>(x), static_cast<int>(y) },

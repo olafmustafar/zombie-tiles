@@ -40,7 +40,7 @@ void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array)
 
 void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array)
 {
-    vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon, {});
+    vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon, RoomMapHelper::doors_of(*dungeon));
 
     size = wall_vector.size();
     array = new Wall[size];
