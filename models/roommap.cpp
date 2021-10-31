@@ -81,6 +81,8 @@ RoomMap& RoomMap::operator=(RoomMap&& other) noexcept
 
 int* RoomMap::operator[](const int index) const { return m_matrix[index]; }
 
+int RoomMap::operator[](const Point& point) const { return m_matrix[point.x][point.y]; }
+
 void RoomMap::addRoom(const Room& new_room)
 {
     m_rooms.push_back(new_room);

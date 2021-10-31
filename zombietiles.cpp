@@ -7,11 +7,6 @@
 #include <algorithm>
 #include <helpers/roommaphelper.hpp>
 
-namespace {
-//RoomMap* dungeon = nullptr;
-//Wall* walls = nullptr;
-}
-
 RoomMap* generate_dungeon(const uint32_t width, const uint32_t height)
 {
     DungeonConfig& dungeon_config = DungeonConfig::get_instance();
@@ -34,12 +29,21 @@ void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
     height = dungeon->get_height();
 }
 
+void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array)
+{
+    vector<Door> doors_vec = RoomMapHelper::doors_of(*dungeon);
+
+    size = doors_vec.size();
+    array = new Door[size];
+    std::move(doors_vec.begin(), doors_vec.end(), array);
+}
+
 void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array)
 {
-    vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon);
+    vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon, {});
 
     size = wall_vector.size();
-    array = new Wall[size]();
+    array = new Wall[size];
     std::move(wall_vector.begin(), wall_vector.end(), array);
 }
 

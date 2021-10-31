@@ -30,6 +30,8 @@ add_library(zombietiles SHARED
   models/wall.hpp
   models/point.hpp
   models/point.cpp
+  models/door.hpp
+  models/door.cpp
   helpers/roommaphelper.hpp
   helpers/roommaphelper.cpp
   helpers/roomhelper.hpp

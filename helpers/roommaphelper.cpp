@@ -140,11 +140,111 @@ int RoomMapHelper::tiny_rooms_of(const RoomMap& roommap)
     return tiny_rooms_count;
 }
 
-vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap)
+vector<Door> RoomMapHelper::doors_of(const RoomMap& roommap)
+{
+    vector<Door> doors {};
+    vector<bool> visited(roommap.get_rooms().size(), false);
+
+    vector<vector<vector<Door>>> neighbors_by_rooms {
+        roommap.get_rooms().size(),
+        vector<vector<Door>> {
+            roommap.get_rooms().size(),
+            vector<Door> {} }
+    };
+
+    for (uint32_t y = 0; y < roommap.get_height(); ++y) {
+        for (uint32_t x = 0; x < roommap.get_width(); ++x) {
+            int curr_room = roommap[x][y];
+            if (curr_room == RoomMap::EMPTY_ROOM || visited[curr_room]) {
+                continue;
+            }
+
+            Point origin { static_cast<int>(x), static_cast<int>(y) };
+            Point curr { static_cast<int>(x), static_cast<int>(y) };
+
+            enum : int {
+                UP = 0,
+                RIGHT = 1,
+                DOWN = 2,
+                LEFT = 3,
+            } direction;
+            direction = UP;
+
+            do {
+                Point next = curr;
+
+                switch (direction) {
+                case UP:
+                    --next.y;
+                    break;
+                case RIGHT:
+                    ++next.x;
+                    break;
+                case LEFT:
+                    --next.x;
+                    break;
+                case DOWN:
+                    ++next.y;
+                    break;
+                }
+
+                if (next.x < 0
+                    || next.y < 0
+                    || next.x == static_cast<int>(roommap.get_height())
+                    || next.y == static_cast<int>(roommap.get_width())
+                    || roommap[next] == RoomMap::EMPTY_ROOM
+                    || visited[roommap[next]]) {
+                    direction = static_cast<decltype(direction)>((direction + 5) % 4);
+                    continue;
+                }
+
+                if (roommap[next] == curr_room) {
+                    curr = next;
+                    direction = static_cast<decltype(direction)>((direction + 3) % 4);
+
+                } else {
+                    switch (direction) {
+                    case UP:
+                        neighbors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::horizontal);
+                        break;
+                    case RIGHT:
+                        neighbors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::vertical);
+                        break;
+                    case LEFT:
+                        neighbors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::vertical);
+                        break;
+                    case DOWN:
+                        neighbors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::horizontal);
+                        break;
+                    }
+                    direction = static_cast<decltype(direction)>((direction + 5) % 4);
+                }
+
+            } while (direction != UP || curr != origin);
+
+            visited[curr_room] = true;
+        }
+    }
+
+    vector<Door> final_doors {};
+    for (const vector<vector<Door>>& neighbors : neighbors_by_rooms) {
+        for (const vector<Door>& doors : neighbors) {
+            if (doors.empty()) {
+                continue;
+            }
+
+            final_doors.push_back(doors[doors.size() / 2]);
+        }
+    }
+
+    return final_doors;
+}
+
+vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>& /*doors*/)
 {
     constexpr int EMPTY = -1;
-    vector<Wall> walls {};
 
+    vector<Wall> walls {};
     //Horizontal walls
     for (size_t y = 0; y <= roommap.get_height(); ++y) {
         int origin = EMPTY;

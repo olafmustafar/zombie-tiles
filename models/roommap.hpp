@@ -2,15 +2,12 @@
 
 #include "room.hpp"
 #include <cstdint>
+#include <models/door.hpp>
+#include <models/point.hpp>
 #include <string>
 #include <vector>
 
 using namespace std;
-
-struct Door {
-    uint32_t x;
-    uint32_t y;
-};
 
 class RoomMap {
 public:
@@ -23,6 +20,7 @@ public:
     RoomMap& operator=(const RoomMap& other);
     RoomMap& operator=(RoomMap&& other) noexcept;
     int* operator[](const int index) const;
+    int operator[](const Point& point) const;
 
     void addRoom(const Room& room);
     void clear();
