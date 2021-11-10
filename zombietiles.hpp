@@ -4,9 +4,8 @@
 #include <cstdint>
 #include <list>
 #include <models/door.hpp>
+#include <models/roommap.hpp>
 #include <models/wall.hpp>
-
-class RoomMap;
 
 extern "C" {
 

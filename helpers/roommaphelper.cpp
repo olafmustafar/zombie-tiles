@@ -5,6 +5,7 @@
 #include <functional>
 #include <iostream>
 #include <queue>
+#include <set>
 #include <unordered_set>
 #include <utility>
 
@@ -143,10 +144,10 @@ int RoomMapHelper::tiny_rooms_of(const RoomMap& roommap)
 
 vector<Door> RoomMapHelper::doors_of(const RoomMap& roommap)
 {
-    vector<Door> doors {};
-    vector<bool> visited(roommap.get_rooms().size(), false);
 
-    vector<vector<vector<Door>>> neighbors_by_rooms {
+    vector<bool> visited(roommap.get_rooms().size(), false);
+    set<pair<int, int>> placed_doors {};
+    vector<vector<vector<Door>>> doors_by_rooms {
         roommap.get_rooms().size(),
         vector<vector<Door>> {
             roommap.get_rooms().size(),
@@ -194,7 +195,8 @@ vector<Door> RoomMapHelper::doors_of(const RoomMap& roommap)
                     || next.x == static_cast<int>(roommap.get_height())
                     || next.y == static_cast<int>(roommap.get_width())
                     || roommap[next] == RoomMap::EMPTY_ROOM
-                    || visited[roommap[next]]) {
+                    || (placed_doors.find(pair<int, int> { curr_room, roommap[next] }) != placed_doors.cend()
+                        && visited[roommap[next]])) {
                     direction = static_cast<decltype(direction)>((direction + 5) % 4);
                     continue;
                 }
@@ -206,18 +208,20 @@ vector<Door> RoomMapHelper::doors_of(const RoomMap& roommap)
                 } else {
                     switch (direction) {
                     case UP:
-                        neighbors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::horizontal);
+                        doors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::horizontal);
                         break;
                     case RIGHT:
-                        neighbors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::vertical);
+                        doors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::vertical);
                         break;
                     case LEFT:
-                        neighbors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::vertical);
+                        doors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::vertical);
                         break;
                     case DOWN:
-                        neighbors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::horizontal);
+                        doors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::horizontal);
                         break;
                     }
+                    placed_doors.emplace(curr_room, roommap[next]);
+                    placed_doors.emplace(roommap[next], curr_room);
                     direction = static_cast<decltype(direction)>((direction + 5) % 4);
                 }
 
@@ -228,7 +232,7 @@ vector<Door> RoomMapHelper::doors_of(const RoomMap& roommap)
     }
 
     vector<Door> final_doors {};
-    for (const vector<vector<Door>>& neighbors : neighbors_by_rooms) {
+    for (const vector<vector<Door>>& neighbors : doors_by_rooms) {
         for (const vector<Door>& doors : neighbors) {
             if (doors.empty()) {
                 continue;
