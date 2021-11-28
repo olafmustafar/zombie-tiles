@@ -11,9 +11,11 @@ extern "C" {
 
 RoomMap* generate_dungeon(const uint32_t width, const uint32_t height);
 
-void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array);
-
 void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array);
+
+void generate_dungeon_enemies(RoomMap* dungeon, int& size, Enemy*& array);
+
+void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array);
 
 void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array);
 

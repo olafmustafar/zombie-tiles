@@ -11,6 +11,11 @@ Point::Point(int x, int y)
 {
 }
 
+Point::Point(uint32_t x, uint32_t y)
+    : Point { static_cast<int>(x), static_cast<int>(y) }
+{
+}
+
 bool Point::operator==(const Point& other) const
 {
     return this->x == other.x

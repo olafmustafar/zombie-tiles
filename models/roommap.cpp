@@ -10,6 +10,7 @@ RoomMap::RoomMap(const uint32_t width, const uint32_t height)
     , m_matrix(nullptr)
     , m_doors {}
     , m_rooms {}
+    , m_enemies {}
 {
     initialize_matrix();
 }
@@ -83,7 +84,7 @@ int* RoomMap::operator[](const int index) const { return m_matrix[index]; }
 
 int RoomMap::operator[](const Point& point) const { return m_matrix[point.x][point.y]; }
 
-void RoomMap::addRoom(const Room& new_room)
+void RoomMap::add_room(const Room& new_room)
 {
     m_rooms.push_back(new_room);
     int index = m_rooms.size() - 1;
@@ -97,6 +98,26 @@ void RoomMap::addRoom(const Room& new_room)
             }
         }
     }
+}
+
+void RoomMap::add_enemy(const Enemy& enemy)
+{
+    m_enemies.push_back(enemy);
+}
+
+const vector<Enemy>& RoomMap::get_enemies() const
+{
+    return m_enemies;
+}
+
+void RoomMap::add_door(const Door& door)
+{
+    m_doors.push_back(door);
+}
+
+const vector<Door>& RoomMap::get_doors() const
+{
+    return m_doors;
 }
 
 void RoomMap::clear()

@@ -29,9 +29,29 @@ void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
     height = dungeon->get_height();
 }
 
+void generate_dungeon_enemies(RoomMap* dungeon, int& size, Enemy*& array)
+{
+    vector<Enemy> enemy_vec;
+
+    if (dungeon->get_doors().empty()) {
+        RoomMapHelper::generate_enemies(*dungeon);
+    }
+
+    enemy_vec = dungeon->get_enemies();
+
+    size = enemy_vec.size();
+    array = new Enemy[size];
+    std::move(enemy_vec.begin(), enemy_vec.end(), array);
+}
+
 void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array)
 {
-    vector<Door> doors_vec = RoomMapHelper::doors_of(*dungeon);
+    vector<Door> doors_vec;
+    if (dungeon->get_doors().empty()) {
+        doors_vec = RoomMapHelper::generate_doors(*dungeon);
+    } else {
+        doors_vec = dungeon->get_doors();
+    }
 
     size = doors_vec.size();
     array = new Door[size];
@@ -40,7 +60,7 @@ void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array)
 
 void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array)
 {
-    vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon, RoomMapHelper::doors_of(*dungeon));
+    vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon, RoomMapHelper::generate_doors(*dungeon));
 
     size = wall_vector.size();
     array = new Wall[size];

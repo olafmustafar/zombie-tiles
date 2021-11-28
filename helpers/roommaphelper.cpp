@@ -1,6 +1,7 @@
 #include "roommaphelper.hpp"
 #include "models/dungeonconfig.hpp"
 #include "roomhelper.hpp"
+#include "utils/randomgenerator.hpp"
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -23,7 +24,7 @@ void RoomMapHelper::add_room_to(RoomMap& roommap, const Room& room)
     int original_size = roommap.get_rooms().size();
 
     if (original_size == 0) {
-        roommap.addRoom(room);
+        roommap.add_room(room);
         return;
     }
 
@@ -34,7 +35,7 @@ void RoomMapHelper::add_room_to(RoomMap& roommap, const Room& room)
     }
 
     RoomMap copy(roommap);
-    copy.addRoom(room);
+    copy.add_room(room);
     if (rooms_count_of(copy) == original_size + 1) {
         roommap = std::move(copy);
     }
@@ -142,7 +143,7 @@ int RoomMapHelper::tiny_rooms_of(const RoomMap& roommap)
     return tiny_rooms_count;
 }
 
-vector<Door> RoomMapHelper::doors_of(const RoomMap& roommap)
+vector<Door> RoomMapHelper::generate_doors(const RoomMap& roommap)
 {
 
     vector<bool> visited(roommap.get_rooms().size(), false);
@@ -238,7 +239,7 @@ vector<Door> RoomMapHelper::doors_of(const RoomMap& roommap)
                 continue;
             }
 
-            final_doors.push_back(doors[doors.size() / 2]);
+            final_doors.push_back(doors[doors.size() / 2]); //bug?
         }
     }
 
@@ -308,6 +309,30 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
     }
 
     return walls;
+}
+
+void RoomMapHelper::generate_enemies(RoomMap& roommap)
+{
+    const uint8_t enemies_per_room = 2;
+    vector<bool> visited(roommap.get_rooms().size(), false);
+    vector<vector<Point>> tiles_by_rooms(roommap.get_rooms().size(), vector<Point> {});
+
+    for (uint32_t y = 0; y < roommap.get_height(); ++y) {
+        for (uint32_t x = 0; x < roommap.get_width(); ++x) {
+            tiles_by_rooms[roommap[x][y]].push_back(Point { x, y });
+        }
+    }
+
+    for (auto& tiles : tiles_by_rooms) {
+        for (int i = 0; i < enemies_per_room; ++i) {
+            int rand_index = RandomGenerator::random_between<int>(0, tiles.size() - 1);
+
+            Point pos = tiles[rand_index];
+            tiles.erase(tiles.begin() + rand_index);
+
+            roommap.add_enemy({ pos });
+        }
+    }
 }
 
 Graph RoomMapHelper::to_graph(const RoomMap& roommap)

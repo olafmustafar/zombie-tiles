@@ -5,6 +5,7 @@
 struct Point {
     Point();
     Point(int x, int y);
+    Point(uint32_t x, uint32_t y);
 
     bool operator==(const Point& other) const;
     bool operator!=(const Point& other) const;

@@ -3,6 +3,7 @@
 #include "room.hpp"
 #include <cstdint>
 #include <models/door.hpp>
+#include <models/enemy.hpp>
 #include <models/point.hpp>
 #include <string>
 #include <vector>
@@ -22,12 +23,19 @@ public:
     int* operator[](const int index) const;
     int operator[](const Point& point) const;
 
-    void addRoom(const Room& room);
+    void add_room(const Room& room);
+    const vector<Room>& get_rooms() const;
+
+    void add_enemy(const Enemy& enemy);
+    const vector<Enemy>& get_enemies() const;
+
+    void add_door(const Door& room);
+    const vector<Door>& get_doors() const;
+
     void clear();
 
     uint32_t get_width() const;
     uint32_t get_height() const;
-    const vector<Room>& get_rooms() const;
 
     string to_string() const;
 
@@ -39,6 +47,7 @@ private:
     int** m_matrix;
     vector<Door> m_doors;
     vector<Room> m_rooms;
+    vector<Enemy> m_enemies;
 
     void initialize_matrix();
     void delete_matrix();
