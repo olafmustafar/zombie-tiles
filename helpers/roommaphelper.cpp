@@ -319,12 +319,17 @@ void RoomMapHelper::generate_enemies(RoomMap& roommap)
 
     for (uint32_t y = 0; y < roommap.get_height(); ++y) {
         for (uint32_t x = 0; x < roommap.get_width(); ++x) {
-            tiles_by_rooms[roommap[x][y]].push_back(Point { x, y });
+            Point p { x, y };
+            tiles_by_rooms[roommap[p]].push_back(p);
         }
     }
 
     for (auto& tiles : tiles_by_rooms) {
         for (int i = 0; i < enemies_per_room; ++i) {
+            if (tiles.empty()) {
+                break;
+            }
+
             int rand_index = RandomGenerator::random_between<int>(0, tiles.size() - 1);
 
             Point pos = tiles[rand_index];
