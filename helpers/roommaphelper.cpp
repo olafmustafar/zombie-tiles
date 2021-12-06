@@ -320,7 +320,9 @@ void RoomMapHelper::generate_enemies(RoomMap& roommap)
     for (uint32_t y = 0; y < roommap.get_height(); ++y) {
         for (uint32_t x = 0; x < roommap.get_width(); ++x) {
             Point p { x, y };
-            tiles_by_rooms[roommap[p]].push_back(p);
+            if (roommap[p] != RoomMap::EMPTY_ROOM) {
+                tiles_by_rooms[roommap[p]].push_back(p);
+            }
         }
     }
 
