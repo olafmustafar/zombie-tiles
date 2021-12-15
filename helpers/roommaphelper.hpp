@@ -17,7 +17,7 @@ public:
     static int tiny_rooms_of(const RoomMap& roommap);
     static vector<Door> generate_doors(const RoomMap& roommap);
     static vector<Wall> walls_of(const RoomMap& roommap, const vector<Door>& doors);
-    static void generate_enemies(RoomMap& roommap);
+    static void generate_entities(RoomMap& roommap);
 
     static string to_painted_map_string(const RoomMap& roommap);
     static Graph to_graph(const RoomMap& roommap);

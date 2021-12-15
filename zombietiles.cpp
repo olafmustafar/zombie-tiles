@@ -29,18 +29,18 @@ void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
     height = dungeon->get_height();
 }
 
-void generate_dungeon_enemies(RoomMap* dungeon, int& size, Enemy*& array)
-{
-    vector<Enemy> enemy_vec;
+void generate_dungeon_enemies(RoomMap* dungeon, int& size, Entity*& array)
+{ // TODO
+    vector<Entity> enemy_vec;
 
     if (dungeon->get_doors().empty()) {
-        RoomMapHelper::generate_enemies(*dungeon);
+        RoomMapHelper::generate_entities(*dungeon);
     }
 
     enemy_vec = dungeon->get_enemies();
 
     size = enemy_vec.size();
-    array = new Enemy[size];
+    array = new Entity[size];
     std::move(enemy_vec.begin(), enemy_vec.end(), array);
 }
 

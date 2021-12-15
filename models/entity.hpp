@@ -2,6 +2,6 @@
 
 #include "point.hpp"
 
-struct Enemy {
+struct Entity {
     Point position;
 };

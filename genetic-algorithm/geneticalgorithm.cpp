@@ -126,7 +126,7 @@ void GeneticAlgorithmImpl::select()
     vector<IndividualImpl*> new_population(m_population.size());
 
     for (size_t i = 0; i < m_population_size; ++i) {
-        double p = RandomGenerator::random_between(0.0, 1.0);
+        double p = Random::random_between(0.0, 1.0);
 
         if (p < m_population.front()->get_cumulative_fitness()) {
             new_population[i] = create_individual(m_population[0]);
@@ -160,7 +160,7 @@ void GeneticAlgorithmImpl::crossover()
     IndividualImpl* first = nullptr;
 
     for (IndividualImpl* second : m_population) {
-        double x = RandomGenerator::random_between(0.0, 1.0);
+        double x = Random::random_between(0.0, 1.0);
 
         if (x < crossover_chance) {
             if (first) {
@@ -179,7 +179,7 @@ void GeneticAlgorithmImpl::mutate()
 {
     Logger::doing("Mutating individuals");
     for (IndividualImpl* individual : m_population) {
-        double mutation_chance = RandomGenerator::random_between(0.0, 1.0);
+        double mutation_chance = Random::random_between(0.0, 1.0);
         if (mutation_chance < 0.1) {
             Logger::log() << "Mutating individual:[" << individual << "]";
             individual->mutate();

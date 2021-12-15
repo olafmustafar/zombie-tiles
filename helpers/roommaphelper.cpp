@@ -311,12 +311,13 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
     return walls;
 }
 
-void RoomMapHelper::generate_enemies(RoomMap& roommap)
+void RoomMapHelper::generate_entities(RoomMap& roommap)
 {
     const uint8_t enemies_per_room = 2;
     vector<bool> visited(roommap.get_rooms().size(), false);
     vector<vector<Point>> tiles_by_rooms(roommap.get_rooms().size(), vector<Point> {});
 
+    // filling tiles_by_rooms
     for (uint32_t y = 0; y < roommap.get_height(); ++y) {
         for (uint32_t x = 0; x < roommap.get_width(); ++x) {
             Point p { x, y };
@@ -326,18 +327,21 @@ void RoomMapHelper::generate_enemies(RoomMap& roommap)
         }
     }
 
+    // placing player
+    {
+        vector<Point> player_room { Random::take_random_element(tiles_by_rooms) };
+        Entity player { Random::random_element(player_room) };
+        roommap.set_player(player);
+    }
+
+    // placing enemies
     for (auto& tiles : tiles_by_rooms) {
         for (int i = 0; i < enemies_per_room; ++i) {
             if (tiles.empty()) {
                 break;
             }
 
-            int rand_index = RandomGenerator::random_between<int>(0, tiles.size() - 1);
-
-            Point pos = tiles[rand_index];
-            tiles.erase(tiles.begin() + rand_index);
-
-            roommap.add_enemy({ pos });
+            roommap.add_enemy({ Random::take_random_element(tiles) });
         }
     }
 }
