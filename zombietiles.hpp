@@ -13,7 +13,7 @@ RoomMap* generate_dungeon(const uint32_t width, const uint32_t height);
 
 void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array);
 
-void generate_dungeon_enemies(RoomMap* dungeon, int& size, Entity*& array);
+void generate_dungeon_entities(RoomMap* dungeon, int& size, Entity*& array);
 
 void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array);
 

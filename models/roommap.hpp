@@ -26,6 +26,9 @@ public:
     void add_room(const Room& room);
     const vector<Room>& get_rooms() const;
 
+    const Entity& get_player() const;
+    void set_player(const Entity& player);
+
     void add_enemy(const Entity& enemy);
     const vector<Entity>& get_enemies() const;
 
@@ -41,17 +44,20 @@ public:
 
     int** get_matrix() const;
 
-    const Entity& get_player() const;
-    void set_player(const Entity& player);
+    const vector<Entity> get_entities() const;
+
+    bool has_entities() const;
 
 private:
     uint32_t m_width;
     uint32_t m_height;
     int** m_matrix;
     vector<Door> m_doors;
-    vector<Room> m_rooms;
+    Entity m_player;
     vector<Entity> m_enemies;
-    Entity player;
+    vector<Room> m_rooms;
+
+    bool m_has_entities;
 
     void initialize_matrix();
     void delete_matrix();

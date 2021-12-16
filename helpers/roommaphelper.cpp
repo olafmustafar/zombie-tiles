@@ -330,8 +330,7 @@ void RoomMapHelper::generate_entities(RoomMap& roommap)
     // placing player
     {
         vector<Point> player_room { Random::take_random_element(tiles_by_rooms) };
-        Entity player { Random::random_element(player_room) };
-        roommap.set_player(player);
+        roommap.set_player({ EntityType::PLAYER, Random::random_element(player_room) });
     }
 
     // placing enemies
@@ -341,7 +340,7 @@ void RoomMapHelper::generate_entities(RoomMap& roommap)
                 break;
             }
 
-            roommap.add_enemy({ Random::take_random_element(tiles) });
+            roommap.add_enemy({ EntityType::ENEMY, Random::take_random_element(tiles) });
         }
     }
 }
