@@ -30,7 +30,7 @@ void RoomMapHelper::add_room_to(RoomMap& roommap, const Room& room)
 
     vector<Room> rooms = roommap.get_rooms();
     auto new_room_overlaps = bind(&RoomHelper::check_if_overlaps, room, placeholders::_1);
-    if (!any_of(rooms.cbegin(), rooms.cend(), new_room_overlaps)) {
+    if (any_of(rooms.cbegin(), rooms.cend(), new_room_overlaps)) {
         return;
     }
 

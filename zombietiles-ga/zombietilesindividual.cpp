@@ -55,6 +55,7 @@ double ZombieTilesIndividual::calculate_fitness() const
     RoomMap tilemap = RoomMapHelper::create_roommap();
 
     ZombieTilesChromosome* chromosome = get_chromosome();
+
     const vector<RoomGene>& genes = chromosome->get_genes();
 
     for (const RoomGene& gene : genes) {

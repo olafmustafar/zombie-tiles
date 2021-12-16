@@ -4,6 +4,11 @@ std::default_random_engine Random::random_engine = std::default_random_engine(01
 
 Random::Random() { }
 
+void Random::set_seed(int seed)
+{
+    random_engine.seed(seed);
+}
+
 int Random::random()
 {
     return this->random_engine();

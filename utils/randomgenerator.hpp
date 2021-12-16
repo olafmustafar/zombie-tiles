@@ -6,8 +6,9 @@
 class Random {
 public:
     Random();
-    int random();
 
+    static void set_seed(int seed);
+    int random();
     bool randomBool();
 
     template <typename T>

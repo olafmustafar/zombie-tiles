@@ -76,3 +76,8 @@ void free_wall_array(Wall* array)
 {
     delete[] array;
 }
+
+void set_seed(int seed)
+{
+    Random::set_seed(seed);
+}

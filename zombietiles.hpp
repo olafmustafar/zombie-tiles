@@ -19,6 +19,8 @@ void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array);
 
 void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array);
 
+void set_seed(int seed);
+
 void free_dungeon(RoomMap* dungeon);
 
 void free_wall_array(Wall* array);
