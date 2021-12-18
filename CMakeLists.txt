@@ -22,6 +22,8 @@ add_library(zombietiles SHARED
   models/dungeonconfig.cpp
   models/roommap.hpp
   models/roommap.cpp
+  models/direction.hpp
+  models/direction.cpp
   models/room.hpp
   models/room.cpp
   models/graph.hpp

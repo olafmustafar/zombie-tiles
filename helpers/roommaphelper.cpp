@@ -1,4 +1,5 @@
 #include "roommaphelper.hpp"
+#include "models/direction.hpp"
 #include "models/dungeonconfig.hpp"
 #include "roomhelper.hpp"
 #include "utils/randomgenerator.hpp"
@@ -165,28 +166,22 @@ vector<Door> RoomMapHelper::generate_doors(const RoomMap& roommap)
             Point origin { static_cast<int>(x), static_cast<int>(y) };
             Point curr { static_cast<int>(x), static_cast<int>(y) };
 
-            enum : int {
-                UP = 0,
-                RIGHT = 1,
-                DOWN = 2,
-                LEFT = 3,
-            } direction;
-            direction = UP;
+            Direction direction = Direction::UP;
 
             do {
                 Point next = curr;
 
                 switch (direction) {
-                case UP:
+                case Direction::UP:
                     --next.y;
                     break;
-                case RIGHT:
+                case Direction::RIGHT:
                     ++next.x;
                     break;
-                case LEFT:
+                case Direction::LEFT:
                     --next.x;
                     break;
-                case DOWN:
+                case Direction::DOWN:
                     ++next.y;
                     break;
                 }
@@ -198,35 +193,35 @@ vector<Door> RoomMapHelper::generate_doors(const RoomMap& roommap)
                     || roommap[next] == RoomMap::EMPTY_ROOM
                     || (placed_doors.find(pair<int, int> { curr_room, roommap[next] }) != placed_doors.cend()
                         && visited[roommap[next]])) {
-                    direction = static_cast<decltype(direction)>((direction + 5) % 4);
+                    direction.turn_right();
                     continue;
                 }
 
                 if (roommap[next] == curr_room) {
                     curr = next;
-                    direction = static_cast<decltype(direction)>((direction + 3) % 4);
+                    direction.turn_left();
 
                 } else {
                     switch (direction) {
-                    case UP:
+                    case Direction::UP:
                         doors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::horizontal);
                         break;
-                    case RIGHT:
+                    case Direction::RIGHT:
                         doors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::vertical);
                         break;
-                    case LEFT:
+                    case Direction::LEFT:
                         doors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::vertical);
                         break;
-                    case DOWN:
+                    case Direction::DOWN:
                         doors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::horizontal);
                         break;
                     }
                     placed_doors.emplace(curr_room, roommap[next]);
                     placed_doors.emplace(roommap[next], curr_room);
-                    direction = static_cast<decltype(direction)>((direction + 5) % 4);
+                    direction.turn_right();
                 }
 
-            } while (direction != UP || curr != origin);
+            } while (direction != Direction::UP || curr != origin);
 
             visited[curr_room] = true;
         }
@@ -234,12 +229,12 @@ vector<Door> RoomMapHelper::generate_doors(const RoomMap& roommap)
 
     vector<Door> final_doors {};
     for (const vector<vector<Door>>& neighbors : doors_by_rooms) {
-        for (const vector<Door>& doors : neighbors) {
-            if (doors.empty()) {
+        for (const vector<Door>& door_locations : neighbors) {
+            if (door_locations.empty()) {
                 continue;
             }
 
-            final_doors.push_back(doors[doors.size() / 2]); //bug?
+            final_doors.push_back(door_locations[door_locations.size() / 2]);
         }
     }
 
@@ -251,7 +246,6 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
     constexpr int EMPTY = -1;
 
     unordered_set<Door> door_set { doors.cbegin(), doors.cend() };
-    //    unordered_set<Door> door_set;
 
     vector<Wall> walls {};
     //Horizontal walls
