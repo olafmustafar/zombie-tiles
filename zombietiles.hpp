@@ -15,7 +15,7 @@ void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
 
 void generate_dungeon_entities(RoomMap* dungeon, int& size, Entity*& array);
 
-void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array);
+void generate_dungeon_walls(RoomMap* dungeon, int& size, Wall*& array);
 
 void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array);
 
@@ -24,4 +24,6 @@ void set_seed(int seed);
 void free_dungeon(RoomMap* dungeon);
 
 void free_wall_array(Wall* array);
+
+void generate_dungeon_description(RoomMap* dungeon, int& size, char*& str);
 }

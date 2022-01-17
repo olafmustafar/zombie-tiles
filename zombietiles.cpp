@@ -58,7 +58,7 @@ void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array)
     std::move(doors_vec.begin(), doors_vec.end(), array);
 }
 
-void generate_wall_array(RoomMap* dungeon, int& size, Wall*& array)
+void generate_dungeon_walls(RoomMap* dungeon, int& size, Wall*& array)
 {
     vector<Wall> wall_vector = RoomMapHelper::walls_of(*dungeon, RoomMapHelper::generate_doors(*dungeon));
 
@@ -80,4 +80,13 @@ void free_wall_array(Wall* array)
 void set_seed(int seed)
 {
     Random::set_seed(seed);
+}
+
+void generate_dungeon_description(RoomMap* dungeon, int& size, char*& str)
+{
+    std::string description = dungeon->to_string();
+
+    size = description.length();
+    str = new char[size];
+    std::copy_n(description.begin(), size, str);
 }

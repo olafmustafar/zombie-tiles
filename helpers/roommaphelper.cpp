@@ -256,7 +256,7 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
             int above_cell = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
             int current_cell = y != roommap.get_height() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
 
-            if (above_cell != current_cell && origin == EMPTY) {
+            if (above_cell != current_cell && origin == EMPTY && door_set.find({ { static_cast<int>(x), static_cast<int>(y) }, Door::horizontal }) == door_set.end()) {
                 origin = x;
                 continue;
             }
@@ -283,7 +283,7 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
             int left_cell = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
             int current_cell = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
 
-            if (left_cell != current_cell && origin == EMPTY) {
+            if (left_cell != current_cell && origin == EMPTY && door_set.find({ { static_cast<int>(x), static_cast<int>(y) }, Door::vertical }) == door_set.end()) {
                 origin = y;
                 continue;
             }
