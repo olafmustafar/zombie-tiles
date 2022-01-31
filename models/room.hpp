@@ -13,6 +13,12 @@ public:
     Room();
     Room(uint32_t x, uint32_t y, uint32_t width, uint32_t height, PlacementType placement_type);
 
+    uint32_t x;
+    uint32_t y;
+    uint32_t width;
+    uint32_t height;
+    PlacementType placement_type;
+
     uint32_t get_x() const;
     void set_x(uint32_t value);
 
@@ -33,11 +39,4 @@ public:
 
     void print() const;
     string to_string() const;
-
-private:
-    uint32_t m_x;
-    uint32_t m_y;
-    uint32_t m_width;
-    uint32_t m_height;
-    PlacementType m_placement_type;
 };

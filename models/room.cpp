@@ -2,82 +2,82 @@
 #include <iostream>
 
 Room::Room()
-    : m_x(0)
-    , m_y(0)
-    , m_width(0)
-    , m_height(0)
-    , m_placement_type(PlacementType::T)
+    : x(0)
+    , y(0)
+    , width(0)
+    , height(0)
+    , placement_type(PlacementType::T)
 {
 }
 
 Room::Room(
     uint32_t x, uint32_t y, uint32_t width, uint32_t height, Room::PlacementType placement_type)
-    : m_x(x)
-    , m_y(y)
-    , m_width(width)
-    , m_height(height)
-    , m_placement_type(placement_type)
+    : x(x)
+    , y(y)
+    , width(width)
+    , height(height)
+    , placement_type(placement_type)
 {
 }
 
 uint32_t Room::get_x() const
 {
-    return m_x;
+    return x;
 }
 
 void Room::set_x(uint32_t value)
 {
-    m_x = value;
+    x = value;
 }
 
 uint32_t Room::get_y() const
 {
-    return m_y;
+    return y;
 }
 
 void Room::set_y(uint32_t value)
 {
-    m_y = value;
+    y = value;
 }
 
 uint32_t Room::get_width() const
 {
-    return m_width;
+    return width;
 }
 
 void Room::set_width(uint32_t value)
 {
-    m_width = value;
+    width = value;
 }
 
 uint32_t Room::get_height() const
 {
-    return m_height;
+    return height;
 }
 
 void Room::set_height(uint32_t value)
 {
-    m_height = value;
+    height = value;
 }
 
 Room::PlacementType Room::get_placement_type() const
 {
-    return m_placement_type;
+    return placement_type;
 }
 
 uint32_t Room::get_x2() const
 {
-    return m_x + m_width;
+    return x + width;
 }
 
 uint32_t Room::get_y2() const
 {
-    return m_y + m_height;
+    return y + height;
 }
 
 void Room::set_placement_type(const PlacementType& value)
 {
-    m_placement_type = value;
+    placement_type = value;
 }
 
 void Room::print() const

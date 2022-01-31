@@ -90,3 +90,10 @@ void generate_dungeon_description(RoomMap* dungeon, int& size, char*& str)
     str = new char[size];
     std::copy_n(description.begin(), size, str);
 }
+
+void generate_dungeon_rooms(RoomMap* dungeon, int& size, Room*& array)
+{
+    size = dungeon->get_rooms().size();
+    array = new Room[size];
+    std::copy_n(dungeon->get_rooms().begin(), size, array);
+}
