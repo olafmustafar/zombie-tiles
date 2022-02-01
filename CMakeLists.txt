@@ -36,6 +36,8 @@ add_library(zombietiles SHARED
   models/door.cpp
   models/entity.hpp
   models/entity.cpp
+  models/enemy.hpp
+  models/enemy.cpp
   helpers/roommaphelper.hpp
   helpers/roommaphelper.cpp
   helpers/roomhelper.hpp
@@ -48,14 +50,18 @@ add_library(zombietiles SHARED
   genetic-algorithm/individual.cpp
   genetic-algorithm/chromosome.hpp
   genetic-algorithm/chromosome.cpp
-  zombietiles-ga/zombietilesga.hpp
-  zombietiles-ga/zombietilesga.cpp
-  zombietiles-ga/zombietilesindividual.hpp
-  zombietiles-ga/zombietilesindividual.cpp
-  zombietiles-ga/zombietileschromosome.hpp
-  zombietiles-ga/zombietileschromosome.cpp
-  zombietiles-ga/roomgene.hpp
-  zombietiles-ga/roomgene.cpp
+  zombietiles-ga/dungeon/zombietilesga.hpp
+  zombietiles-ga/dungeon/zombietilesga.cpp
+  zombietiles-ga/dungeon/zombietilesindividual.hpp
+  zombietiles-ga/dungeon/zombietilesindividual.cpp
+  zombietiles-ga/dungeon/zombietileschromosome.hpp
+  zombietiles-ga/dungeon/zombietileschromosome.cpp
+  zombietiles-ga/dungeon/roomgene.hpp
+  zombietiles-ga/dungeon/roomgene.cpp
+  zombietiles-ga/enemy/enemyindividual.h
+  zombietiles-ga/enemy/enemyindividual.cpp
+  zombietiles-ga/enemy/enemychormosome.h
+  zombietiles-ga/enemy/enemychormosome.cpp
 )
 
 set_target_properties(zombietiles PROPERTIES PUBLIC_HEADER "zombietiles.hpp;zombietiles_global.hpp;")

@@ -3,7 +3,7 @@
 #include "models/roommap.hpp"
 #include "utils/logger.hpp"
 #include "utils/randomgenerator.hpp"
-#include "zombietiles-ga/zombietilesga.hpp"
+#include "zombietiles-ga/dungeon/zombietilesga.hpp"
 #include <algorithm>
 #include <helpers/roommaphelper.hpp>
 
