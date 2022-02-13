@@ -18,8 +18,11 @@ add_library(zombietiles SHARED
   utils/randomgenerator.cpp
   utils/logger.hpp
   utils/logger.cpp
+  utils/singleton.hpp
   models/dungeonconfig.hpp
   models/dungeonconfig.cpp
+  models/enemiesconfig.hpp
+  models/enemiesconfig.cpp
   models/roommap.hpp
   models/roommap.cpp
   models/direction.hpp

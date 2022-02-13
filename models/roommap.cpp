@@ -9,8 +9,8 @@ RoomMap::RoomMap(const uint32_t width, const uint32_t height)
     , m_height(height)
     , m_matrix(nullptr)
     , m_doors {}
-    , m_rooms {}
     , m_enemies {}
+    , m_rooms {}
 {
     initialize_matrix();
 }
@@ -27,10 +27,7 @@ RoomMap::~RoomMap()
         return;
     }
 
-    for (uint32_t i = 0; i <= m_width; ++i) {
-        delete[] m_matrix[i];
-    }
-    delete[] m_matrix;
+    delete_matrix();
 }
 
 RoomMap& RoomMap::operator=(const RoomMap& other)
@@ -100,13 +97,13 @@ void RoomMap::add_room(const Room& new_room)
     }
 }
 
-void RoomMap::add_enemy(const Entity& enemy)
+void RoomMap::add_enemy(const Enemy& enemy)
 {
     m_enemies.push_back(enemy);
     m_has_entities = true;
 }
 
-const vector<Entity>& RoomMap::get_enemies() const
+const vector<Enemy>& RoomMap::get_enemies() const
 {
     return m_enemies;
 }
@@ -187,7 +184,7 @@ bool RoomMap::has_entities() const
 void RoomMap::initialize_matrix()
 {
     m_matrix = new int*[m_width];
-    for (uint32_t i = 0; i <= m_width; ++i) {
+    for (uint32_t i = 0; i < m_width; ++i) {
         m_matrix[i] = new int[m_height] {};
         std::fill_n(m_matrix[i], m_height, -1);
     }
@@ -195,7 +192,7 @@ void RoomMap::initialize_matrix()
 
 void RoomMap::delete_matrix()
 {
-    for (uint32_t i = 0; i <= m_width; ++i) {
+    for (uint32_t i = 0; i < m_width; ++i) {
         delete[] m_matrix[i];
     }
     delete[] m_matrix;

@@ -3,6 +3,7 @@
 #include "room.hpp"
 #include <cstdint>
 #include <models/door.hpp>
+#include <models/enemy.hpp>
 #include <models/entity.hpp>
 #include <models/point.hpp>
 #include <string>
@@ -13,6 +14,7 @@ using namespace std;
 class RoomMap {
 public:
     static constexpr int EMPTY_ROOM = -1;
+    static constexpr int PLAYER_ROOM = 0;
 
     RoomMap(const uint32_t width, const uint32_t height);
     RoomMap(const RoomMap& other);
@@ -29,8 +31,8 @@ public:
     const Entity& get_player() const;
     void set_player(const Entity& player);
 
-    void add_enemy(const Entity& enemy);
-    const vector<Entity>& get_enemies() const;
+    void add_enemy(const Enemy& enemy);
+    const vector<Enemy>& get_enemies() const;
 
     void add_door(const Door& room);
     const vector<Door>& get_doors() const;
@@ -54,7 +56,7 @@ private:
     int** m_matrix;
     vector<Door> m_doors;
     Entity m_player;
-    vector<Entity> m_enemies;
+    vector<Enemy> m_enemies;
     vector<Room> m_rooms;
 
     bool m_has_entities;

@@ -6,10 +6,10 @@
 struct Enemy : Entity {
     Enemy();
 
-    float health;
-    float damage;
-    float attackCooldown;
-    float velocity;
+    uint32_t health;
+    uint32_t damage;
+    uint32_t attackCooldown;
+    uint32_t velocity;
 
     std::string to_string() const;
 };

@@ -3,8 +3,8 @@
 DungeonConfig *DungeonConfig::m_instance;
 
 DungeonConfig::DungeonConfig(const uint32_t width, const uint32_t height)
-    : m_width(width)
-    , m_height(height)
+    : width(width)
+    , height(height)
 {
 }
 
@@ -28,22 +28,22 @@ DungeonConfig& DungeonConfig::get_instance()
     return *m_instance;
 }
 
-uint32_t DungeonConfig::get_width() const { return m_width; }
+uint32_t DungeonConfig::get_width() const { return width; }
 
-void DungeonConfig::set_width(const uint32_t value) { m_width = value; }
+void DungeonConfig::set_width(const uint32_t value) { width = value; }
 
-uint32_t DungeonConfig::get_height() const { return m_height; }
+uint32_t DungeonConfig::get_height() const { return height; }
 
-void DungeonConfig::set_height(const uint32_t value) { m_height = value; }
+void DungeonConfig::set_height(const uint32_t value) { height = value; }
 
-uint32_t DungeonConfig::get_rooms_count() const { return m_rooms_count; }
+uint32_t DungeonConfig::get_rooms_count() const { return rooms_count; }
 
-uint32_t DungeonConfig::get_generations() const { return m_generations; }
+uint32_t DungeonConfig::get_generations() const { return generations; }
 
-void DungeonConfig::set_generations(uint32_t generations) { m_generations = generations; }
+void DungeonConfig::set_generations(uint32_t new_generations) { generations = new_generations; }
 
-uint32_t DungeonConfig::get_population_size() const { return m_population_size; }
+uint32_t DungeonConfig::get_population_size() const { return population_size; }
 
-void DungeonConfig::set_population_size(uint32_t population_size) { m_population_size = population_size; }
+void DungeonConfig::set_population_size(uint32_t new_population_size) { population_size = new_population_size; }
 
-void DungeonConfig::set_rooms_count(uint32_t rooms_count) { m_rooms_count = rooms_count; }
+void DungeonConfig::set_rooms_count(uint32_t new_rooms_count) { rooms_count = new_rooms_count; }

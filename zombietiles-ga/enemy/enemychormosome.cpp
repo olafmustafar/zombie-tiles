@@ -1,31 +1,39 @@
 #include "enemychormosome.h"
 
 #include <models/dungeonconfig.hpp>
+#include <models/enemiesconfig.hpp>
 #include <utils/randomgenerator.hpp>
+#include <utils/singleton.hpp>
 
 EnemyChormosome::EnemyChormosome()
-    : enemies { std::vector<Enemy> { DungeonConfig::get_instance().get_rooms_count() * 2, Enemy {} } }
-
+    : dungeon { *Singleton<EnemiesConfig>().get_instance().current_dungeon }
+    , enemies { std::vector<Enemy> { DungeonConfig::get_instance().get_rooms_count() * 2, Enemy {} } }
+    , min { Singleton<EnemiesConfig>().get_instance().min_att_value }
+    , max { Singleton<EnemiesConfig>().get_instance().max_att_value }
 {
 }
 
 void EnemyChormosome::randomize()
 {
     for (auto& e : enemies) {
-        e.damage = Random::random_between(1, 100);
-        e.health = Random::random_between(1, 100);
-        e.velocity = Random::random_between(1, 100);
-        e.attackCooldown = Random::random_between(1, 100);
+        e.position.x = Random::random_between(0, dungeon.get_width() - 1);
+        e.position.y = Random::random_between(0, dungeon.get_height() - 1);
+        e.damage = Random::random_between(min, max);
+        e.health = Random::random_between(min, max);
+        e.velocity = Random::random_between(min, max);
+        e.attackCooldown = Random::random_between(min, max);
     }
 }
 
 void EnemyChormosome::mutate()
 {
     Enemy& e = enemies[Random::random_between(0, enemies.size() - 1)];
-    e.damage = Random::random_between(1, 100);
-    e.health = Random::random_between(1, 100);
-    e.velocity = Random::random_between(1, 100);
-    e.attackCooldown = Random::random_between(1, 100);
+    e.position.x = Random::random_between(0, dungeon.get_width() - 1);
+    e.position.y = Random::random_between(0, dungeon.get_height() - 1);
+    e.damage = Random::random_between(min, max);
+    e.health = Random::random_between(min, max);
+    e.velocity = Random::random_between(min, max);
+    e.attackCooldown = Random::random_between(min, max);
 }
 
 void EnemyChormosome::crossover(Chromosome* other)
@@ -41,8 +49,8 @@ void EnemyChormosome::crossover(Chromosome* other)
 
 string EnemyChormosome::to_string() const
 {
-    string str = "enemyChormosome(";
-    for (auto& e : enemies) {
+    std::string str = "enemyChormosome(";
+    for (const auto& e : enemies) {
         str += e.to_string();
     }
     str += ")";

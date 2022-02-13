@@ -251,7 +251,7 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
     //Horizontal walls
     for (size_t y = 0; y <= roommap.get_height(); ++y) {
         int origin = EMPTY;
-        for (size_t x = 0; x <= roommap.get_width(); ++x) {
+        for (size_t x = 0; x < roommap.get_width(); ++x) {
 
             int above_cell = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
             int current_cell = y != roommap.get_height() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
@@ -278,7 +278,7 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
     //Vertical walls
     for (size_t x = 0; x <= roommap.get_width(); ++x) {
         int origin = EMPTY;
-        for (size_t y = 0; y <= roommap.get_height(); ++y) {
+        for (size_t y = 0; y < roommap.get_height(); ++y) {
 
             int left_cell = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
             int current_cell = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
@@ -303,6 +303,23 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
     }
 
     return walls;
+}
+
+void RoomMapHelper::add_player_to(RoomMap& dungeon)
+{
+    vector<vector<Point>> tiles_by_rooms(dungeon.get_rooms().size(), vector<Point> {});
+
+    for (uint32_t y = 0; y < dungeon.get_height(); ++y) {
+        for (uint32_t x = 0; x < dungeon.get_width(); ++x) {
+            Point p { x, y };
+            if (dungeon[p] != RoomMap::EMPTY_ROOM) {
+                tiles_by_rooms[dungeon[p]].push_back(p);
+            }
+        }
+    }
+
+    vector<Point> player_room { Random::take_random_element(tiles_by_rooms) };
+    dungeon.set_player({ EntityType::PLAYER, Random::random_element(player_room) });
 }
 
 void RoomMapHelper::generate_entities(RoomMap& roommap)
@@ -334,7 +351,9 @@ void RoomMapHelper::generate_entities(RoomMap& roommap)
                 break;
             }
 
-            roommap.add_enemy({ EntityType::ENEMY, Random::take_random_element(tiles) });
+            Enemy e;
+            e.position = Random::take_random_element(tiles);
+            roommap.add_enemy(e);
         }
     }
 }

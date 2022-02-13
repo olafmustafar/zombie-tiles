@@ -1,11 +1,15 @@
 #include "zombietiles.hpp"
 #include "models/dungeonconfig.hpp"
+#include "models/enemiesconfig.hpp"
 #include "models/roommap.hpp"
 #include "utils/logger.hpp"
 #include "utils/randomgenerator.hpp"
 #include "zombietiles-ga/dungeon/zombietilesga.hpp"
+#include "zombietiles-ga/enemy/enemyindividual.h"
 #include <algorithm>
 #include <helpers/roommaphelper.hpp>
+#include <utils/singleton.hpp>
+#include <vector>
 
 RoomMap* generate_dungeon(const uint32_t width, const uint32_t height)
 {
@@ -34,7 +38,21 @@ void generate_dungeon_entities(RoomMap* dungeon, int& size, Entity*& array)
     vector<Entity> entity_vec;
 
     if (!dungeon->has_entities()) {
-        RoomMapHelper::generate_entities(*dungeon);
+        EnemiesConfig& enemies_config = Singleton<EnemiesConfig>::get_instance();
+        enemies_config.current_dungeon = dungeon;
+        enemies_config.max_att_value = 100;
+        enemies_config.min_att_value = 1;
+
+        GeneticAlgorithm<EnemyIndividual> enemy_ga;
+        enemy_ga.run();
+
+        std::vector<Enemy> enemies = std::move(enemy_ga.get_best()->get_chromosome()->enemies);
+
+        for (auto& enemy : enemies) {
+            dungeon->add_enemy(enemy);
+        }
+
+        RoomMapHelper::add_player_to(*dungeon);
     }
 
     entity_vec = dungeon->get_entities();

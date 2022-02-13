@@ -23,15 +23,16 @@ public:
     uint32_t get_rooms_count() const;
     void set_rooms_count(uint32_t rooms_count);
 
+    uint32_t width;
+    uint32_t height;
+    uint32_t rooms_count;
+    uint32_t generations;
+    uint32_t population_size;
+
 private:
     DungeonConfig(const uint32_t width, const uint32_t height);
     DungeonConfig() = default;
 
     static DungeonConfig* m_instance;
-    uint32_t m_width;
-    uint32_t m_height;
-    uint32_t m_rooms_count;
-    uint32_t m_generations;
-    uint32_t m_population_size;
 };
 
