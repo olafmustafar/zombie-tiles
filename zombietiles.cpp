@@ -33,9 +33,9 @@ void get_dungeon_matrix(RoomMap* dungeon, int& width, int& height, int**& array)
     height = dungeon->get_height();
 }
 
-void generate_dungeon_entities(RoomMap* dungeon, int& size, Entity*& array)
+void generate_dungeon_enemies(RoomMap* dungeon, int& size, Enemy*& array)
 {
-    vector<Entity> entity_vec;
+    vector<Enemy> enemies;
 
     if (!dungeon->has_entities()) {
         EnemiesConfig& enemies_config = Singleton<EnemiesConfig>::get_instance();
@@ -49,17 +49,26 @@ void generate_dungeon_entities(RoomMap* dungeon, int& size, Entity*& array)
         std::vector<Enemy> enemies = std::move(enemy_ga.get_best()->get_chromosome()->enemies);
 
         for (auto& enemy : enemies) {
-            dungeon->add_enemy(enemy);
+            if ((*dungeon)[enemy.position] != RoomMap::EMPTY_ROOM) {
+                dungeon->add_enemy(enemy);
+            }
         }
+    }
 
+    enemies = dungeon->get_enemies();
+
+    size = enemies.size();
+    array = new Enemy[size];
+    std::move(enemies.begin(), enemies.end(), array);
+}
+
+void generate_dungeon_player(RoomMap* dungeon, Entity*& player)
+{
+    if (!dungeon->has_player()) {
         RoomMapHelper::add_player_to(*dungeon);
     }
 
-    entity_vec = dungeon->get_entities();
-
-    size = entity_vec.size();
-    array = new Entity[size];
-    std::move(entity_vec.begin(), entity_vec.end(), array);
+    player = new Entity { dungeon->get_player() };
 }
 
 void generate_dungeon_doors(RoomMap* dungeon, int& size, Door*& array)

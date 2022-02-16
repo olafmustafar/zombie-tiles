@@ -46,9 +46,10 @@ public:
 
     int** get_matrix() const;
 
-    const vector<Entity> get_entities() const;
-
     bool has_entities() const;
+
+    bool has_player() const;
+    void set_has_player(bool has_player);
 
 private:
     uint32_t m_width;
@@ -59,7 +60,8 @@ private:
     vector<Enemy> m_enemies;
     vector<Room> m_rooms;
 
-    bool m_has_entities;
+    bool m_has_enemies;
+    bool m_has_player;
 
     void initialize_matrix();
     void delete_matrix();

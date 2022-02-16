@@ -1,7 +1,6 @@
 #include "enemyindividual.h"
 #include <cmath>
 #include <models/enemiesconfig.hpp>
-#include <utils/globalutils.hpp>
 #include <utils/singleton.hpp>
 
 EnemyIndividual::EnemyIndividual()

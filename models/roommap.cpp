@@ -100,7 +100,7 @@ void RoomMap::add_room(const Room& new_room)
 void RoomMap::add_enemy(const Enemy& enemy)
 {
     m_enemies.push_back(enemy);
-    m_has_entities = true;
+    m_has_enemies = true;
 }
 
 const vector<Enemy>& RoomMap::get_enemies() const
@@ -166,19 +166,22 @@ const Entity& RoomMap::get_player() const
 void RoomMap::set_player(const Entity& player)
 {
     this->m_player = player;
-    m_has_entities = true;
-}
-
-const vector<Entity> RoomMap::get_entities() const
-{
-    std::vector<Entity> entities { m_player };
-    entities.insert(entities.end(), m_enemies.begin(), m_enemies.end());
-    return entities;
+    m_has_player = true;
 }
 
 bool RoomMap::has_entities() const
 {
-    return m_has_entities;
+    return m_has_enemies;
+}
+
+bool RoomMap::has_player() const
+{
+    return m_has_player;
+}
+
+void RoomMap::set_has_player(bool has_player)
+{
+    m_has_player = has_player;
 }
 
 void RoomMap::initialize_matrix()
