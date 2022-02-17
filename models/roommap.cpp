@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <helpers/roomhelper.hpp>
 #include <iostream>
+
 using namespace std;
 
 RoomMap::RoomMap(const uint32_t width, const uint32_t height)
@@ -11,6 +12,8 @@ RoomMap::RoomMap(const uint32_t width, const uint32_t height)
     , m_doors {}
     , m_enemies {}
     , m_rooms {}
+    , m_has_enemies { false }
+    , m_has_player { false }
 {
     initialize_matrix();
 }
