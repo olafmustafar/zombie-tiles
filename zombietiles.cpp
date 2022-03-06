@@ -13,6 +13,8 @@
 
 RoomMap* generate_dungeon(const uint32_t width, const uint32_t height)
 {
+    Logger::setLoggin(false);
+
     DungeonConfig& dungeon_config = DungeonConfig::get_instance();
     dungeon_config.set_width(width);
     dungeon_config.set_height(height);

@@ -6,6 +6,11 @@
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
 
+namespace {
+constexpr float MUTATION_CHANCE = 0.2;
+constexpr float CROSSOVER_CHANCE = 0.8;
+}
+
 GeneticAlgorithmImpl::GeneticAlgorithmImpl()
     : m_population_size(0)
     , m_population({})
@@ -156,14 +161,12 @@ void GeneticAlgorithmImpl::select()
 void GeneticAlgorithmImpl::crossover()
 {
     Logger::doing("Crossing individuals");
-    const double crossover_chance = 0.8;
-
     IndividualImpl* first = nullptr;
 
     for (IndividualImpl* second : m_population) {
         double x = Random::random_between(0.0, 1.0);
 
-        if (x < crossover_chance) {
+        if (x < CROSSOVER_CHANCE) {
             if (first) {
                 first->crossover(second);
                 Logger::log() << "Crossing over: [" << first << "] X [" << second << "]";
@@ -181,7 +184,7 @@ void GeneticAlgorithmImpl::mutate()
     Logger::doing("Mutating individuals");
     for (IndividualImpl* individual : m_population) {
         double mutation_chance = Random::random_between(0.0, 1.0);
-        if (mutation_chance < 0.1) {
+        if (mutation_chance < MUTATION_CHANCE) {
             Logger::log() << "Mutating individual:[" << individual << "]";
             individual->mutate();
         }
