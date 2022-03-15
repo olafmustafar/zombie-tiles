@@ -32,27 +32,18 @@ bool RoomHelper::check_if_can_add(const Room& new_room, const vector<Room>& room
 
 bool RoomHelper::check_if_overlaps(const Room& room, const Room& another)
 {
-    return room.get_x() <= another.get_x()
+    return room.x <= another.x
         && room.get_x2() >= another.get_x2()
-        && room.get_y() <= another.get_y()
+        && room.y <= another.y
         && room.get_y2() >= another.get_y2();
 }
 
 bool RoomHelper::check_if_room_collides(const Room& room, const Room& another)
 {
-    Point points[4] = {
-        Point { room.x, room.y },
-        Point { room.x, room.get_y2() },
-        Point { room.get_x2(), room.get_y2() },
-        Point { room.get_x2(), room.y },
-    };
-
-    for (size_t i = 0; i <= 4; i++) {
-        if (check_if_point_collides(another, points[i])) {
-            return true;
-        }
-    }
-    return false;
+    return room.get_x2() >= another.x
+        && room.x <= another.get_x2()
+        && room.get_y2() >= another.y
+        && room.y <= another.get_y2();
 }
 
 bool RoomHelper::check_if_hides_or_is_hidden(const Room& room, const Room& another)

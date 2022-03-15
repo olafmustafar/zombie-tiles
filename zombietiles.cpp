@@ -20,7 +20,20 @@ RoomMap* generate_dungeon(const uint32_t width, const uint32_t height)
     dungeon_config.set_height(height);
     dungeon_config.set_rooms_count(10);
     dungeon_config.set_generations(100);
-    dungeon_config.set_population_size(20);
+    dungeon_config.set_population_size(200);
+
+    //    RoomMap rm(10, 10);
+    //    RoomMapHelper::add_room_to(rm, Room { 0, 0, 1, 10, Room::PlacementType::T });
+    //    RoomMapHelper::add_room_to(rm, Room { 1, 4, 5, 5, Room::PlacementType::T });
+    //    string str = RoomMapHelper::to_painted_map_string(rm);
+    //    std::cout << str << std::endl;
+
+    //    RoomMap rm2(10, 10);
+    //    rm2.add_room({ 0, 0, 1, 10, Room::PlacementType::T });
+    //    rm2.add_room({ 1, 4, 5, 5, Room::PlacementType::T });
+    //    DungeonMatrix matrix = RoomMapHelper::generate_dungeon_matrix(rm2);
+    //    string mstr = RoomMapHelper::to_painted_map_string(matrix);
+    //    std::cout << mstr << std::endl;
 
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
     m_ga.run();

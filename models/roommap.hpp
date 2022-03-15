@@ -26,6 +26,7 @@ public:
     int operator[](const Point& point) const;
 
     void add_room(const Room& room);
+    const vector<Room>& rooms() const;
     const vector<Room>& get_rooms() const;
 
     const Entity& get_player() const;
@@ -39,7 +40,9 @@ public:
 
     void clear();
 
+    uint32_t width() const;
     uint32_t get_width() const;
+    uint32_t height() const;
     uint32_t get_height() const;
 
     string to_string() const;

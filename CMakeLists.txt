@@ -19,6 +19,8 @@ add_library(zombietiles SHARED
   utils/logger.hpp
   utils/logger.cpp
   utils/singleton.hpp
+  models/dungeonmatrix.hpp
+  models/dungeonmatrix.cpp
   models/dungeonconfig.hpp
   models/dungeonconfig.cpp
   models/enemiesconfig.hpp
@@ -41,6 +43,8 @@ add_library(zombietiles SHARED
   models/entity.cpp
   models/enemy.hpp
   models/enemy.cpp
+  helpers/dungeonmatrixhelper.hpp
+  helpers/dungeonmatrixhelper.cpp
   helpers/roommaphelper.hpp
   helpers/roommaphelper.cpp
   helpers/roomhelper.hpp

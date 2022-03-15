@@ -1,6 +1,9 @@
 #include "roommaphelper.hpp"
+#include "helpers/dungeonmatrixhelper.hpp"
+#include "helpers/graphhelper.hpp"
 #include "models/direction.hpp"
 #include "models/dungeonconfig.hpp"
+#include "models/graph.hpp"
 #include "roomhelper.hpp"
 #include "utils/randomgenerator.hpp"
 #include <algorithm>
@@ -311,6 +314,59 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
     return walls;
 }
 
+DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const RoomMap& roommap)
+{
+    DungeonMatrix matrix(roommap.width(), roommap.height());
+    auto rooms = roommap.rooms();
+
+    // placing tiles
+    size_t room_count = 0;
+    matrix.set_max_index(rooms.size() - 1);
+    for (uint i = 0; i < rooms.size(); i++) {
+        Room r = rooms[i];
+
+        DungeonMatrix matrix_copy = matrix;
+
+        for (uint32_t x = r.x; x < r.get_x2(); x++) {
+            for (uint32_t y = r.y; y < r.get_y2(); y++) {
+                int& current = matrix_copy[x][y];
+
+                if (current == RoomMap::EMPTY_ROOM || r.get_placement_type() == Room::PlacementType::T) {
+                    current = i;
+                }
+            }
+        }
+
+        if (DungeonMatrixHelper::rooms_count_of(matrix_copy) == (room_count + 1)) {
+            matrix = std::move(matrix_copy);
+            room_count++;
+        }
+    }
+
+    Graph graph = to_graph(matrix);
+    std::vector<std::vector<int>> distances = GraphHelper::distances_of(graph);
+    std::set<int> unreachable_rooms {};
+
+    // searching unreachable rooms
+    for (size_t i = 0; i < distances.size(); i++) {
+        if (std::all_of(distances[i].begin(), distances[i].end(), [](int d) { return d == -1; })) {
+            unreachable_rooms.insert(i);
+        }
+    }
+
+    // removing unreachable rooms
+    for (size_t x = 0; x < matrix.width(); x++) {
+        for (size_t y = 0; y < matrix.height(); y++) {
+            int& current = matrix[x][y];
+            if (unreachable_rooms.contains(current)) {
+                current = RoomMap::EMPTY_ROOM;
+            }
+        }
+    }
+
+    return matrix;
+}
+
 void RoomMapHelper::add_player_to(RoomMap& dungeon)
 {
     vector<vector<Point>> tiles_by_rooms(dungeon.get_rooms().size(), vector<Point> {});
@@ -411,6 +467,96 @@ Graph RoomMapHelper::to_graph(const RoomMap& roommap)
         }
     }
     return graph;
+}
+
+Graph RoomMapHelper::to_graph(const DungeonMatrix& matrix)
+{
+    const size_t w = matrix.width();
+    const size_t h = matrix.height();
+    const size_t size = matrix.max_index() + 1;
+
+    std::vector<std::vector<bool>> visited { w, std::vector<bool>(h, false) };
+
+    Graph graph(size, std::vector<int>(size, -1));
+    for (size_t i = 0; i < w; ++i) {
+        for (size_t j = 0; j < h; ++j) {
+            if (matrix[i][j] == RoomMap::EMPTY_ROOM || visited[i][j]) {
+                continue;
+            }
+
+            int current_room = matrix[i][j];
+            queue<pair<int, int>> to_visit {};
+            to_visit.emplace(i, j);
+
+            while (!to_visit.empty()) {
+                pair<size_t, size_t> pos = to_visit.front();
+                to_visit.pop();
+
+                const auto x = pos.first;
+                const auto y = pos.second;
+
+                if (x < 0 || y < 0 || x >= w || y >= h
+                    || matrix[x][y] == RoomMap::EMPTY_ROOM) {
+                    continue;
+                }
+
+                graph[current_room][matrix[x][y]] = 1;
+
+                if (matrix[x][y] == current_room
+                    && !visited[x][y]) {
+
+                    visited[x][y] = true;
+                    to_visit.emplace(x + 1, y);
+                    to_visit.emplace(x - 1, y);
+                    to_visit.emplace(x, y + 1);
+                    to_visit.emplace(x, y - 1);
+                }
+            }
+        }
+    }
+    return graph;
+}
+
+string RoomMapHelper::to_painted_map_string(const DungeonMatrix& matrix)
+{
+
+    const uint32_t w = matrix.width();
+    const uint32_t h = matrix.height();
+
+    string str = "\n     ";
+    {
+        string linha = "     ";
+        for (uint32_t i = 0; i < w; ++i) {
+            char buffer[255];
+            sprintf(buffer, "%3d", i);
+            str += buffer;
+            linha += "___";
+        }
+        str += "\n" + linha + "\n";
+    }
+
+    for (uint32_t j = 0; j < h; ++j) {
+        for (uint32_t i = 0; i < w; ++i) {
+            if (i == 0) {
+                char buffer[255];
+                sprintf(buffer, "% 3d |", j);
+                str += buffer;
+            }
+
+            if (matrix[i][j] == RoomMap::EMPTY_ROOM) {
+                str += "   ";
+            } else {
+                str += "[" + std::to_string(matrix[i][j]) + "]";
+            }
+
+            if (i == w - 1) {
+                str += "|";
+            }
+        }
+
+        str += "\n";
+    }
+    return str;
 }
 
 string RoomMapHelper::to_painted_map_string(const RoomMap& roommap)

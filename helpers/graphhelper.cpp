@@ -3,23 +3,23 @@
 #include <vector>
 using namespace std;
 
-int GraphHelper::diameter_of(const Graph& graph)
+std::vector<std::vector<int>> GraphHelper::distances_of(const Graph& graph)
 {
     const size_t size = graph.size();
 
-    int distances[size][size] {};
+    std::vector<std::vector<int>> distances { size, std::vector<int>(size, -1) };
 
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
+    for (size_t i = 0; i < size; ++i) {
+        for (size_t j = 0; j < size; ++j) {
             distances[i][j] = graph[i][j];
         }
     }
 
-    for (int k = 0; k < size; ++k) {
-
-        for (int i = 0; i < size; ++i) {
+    // dikstra
+    for (size_t k = 0; k < size; ++k) {
+        for (size_t i = 0; i < size; ++i) {
             if (distances[i][k] != -1) {
-                for (int j = 0; j < size; ++j) {
+                for (size_t j = 0; j < size; ++j) {
                     if (distances[k][j] != -1 && (distances[i][j] == -1 || distances[i][k] + distances[k][j] < distances[i][j])) {
                         distances[i][j] = distances[i][k] + distances[k][j];
                     }
@@ -28,10 +28,19 @@ int GraphHelper::diameter_of(const Graph& graph)
         }
     }
 
+    return distances;
+}
+
+int GraphHelper::diameter_of(const Graph& graph)
+{
+    const size_t size = graph.size();
+
+    auto distances = distances_of(graph);
+
     int diameter = -1;
 
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
+    for (size_t i = 0; i < size; ++i) {
+        for (size_t j = 0; j < size; ++j) {
             if (diameter < distances[i][j]) {
                 diameter = distances[i][j];
             }
