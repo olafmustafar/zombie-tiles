@@ -25,7 +25,7 @@ void ZombieTilesIndividual::mutate()
 
 string ZombieTilesIndividual::to_string() const
 {
-    RoomMap tilemap = RoomMapHelper::create_roommap();
+    Dungeon tilemap = RoomMapHelper::create_roommap();
 
     ZombieTilesChromosome* chromosome = get_chromosome();
     const vector<RoomGene>& genes = chromosome->get_genes();
@@ -37,9 +37,9 @@ string ZombieTilesIndividual::to_string() const
     return RoomMapHelper::to_painted_map_string(tilemap);
 }
 
-RoomMap ZombieTilesIndividual::get_map() const
+Dungeon ZombieTilesIndividual::get_map() const
 {
-    RoomMap tilemap = RoomMapHelper::create_roommap();
+    Dungeon tilemap = RoomMapHelper::create_roommap();
 
     ZombieTilesChromosome* chromosome = get_chromosome();
     const vector<RoomGene>& genes = chromosome->get_genes();
@@ -54,7 +54,7 @@ RoomMap ZombieTilesIndividual::get_map() const
 double ZombieTilesIndividual::calculate_fitness() const
 {
     using namespace std;
-    RoomMap tilemap = RoomMapHelper::create_roommap();
+    Dungeon tilemap = RoomMapHelper::create_roommap();
 
     ZombieTilesChromosome* chromosome = get_chromosome();
 

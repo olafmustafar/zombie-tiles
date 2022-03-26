@@ -11,17 +11,17 @@
 
 using namespace std;
 
-class RoomMap {
+class Dungeon {
 public:
     static constexpr int EMPTY_ROOM = -1;
     static constexpr int PLAYER_ROOM = 0;
 
-    RoomMap(const uint32_t width, const uint32_t height);
-    RoomMap(const RoomMap& other);
-    ~RoomMap();
+    Dungeon(const uint32_t width, const uint32_t height);
+    Dungeon(const Dungeon& other);
+    ~Dungeon();
 
-    RoomMap& operator=(const RoomMap& other);
-    RoomMap& operator=(RoomMap&& other) noexcept;
+    Dungeon& operator=(const Dungeon& other);
+    Dungeon& operator=(Dungeon&& other) noexcept;
     int* operator[](const int index) const;
     int operator[](const Point& point) const;
 

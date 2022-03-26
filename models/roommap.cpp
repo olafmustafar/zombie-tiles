@@ -5,7 +5,7 @@
 
 using namespace std;
 
-RoomMap::RoomMap(const uint32_t width, const uint32_t height)
+Dungeon::Dungeon(const uint32_t width, const uint32_t height)
     : m_width(width)
     , m_height(height)
     , m_matrix(nullptr)
@@ -18,13 +18,13 @@ RoomMap::RoomMap(const uint32_t width, const uint32_t height)
     initialize_matrix();
 }
 
-RoomMap::RoomMap(const RoomMap& other)
-    : RoomMap(other.get_width(), other.get_height())
+Dungeon::Dungeon(const Dungeon& other)
+    : Dungeon(other.get_width(), other.get_height())
 {
     *this = other;
 }
 
-RoomMap::~RoomMap()
+Dungeon::~Dungeon()
 {
     if (!m_matrix) {
         return;
@@ -33,7 +33,7 @@ RoomMap::~RoomMap()
     delete_matrix();
 }
 
-RoomMap& RoomMap::operator=(const RoomMap& other)
+Dungeon& Dungeon::operator=(const Dungeon& other)
 {
     if (this == &other) {
         return *this;
@@ -58,7 +58,7 @@ RoomMap& RoomMap::operator=(const RoomMap& other)
     return *this;
 }
 
-RoomMap& RoomMap::operator=(RoomMap&& other) noexcept
+Dungeon& Dungeon::operator=(Dungeon&& other) noexcept
 {
     if (this == &other) {
         return *this;
@@ -80,11 +80,11 @@ RoomMap& RoomMap::operator=(RoomMap&& other) noexcept
     return *this;
 }
 
-int* RoomMap::operator[](const int index) const { return m_matrix[index]; }
+int* Dungeon::operator[](const int index) const { return m_matrix[index]; }
 
-int RoomMap::operator[](const Point& point) const { return m_matrix[point.x][point.y]; }
+int Dungeon::operator[](const Point& point) const { return m_matrix[point.x][point.y]; }
 
-void RoomMap::add_room(const Room& new_room)
+void Dungeon::add_room(const Room& new_room)
 {
     m_rooms.push_back(new_room);
     int index = m_rooms.size() - 1;
@@ -100,21 +100,21 @@ void RoomMap::add_room(const Room& new_room)
     }
 }
 
-const vector<Room>& RoomMap::rooms() const { return m_rooms; }
+const vector<Room>& Dungeon::rooms() const { return m_rooms; }
 
-void RoomMap::add_enemy(const Enemy& enemy)
+void Dungeon::add_enemy(const Enemy& enemy)
 {
     m_enemies.push_back(enemy);
     m_has_enemies = true;
 }
 
-const vector<Enemy>& RoomMap::get_enemies() const { return m_enemies; }
+const vector<Enemy>& Dungeon::get_enemies() const { return m_enemies; }
 
-void RoomMap::add_door(const Door& door) { m_doors.push_back(door); }
+void Dungeon::add_door(const Door& door) { m_doors.push_back(door); }
 
-const vector<Door>& RoomMap::get_doors() const { return m_doors; }
+const vector<Door>& Dungeon::get_doors() const { return m_doors; }
 
-void RoomMap::clear()
+void Dungeon::clear()
 {
     for (uint32_t j = 0; j < m_height; ++j) {
         for (uint32_t i = 0; i < m_width; ++i) {
@@ -124,17 +124,17 @@ void RoomMap::clear()
     m_rooms.clear();
 }
 
-uint32_t RoomMap::width() const { return m_width; }
+uint32_t Dungeon::width() const { return m_width; }
 
-uint32_t RoomMap::get_width() const { return m_width; }
+uint32_t Dungeon::get_width() const { return m_width; }
 
-uint32_t RoomMap::height() const { return m_height; }
+uint32_t Dungeon::height() const { return m_height; }
 
-uint32_t RoomMap::get_height() const { return m_height; }
+uint32_t Dungeon::get_height() const { return m_height; }
 
-const vector<Room>& RoomMap::get_rooms() const { return m_rooms; }
+const vector<Room>& Dungeon::get_rooms() const { return m_rooms; }
 
-string RoomMap::to_string() const
+string Dungeon::to_string() const
 {
     string str = "map( \n";
     for (const Room& room : m_rooms) {
@@ -144,23 +144,23 @@ string RoomMap::to_string() const
     return str;
 }
 
-int** RoomMap::get_matrix() const { return m_matrix; }
+int** Dungeon::get_matrix() const { return m_matrix; }
 
-const Entity& RoomMap::get_player() const { return m_player; }
+const Entity& Dungeon::get_player() const { return m_player; }
 
-void RoomMap::set_player(const Entity& player)
+void Dungeon::set_player(const Entity& player)
 {
     this->m_player = player;
     m_has_player = true;
 }
 
-bool RoomMap::has_entities() const { return m_has_enemies; }
+bool Dungeon::has_entities() const { return m_has_enemies; }
 
-bool RoomMap::has_player() const { return m_has_player; }
+bool Dungeon::has_player() const { return m_has_player; }
 
-void RoomMap::set_has_player(bool has_player) { m_has_player = has_player; }
+void Dungeon::set_has_player(bool has_player) { m_has_player = has_player; }
 
-void RoomMap::initialize_matrix()
+void Dungeon::initialize_matrix()
 {
     m_matrix = new int*[m_width];
     for (uint32_t i = 0; i < m_width; ++i) {
@@ -169,7 +169,7 @@ void RoomMap::initialize_matrix()
     }
 }
 
-void RoomMap::delete_matrix()
+void Dungeon::delete_matrix()
 {
     for (uint32_t i = 0; i < m_width; ++i) {
         delete[] m_matrix[i];

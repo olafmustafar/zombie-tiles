@@ -8,7 +8,7 @@ public:
     void crossover(IndividualImpl* other) override;
     void mutate() override;
     string to_string() const override;
-    RoomMap get_map() const;
+    Dungeon get_map() const;
 
 private:
     double calculate_fitness() const override;

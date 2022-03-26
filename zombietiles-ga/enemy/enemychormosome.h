@@ -13,7 +13,7 @@ public:
     void crossover(Chromosome* other) override;
     string to_string() const override;
 
-    const RoomMap& dungeon;
+    const Dungeon& dungeon;
     std::vector<Enemy> enemies;
     const uint32_t min;
     const uint32_t max;

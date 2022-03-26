@@ -35,8 +35,8 @@ double EnemyIndividual::calculate_fitness() const
     std::vector<Enemy> allocated_enemies;
 
     for (auto& enemy : enemies) {
-        if (dungeon[enemy.position] != RoomMap::EMPTY_ROOM
-            && dungeon[enemy.position] != RoomMap::PLAYER_ROOM) {
+        if (dungeon[enemy.position] != Dungeon::EMPTY_ROOM
+            && dungeon[enemy.position] != Dungeon::PLAYER_ROOM) {
             allocated_enemies.push_back(enemy);
         }
     }
@@ -80,7 +80,7 @@ double EnemyIndividual::atributes_balance_fitness(const std::vector<Enemy>& enem
     std::vector<uint> total_att_by_room(dungeon.get_rooms().size(), 0);
     for (auto& enemy : enemies) {
         int room = dungeon[enemy.position];
-        if (room == RoomMap::EMPTY_ROOM) {
+        if (room == Dungeon::EMPTY_ROOM) {
             continue;
         }
 

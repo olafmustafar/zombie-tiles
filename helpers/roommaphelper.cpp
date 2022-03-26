@@ -16,14 +16,14 @@
 
 using namespace std;
 
-RoomMap RoomMapHelper::create_roommap()
+Dungeon RoomMapHelper::create_roommap()
 {
     DungeonConfig dungeon_config = DungeonConfig::get_instance();
-    RoomMap roommap(dungeon_config.get_width(), dungeon_config.get_height());
+    Dungeon roommap(dungeon_config.get_width(), dungeon_config.get_height());
     return roommap;
 }
 
-void RoomMapHelper::add_room_to(RoomMap& roommap, const Room& room)
+void RoomMapHelper::add_room_to(Dungeon& roommap, const Room& room)
 {
     int original_size = roommap.get_rooms().size();
 
@@ -38,14 +38,14 @@ void RoomMapHelper::add_room_to(RoomMap& roommap, const Room& room)
         return;
     }
 
-    RoomMap copy(roommap);
+    Dungeon copy(roommap);
     copy.add_room(room);
     if (rooms_count_of(copy) == original_size + 1) {
         roommap = std::move(copy);
     }
 }
 
-size_t RoomMapHelper::rooms_count_of(const RoomMap& roommap)
+size_t RoomMapHelper::rooms_count_of(const Dungeon& roommap)
 {
     const uint32_t w = roommap.get_width();
     const uint32_t h = roommap.get_height();
@@ -56,7 +56,7 @@ size_t RoomMapHelper::rooms_count_of(const RoomMap& roommap)
 
     for (int i = 0; i < w; ++i) {
         for (int j = 0; j < h; ++j) {
-            if (roommap[i][j] == RoomMap::EMPTY_ROOM || visited[i][j] != 0) {
+            if (roommap[i][j] == Dungeon::EMPTY_ROOM || visited[i][j] != 0) {
                 continue;
             }
 
@@ -89,7 +89,7 @@ size_t RoomMapHelper::rooms_count_of(const RoomMap& roommap)
     return room_index - 1;
 }
 
-int RoomMapHelper::narrow_rooms_of(const RoomMap& roommap)
+int RoomMapHelper::narrow_rooms_of(const Dungeon& roommap)
 {
     int narrow_rooms_count = 0;
     for (const Room& room : roommap.get_rooms()) {
@@ -101,7 +101,7 @@ int RoomMapHelper::narrow_rooms_of(const RoomMap& roommap)
     return narrow_rooms_count;
 }
 
-int RoomMapHelper::tiny_rooms_of(const RoomMap& roommap)
+int RoomMapHelper::tiny_rooms_of(const Dungeon& roommap)
 {
     int tiny_rooms_count = 0;
     vector<bool> counted(roommap.get_rooms().size(), false);
@@ -109,7 +109,7 @@ int RoomMapHelper::tiny_rooms_of(const RoomMap& roommap)
     for (uint32_t x = 0; x < roommap.get_width(); ++x) {
         for (uint32_t y = 0; y < roommap.get_height(); ++y) {
             int current_room = roommap[x][y];
-            if (current_room == RoomMap::EMPTY_ROOM || counted[current_room]) {
+            if (current_room == Dungeon::EMPTY_ROOM || counted[current_room]) {
                 continue;
             };
 
@@ -147,7 +147,7 @@ int RoomMapHelper::tiny_rooms_of(const RoomMap& roommap)
     return tiny_rooms_count;
 }
 
-vector<Door> RoomMapHelper::generate_doors(const RoomMap& roommap)
+vector<Door> RoomMapHelper::generate_doors(const Dungeon& roommap)
 {
 
     vector<bool> visited(roommap.get_rooms().size(), false);
@@ -162,7 +162,7 @@ vector<Door> RoomMapHelper::generate_doors(const RoomMap& roommap)
     for (uint32_t y = 0; y < roommap.get_height(); ++y) {
         for (uint32_t x = 0; x < roommap.get_width(); ++x) {
             int curr_room = roommap[x][y];
-            if (curr_room == RoomMap::EMPTY_ROOM || visited[curr_room]) {
+            if (curr_room == Dungeon::EMPTY_ROOM || visited[curr_room]) {
                 continue;
             }
 
@@ -193,7 +193,7 @@ vector<Door> RoomMapHelper::generate_doors(const RoomMap& roommap)
                     || next.y < 0
                     || next.x == static_cast<int>(roommap.get_height())
                     || next.y == static_cast<int>(roommap.get_width())
-                    || roommap[next] == RoomMap::EMPTY_ROOM
+                    || roommap[next] == Dungeon::EMPTY_ROOM
                     || (placed_doors.find(pair<int, int> { curr_room, roommap[next] }) != placed_doors.cend()
                         && visited[roommap[next]])) {
                     direction.turn_right();
@@ -244,7 +244,7 @@ vector<Door> RoomMapHelper::generate_doors(const RoomMap& roommap)
     return final_doors;
 }
 
-vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>& doors)
+vector<Wall> RoomMapHelper::walls_of(const Dungeon& roommap, const vector<Door>& doors)
 {
     constexpr int EMPTY = -1;
 
@@ -256,11 +256,11 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
         int origin = EMPTY;
         for (size_t x = 0; x <= roommap.get_width(); ++x) {
 
-            int above_cell = RoomMap::EMPTY_ROOM;
-            int current_cell = RoomMap::EMPTY_ROOM;
+            int above_cell = Dungeon::EMPTY_ROOM;
+            int current_cell = Dungeon::EMPTY_ROOM;
             if (x != roommap.get_width()) {
-                above_cell = y != 0 ? roommap[x][y - 1] : RoomMap::EMPTY_ROOM;
-                current_cell = y != roommap.get_height() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+                above_cell = y != 0 ? roommap[x][y - 1] : Dungeon::EMPTY_ROOM;
+                current_cell = y != roommap.get_height() ? roommap[x][y] : Dungeon::EMPTY_ROOM;
             }
 
             if (above_cell != current_cell && origin == EMPTY && door_set.find({ { static_cast<int>(x), static_cast<int>(y) }, Door::horizontal }) == door_set.end()) {
@@ -286,11 +286,11 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
         int origin = EMPTY;
         for (size_t y = 0; y <= roommap.get_height(); ++y) {
 
-            int left_cell = RoomMap::EMPTY_ROOM;
-            int current_cell = RoomMap::EMPTY_ROOM;
+            int left_cell = Dungeon::EMPTY_ROOM;
+            int current_cell = Dungeon::EMPTY_ROOM;
             if (y != roommap.get_height()) {
-                left_cell = x != 0 ? roommap[x - 1][y] : RoomMap::EMPTY_ROOM;
-                current_cell = x != roommap.get_width() ? roommap[x][y] : RoomMap::EMPTY_ROOM;
+                left_cell = x != 0 ? roommap[x - 1][y] : Dungeon::EMPTY_ROOM;
+                current_cell = x != roommap.get_width() ? roommap[x][y] : Dungeon::EMPTY_ROOM;
             }
 
             if (left_cell != current_cell && origin == EMPTY && door_set.find({ { static_cast<int>(x), static_cast<int>(y) }, Door::vertical }) == door_set.end()) {
@@ -314,7 +314,7 @@ vector<Wall> RoomMapHelper::walls_of(const RoomMap& roommap, const vector<Door>&
     return walls;
 }
 
-DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const RoomMap& roommap)
+DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const Dungeon& roommap)
 {
     DungeonMatrix matrix(roommap.width(), roommap.height());
     auto rooms = roommap.rooms();
@@ -331,7 +331,7 @@ DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const RoomMap& roommap)
             for (uint32_t y = r.y; y < r.get_y2(); y++) {
                 int& current = matrix_copy[x][y];
 
-                if (current == RoomMap::EMPTY_ROOM || r.get_placement_type() == Room::PlacementType::T) {
+                if (current == Dungeon::EMPTY_ROOM || r.get_placement_type() == Room::PlacementType::T) {
                     current = i;
                 }
             }
@@ -359,7 +359,7 @@ DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const RoomMap& roommap)
         for (size_t y = 0; y < matrix.height(); y++) {
             int& current = matrix[x][y];
             if (unreachable_rooms.contains(current)) {
-                current = RoomMap::EMPTY_ROOM;
+                current = Dungeon::EMPTY_ROOM;
             }
         }
     }
@@ -367,14 +367,14 @@ DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const RoomMap& roommap)
     return matrix;
 }
 
-void RoomMapHelper::add_player_to(RoomMap& dungeon)
+void RoomMapHelper::add_player_to(Dungeon& dungeon)
 {
     vector<vector<Point>> tiles_by_rooms(dungeon.get_rooms().size(), vector<Point> {});
 
     for (uint32_t y = 0; y < dungeon.get_height(); ++y) {
         for (uint32_t x = 0; x < dungeon.get_width(); ++x) {
             Point p { x, y };
-            if (dungeon[p] != RoomMap::EMPTY_ROOM) {
+            if (dungeon[p] != Dungeon::EMPTY_ROOM) {
                 tiles_by_rooms[dungeon[p]].push_back(p);
             }
         }
@@ -384,7 +384,7 @@ void RoomMapHelper::add_player_to(RoomMap& dungeon)
     dungeon.set_player({ EntityType::PLAYER, Random::random_element(player_room) });
 }
 
-void RoomMapHelper::generate_entities(RoomMap& roommap)
+void RoomMapHelper::generate_entities(Dungeon& roommap)
 {
     const uint8_t enemies_per_room = 2;
     vector<bool> visited(roommap.get_rooms().size(), false);
@@ -394,7 +394,7 @@ void RoomMapHelper::generate_entities(RoomMap& roommap)
     for (uint32_t y = 0; y < roommap.get_height(); ++y) {
         for (uint32_t x = 0; x < roommap.get_width(); ++x) {
             Point p { x, y };
-            if (roommap[p] != RoomMap::EMPTY_ROOM) {
+            if (roommap[p] != Dungeon::EMPTY_ROOM) {
                 tiles_by_rooms[roommap[p]].push_back(p);
             }
         }
@@ -420,7 +420,7 @@ void RoomMapHelper::generate_entities(RoomMap& roommap)
     }
 }
 
-Graph RoomMapHelper::to_graph(const RoomMap& roommap)
+Graph RoomMapHelper::to_graph(const Dungeon& roommap)
 {
     const int w = roommap.get_width();
     const int h = roommap.get_height();
@@ -432,7 +432,7 @@ Graph RoomMapHelper::to_graph(const RoomMap& roommap)
 
     for (int i = 0; i < w; ++i) {
         for (int j = 0; j < h; ++j) {
-            if (roommap[i][j] == RoomMap::EMPTY_ROOM || visited[i][j]) {
+            if (roommap[i][j] == Dungeon::EMPTY_ROOM || visited[i][j]) {
                 continue;
             }
 
@@ -448,7 +448,7 @@ Graph RoomMapHelper::to_graph(const RoomMap& roommap)
                 const int y = pos.second;
 
                 if (x < 0 || y < 0 || x >= w || y >= h
-                    || roommap[x][y] == RoomMap::EMPTY_ROOM) {
+                    || roommap[x][y] == Dungeon::EMPTY_ROOM) {
                     continue;
                 }
 
@@ -480,7 +480,7 @@ Graph RoomMapHelper::to_graph(const DungeonMatrix& matrix)
     Graph graph(size, std::vector<int>(size, -1));
     for (size_t i = 0; i < w; ++i) {
         for (size_t j = 0; j < h; ++j) {
-            if (matrix[i][j] == RoomMap::EMPTY_ROOM || visited[i][j]) {
+            if (matrix[i][j] == Dungeon::EMPTY_ROOM || visited[i][j]) {
                 continue;
             }
 
@@ -496,7 +496,7 @@ Graph RoomMapHelper::to_graph(const DungeonMatrix& matrix)
                 const auto y = pos.second;
 
                 if (x < 0 || y < 0 || x >= w || y >= h
-                    || matrix[x][y] == RoomMap::EMPTY_ROOM) {
+                    || matrix[x][y] == Dungeon::EMPTY_ROOM) {
                     continue;
                 }
 
@@ -543,7 +543,7 @@ string RoomMapHelper::to_painted_map_string(const DungeonMatrix& matrix)
                 str += buffer;
             }
 
-            if (matrix[i][j] == RoomMap::EMPTY_ROOM) {
+            if (matrix[i][j] == Dungeon::EMPTY_ROOM) {
                 str += "   ";
             } else {
                 str += "[" + std::to_string(matrix[i][j]) + "]";
@@ -559,7 +559,7 @@ string RoomMapHelper::to_painted_map_string(const DungeonMatrix& matrix)
     return str;
 }
 
-string RoomMapHelper::to_painted_map_string(const RoomMap& roommap)
+string RoomMapHelper::to_painted_map_string(const Dungeon& roommap)
 {
     const uint32_t w = roommap.get_width();
     const uint32_t h = roommap.get_height();
@@ -584,7 +584,7 @@ string RoomMapHelper::to_painted_map_string(const RoomMap& roommap)
                 str += buffer;
             }
 
-            if (roommap[i][j] == RoomMap::EMPTY_ROOM) {
+            if (roommap[i][j] == Dungeon::EMPTY_ROOM) {
                 str += "   ";
             } else {
                 str += "[" + std::to_string(roommap[i][j]) + "]";
