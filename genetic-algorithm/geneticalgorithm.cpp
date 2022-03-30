@@ -7,7 +7,7 @@
 #include <utils/randomgenerator.hpp>
 
 namespace {
-constexpr float MUTATION_CHANCE = 0.2;
+constexpr float MUTATION_CHANCE = 0.3;
 constexpr float CROSSOVER_CHANCE = 0.8;
 }
 

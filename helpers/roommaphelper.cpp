@@ -349,7 +349,9 @@ DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const Dungeon& roommap)
 
     // searching unreachable rooms
     for (size_t i = 0; i < distances.size(); i++) {
-        if (std::all_of(distances[i].begin(), distances[i].end(), [](int d) { return d == -1; })) {
+        size_t j = 0;
+        if (std::all_of(distances[i].begin(), distances[i].end(),
+                [&](int d) { return j++ == i || d == -1; })) {
             unreachable_rooms.insert(i);
         }
     }
