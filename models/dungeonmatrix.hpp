@@ -24,9 +24,11 @@ public:
     size_t max_index() const;
     void set_max_index(size_t max_index);
 
+    int** data();
+
 private:
     size_t m_width;
     size_t m_height;
     size_t m_max_index;
-    int** m_matrix;
+    int** m_data;
 };

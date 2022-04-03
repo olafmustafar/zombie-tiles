@@ -30,7 +30,8 @@ Dungeon* generate_dungeon(const uint32_t width, const uint32_t height)
 
 void get_dungeon_matrix(Dungeon* dungeon, int& width, int& height, int**& array)
 {
-    array = dungeon->get_matrix();
+    DungeonMatrix matrix = RoomMapHelper::generate_dungeon_matrix(*dungeon);
+    array = matrix.data();
     width = dungeon->get_width();
     height = dungeon->get_height();
 }

@@ -5,28 +5,28 @@ DungeonMatrix::DungeonMatrix(size_t width, size_t height)
     : m_width { width }
     , m_height { height }
     , m_max_index { 0 }
-    , m_matrix { nullptr }
+    , m_data { nullptr }
 {
-    m_matrix = new int*[m_width];
+    m_data = new int*[m_width];
     for (uint32_t i = 0; i < m_width; ++i) {
-        m_matrix[i] = new int[m_height] {};
-        std::fill_n(m_matrix[i], m_height, -1);
+        m_data[i] = new int[m_height] {};
+        std::fill_n(m_data[i], m_height, -1);
     }
 }
 
 DungeonMatrix::~DungeonMatrix()
 {
     for (uint32_t i = 0; i < m_width; ++i) {
-        delete[] m_matrix[i];
+        delete[] m_data[i];
     }
-    delete[] m_matrix;
+    delete[] m_data;
 }
 
 void swap(DungeonMatrix& first, DungeonMatrix& second)
 {
     std::swap(first.m_height, second.m_height);
     std::swap(first.m_width, second.m_width);
-    std::swap(first.m_matrix, second.m_matrix);
+    std::swap(first.m_data, second.m_data);
     std::swap(first.m_max_index, second.m_max_index);
 }
 
@@ -36,7 +36,7 @@ DungeonMatrix::DungeonMatrix(const DungeonMatrix& other)
     set_max_index(other.m_max_index);
     for (uint32_t i = 0; i < m_width; ++i) {
         for (uint32_t j = 0; j < m_height; ++j) {
-            m_matrix[i][j] = other[i][j];
+            m_data[i][j] = other[i][j];
         }
     }
 }
@@ -55,12 +55,12 @@ DungeonMatrix& DungeonMatrix::operator=(DungeonMatrix other)
 
 int* DungeonMatrix::operator[](const int index) const
 {
-    return m_matrix[index];
+    return m_data[index];
 }
 
 int& DungeonMatrix::operator[](const Point& point) const
 {
-    return m_matrix[point.x][point.y];
+    return m_data[point.x][point.y];
 }
 
 size_t DungeonMatrix::width() const
@@ -81,4 +81,9 @@ size_t DungeonMatrix::max_index() const
 void DungeonMatrix::set_max_index(size_t max_index)
 {
     m_max_index = max_index;
+}
+
+int** DungeonMatrix::data()
+{
+    return m_data;
 }

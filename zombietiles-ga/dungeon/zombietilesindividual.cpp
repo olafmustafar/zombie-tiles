@@ -68,6 +68,11 @@ double ZombieTilesIndividual::calculate_fitness() const
 
     Graph graph = RoomMapHelper::to_graph(dm);
     const double n_rooms = static_cast<double>(DungeonMatrixHelper::rooms_count_of(dm));
+
+    if (n_rooms == 0) {
+        return 0;
+    }
+
     const double n_narrow = static_cast<double>(DungeonMatrixHelper::narrow_rooms_of(dm));
     const double n_tiny = static_cast<double>(DungeonMatrixHelper::tiny_rooms_of(dm));
 
