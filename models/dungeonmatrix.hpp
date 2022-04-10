@@ -24,7 +24,7 @@ public:
     size_t max_index() const;
     void set_max_index(size_t max_index);
 
-    int** data();
+    int** data() const;
 
 private:
     size_t m_width;

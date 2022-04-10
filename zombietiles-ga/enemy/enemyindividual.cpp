@@ -19,7 +19,6 @@ void EnemyIndividual::mutate()
 {
     get_chromosome()->mutate();
 }
-
 string EnemyIndividual::to_string() const
 {
     return get_chromosome()->to_string();
@@ -27,16 +26,16 @@ string EnemyIndividual::to_string() const
 
 double EnemyIndividual::calculate_fitness() const
 {
-    auto& dungeon = *enemies_config.current_dungeon;
     auto enemies = get_chromosome()->enemies;
 
     double fitness = 0;
 
     std::vector<Enemy> allocated_enemies;
 
+    const auto& matrix = enemies_config.current_dungeon->get_matrix();
     for (auto& enemy : enemies) {
-        if (dungeon[enemy.position] != Dungeon::EMPTY_ROOM
-            && dungeon[enemy.position] != Dungeon::PLAYER_ROOM) {
+        if (matrix[enemy.position] != Dungeon::EMPTY_ROOM
+            && matrix[enemy.position] != Dungeon::PLAYER_ROOM) {
             allocated_enemies.push_back(enemy);
         }
     }

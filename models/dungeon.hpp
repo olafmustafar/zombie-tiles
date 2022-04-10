@@ -3,6 +3,7 @@
 #include "room.hpp"
 #include <cstdint>
 #include <models/door.hpp>
+#include <models/dungeonmatrix.hpp>
 #include <models/enemy.hpp>
 #include <models/entity.hpp>
 #include <models/point.hpp>
@@ -47,7 +48,7 @@ public:
 
     string to_string() const;
 
-    int** get_matrix() const;
+    const DungeonMatrix& get_matrix();
 
     bool has_entities() const;
 
@@ -57,6 +58,7 @@ public:
 private:
     uint32_t m_width;
     uint32_t m_height;
+    DungeonMatrix m_matrix2;
     int** m_matrix;
     vector<Door> m_doors;
     Entity m_player;
@@ -65,6 +67,7 @@ private:
 
     bool m_has_enemies;
     bool m_has_player;
+    bool m_has_matrix;
 
     void initialize_matrix();
     void delete_matrix();

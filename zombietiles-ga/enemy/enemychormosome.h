@@ -2,7 +2,7 @@
 
 #include "genetic-algorithm/chromosome.hpp"
 #include <models/enemy.hpp>
-#include <models/roommap.hpp>
+#include <models/dungeon.hpp>
 #include <vector>
 
 struct EnemyChormosome : Chromosome {

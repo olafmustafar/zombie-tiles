@@ -244,23 +244,24 @@ vector<Door> RoomMapHelper::generate_doors(const Dungeon& roommap)
     return final_doors;
 }
 
-vector<Wall> RoomMapHelper::walls_of(const Dungeon& roommap, const vector<Door>& doors)
+vector<Wall> RoomMapHelper::walls_of(Dungeon& dungeon, const vector<Door>& doors)
 {
     constexpr int EMPTY = -1;
+    const DungeonMatrix& matrix = dungeon.get_matrix();
 
     unordered_set<Door> door_set { doors.cbegin(), doors.cend() };
 
     vector<Wall> walls {};
     //Horizontal walls
-    for (size_t y = 0; y <= roommap.get_height(); ++y) {
+    for (size_t y = 0; y <= matrix.height(); ++y) {
         int origin = EMPTY;
-        for (size_t x = 0; x <= roommap.get_width(); ++x) {
+        for (size_t x = 0; x <= matrix.width(); ++x) {
 
             int above_cell = Dungeon::EMPTY_ROOM;
             int current_cell = Dungeon::EMPTY_ROOM;
-            if (x != roommap.get_width()) {
-                above_cell = y != 0 ? roommap[x][y - 1] : Dungeon::EMPTY_ROOM;
-                current_cell = y != roommap.get_height() ? roommap[x][y] : Dungeon::EMPTY_ROOM;
+            if (x != matrix.width()) {
+                above_cell = y != 0 ? matrix[x][y - 1] : Dungeon::EMPTY_ROOM;
+                current_cell = y != matrix.height() ? matrix[x][y] : Dungeon::EMPTY_ROOM;
             }
 
             if (above_cell != current_cell && origin == EMPTY && door_set.find({ { static_cast<int>(x), static_cast<int>(y) }, Door::horizontal }) == door_set.end()) {
@@ -282,15 +283,15 @@ vector<Wall> RoomMapHelper::walls_of(const Dungeon& roommap, const vector<Door>&
     }
 
     //Vertical walls
-    for (size_t x = 0; x <= roommap.get_width(); ++x) {
+    for (size_t x = 0; x <= matrix.width(); ++x) {
         int origin = EMPTY;
-        for (size_t y = 0; y <= roommap.get_height(); ++y) {
+        for (size_t y = 0; y <= matrix.height(); ++y) {
 
             int left_cell = Dungeon::EMPTY_ROOM;
             int current_cell = Dungeon::EMPTY_ROOM;
-            if (y != roommap.get_height()) {
-                left_cell = x != 0 ? roommap[x - 1][y] : Dungeon::EMPTY_ROOM;
-                current_cell = x != roommap.get_width() ? roommap[x][y] : Dungeon::EMPTY_ROOM;
+            if (y != matrix.height()) {
+                left_cell = x != 0 ? matrix[x - 1][y] : Dungeon::EMPTY_ROOM;
+                current_cell = x != matrix.width() ? matrix[x][y] : Dungeon::EMPTY_ROOM;
             }
 
             if (left_cell != current_cell && origin == EMPTY && door_set.find({ { static_cast<int>(x), static_cast<int>(y) }, Door::vertical }) == door_set.end()) {

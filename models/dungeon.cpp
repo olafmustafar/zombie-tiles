@@ -1,6 +1,7 @@
-#include "roommap.hpp"
+#include "dungeon.hpp"
 #include <algorithm>
 #include <helpers/roomhelper.hpp>
+#include <helpers/roommaphelper.hpp>
 #include <iostream>
 
 using namespace std;
@@ -8,12 +9,14 @@ using namespace std;
 Dungeon::Dungeon(const uint32_t width, const uint32_t height)
     : m_width(width)
     , m_height(height)
-    , m_matrix(nullptr)
+    , m_matrix2 { width, height }
+    , m_matrix { nullptr }
     , m_doors {}
     , m_enemies {}
     , m_rooms {}
     , m_has_enemies { false }
     , m_has_player { false }
+    , m_has_matrix { false }
 {
     initialize_matrix();
 }
@@ -144,7 +147,13 @@ string Dungeon::to_string() const
     return str;
 }
 
-int** Dungeon::get_matrix() const { return m_matrix; }
+const DungeonMatrix& Dungeon::get_matrix()
+{
+    if (!m_has_matrix && !m_rooms.empty()) {
+        m_matrix2 = RoomMapHelper::generate_dungeon_matrix(*this);
+    }
+    return m_matrix2;
+}
 
 const Entity& Dungeon::get_player() const { return m_player; }
 

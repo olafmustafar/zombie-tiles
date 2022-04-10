@@ -9,7 +9,7 @@
 #include <helpers/roommaphelper.hpp>
 #include <models/dungeonmatrix.hpp>
 #include <models/graph.hpp>
-#include <models/roommap.hpp>
+#include <models/dungeon.hpp>
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
 
@@ -40,14 +40,10 @@ string ZombieTilesIndividual::to_string() const
 Dungeon ZombieTilesIndividual::get_map() const
 {
     Dungeon tilemap = RoomMapHelper::create_roommap();
-
-    ZombieTilesChromosome* chromosome = get_chromosome();
-    const vector<RoomGene>& genes = chromosome->get_genes();
-
+    const vector<RoomGene>& genes = get_chromosome()->get_genes();
     for (const RoomGene& gene : genes) {
-        RoomMapHelper::add_room_to(tilemap, gene.get_room());
+        tilemap.add_room(gene.get_room());
     }
-
     return tilemap;
 }
 

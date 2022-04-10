@@ -2,7 +2,7 @@
 #include "zombietileschromosome.hpp"
 #include <helpers/graphhelper.hpp>
 #include <helpers/roommaphelper.hpp>
-#include <models/roommap.hpp>
+#include <models/dungeon.hpp>
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
 

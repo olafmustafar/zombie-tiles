@@ -1,7 +1,9 @@
 #include "zombietiles.hpp"
+#include "helpers/graphhelper.hpp"
+#include "helpers/roommaphelper.hpp"
+#include "models/dungeon.hpp"
 #include "models/dungeonconfig.hpp"
 #include "models/enemiesconfig.hpp"
-#include "models/roommap.hpp"
 #include "utils/logger.hpp"
 #include "utils/randomgenerator.hpp"
 #include "zombietiles-ga/dungeon/zombietilesga.hpp"
@@ -30,10 +32,10 @@ Dungeon* generate_dungeon(const uint32_t width, const uint32_t height)
 
 void get_dungeon_matrix(Dungeon* dungeon, int& width, int& height, int**& array)
 {
-    DungeonMatrix matrix = RoomMapHelper::generate_dungeon_matrix(*dungeon);
+    const DungeonMatrix& matrix = dungeon->get_matrix();
     array = matrix.data();
-    width = dungeon->get_width();
-    height = dungeon->get_height();
+    width = matrix.width();
+    height = matrix.height();
 }
 
 void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array)

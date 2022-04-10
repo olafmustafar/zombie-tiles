@@ -4,7 +4,7 @@
 #include <models/door.hpp>
 #include <models/dungeonmatrix.hpp>
 #include <models/graph.hpp>
-#include <models/roommap.hpp>
+#include <models/dungeon.hpp>
 #include <models/wall.hpp>
 #include <utility>
 #include <vector>
@@ -19,7 +19,7 @@ public:
     static size_t rooms_count_of(const Dungeon& roommap);
     static int narrow_rooms_of(const Dungeon& roommap);
     static int tiny_rooms_of(const Dungeon& roommap);
-    static vector<Wall> walls_of(const Dungeon& roommap, const vector<Door>& doors);
+    static vector<Wall> walls_of(Dungeon& roommap, const vector<Door>& doors);
 
     static DungeonMatrix generate_dungeon_matrix(const Dungeon& roommap);
     static vector<Door> generate_doors(const Dungeon& roommap);

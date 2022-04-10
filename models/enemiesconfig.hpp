@@ -1,6 +1,6 @@
 #pragma once
 
-#include <models/roommap.hpp>
+#include <models/dungeon.hpp>
 
 struct EnemiesConfig {
     EnemiesConfig();

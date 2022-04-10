@@ -83,7 +83,7 @@ void DungeonMatrix::set_max_index(size_t max_index)
     m_max_index = max_index;
 }
 
-int** DungeonMatrix::data()
+int** DungeonMatrix::data() const
 {
     return m_data;
 }

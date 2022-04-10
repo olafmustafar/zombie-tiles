@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <list>
 #include <models/door.hpp>
-#include <models/roommap.hpp>
+#include <models/dungeon.hpp>
 #include <models/wall.hpp>
 
 extern "C" {
