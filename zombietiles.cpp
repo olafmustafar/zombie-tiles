@@ -117,7 +117,6 @@ void set_seed(int seed)
 void generate_dungeon_description(Dungeon* dungeon, int& size, char*& str)
 {
     std::string description = dungeon->to_string();
-
     size = description.length();
     str = new char[size];
     std::copy_n(description.begin(), size, str);
@@ -128,4 +127,20 @@ void generate_dungeon_rooms(Dungeon* dungeon, int& size, Room*& array)
     size = dungeon->get_rooms().size();
     array = new Room[size];
     std::copy_n(dungeon->get_rooms().begin(), size, array);
+}
+
+void get_dungeon_distances_graph(Dungeon* dungeon, int& width, int& height, int**& array)
+{
+    Graph graph = RoomMapHelper::to_graph(dungeon->get_matrix());
+    std::vector<std::vector<int>> distances = GraphHelper::distances_of(graph);
+
+    width = distances.size();
+    height = distances.front().size();
+    array = new int*[width];
+    size_t i = 0;
+    for (std::vector<int> row : distances) {
+        int* new_row = new int[row.size()];
+        std::copy_n(row.begin(), row.size(), new_row);
+        array[i++] = new_row;
+    }
 }

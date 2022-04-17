@@ -13,6 +13,8 @@ Dungeon* generate_dungeon(const uint32_t width, const uint32_t height);
 
 void get_dungeon_matrix(Dungeon* dungeon, int& width, int& height, int**& array);
 
+void get_dungeon_distances_graph(Dungeon* dungeon, int& width, int& height, int**& array);
+
 void generate_dungeon_rooms(Dungeon* dungeon, int& size, Room*& array);
 
 void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array);

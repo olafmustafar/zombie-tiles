@@ -151,6 +151,7 @@ const DungeonMatrix& Dungeon::get_matrix()
 {
     if (!m_has_matrix && !m_rooms.empty()) {
         m_matrix2 = RoomMapHelper::generate_dungeon_matrix(*this);
+        m_has_matrix = true;
     }
     return m_matrix2;
 }
