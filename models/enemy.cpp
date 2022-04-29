@@ -3,7 +3,16 @@
 #include <string>
 
 Enemy::Enemy()
-    : Entity { EntityType::ENEMY, Point {} }
+    : Enemy { Point { 0, 0 }, 0, 0, 0, 0 }
+{
+}
+
+Enemy::Enemy(Point point, uint32_t health, uint32_t damage, uint32_t attackCooldown, uint32_t velocity)
+    : Entity { EntityType::ENEMY, Point { point } }
+    , health { health }
+    , damage { damage }
+    , attackCooldown { attackCooldown }
+    , velocity { velocity }
 {
 }
 
