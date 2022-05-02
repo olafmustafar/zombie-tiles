@@ -111,6 +111,8 @@ void Dungeon::add_enemy(const Enemy& enemy)
     m_has_enemies = true;
 }
 
+const vector<Enemy>& Dungeon::enemies() const { return m_enemies; }
+
 const vector<Enemy>& Dungeon::get_enemies() const { return m_enemies; }
 
 void Dungeon::add_door(const Door& door) { m_doors.push_back(door); }

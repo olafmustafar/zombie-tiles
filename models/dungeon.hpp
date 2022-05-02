@@ -34,6 +34,7 @@ public:
     void set_player(const Entity& player);
 
     void add_enemy(const Enemy& enemy);
+    const vector<Enemy>& enemies() const;
     const vector<Enemy>& get_enemies() const;
 
     void add_door(const Door& room);

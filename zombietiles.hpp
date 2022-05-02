@@ -11,6 +11,10 @@ extern "C" {
 
 Dungeon* generate_dungeon(const uint32_t width, const uint32_t height);
 
+Dungeon* load_dungeon(const char* path);
+
+void save_dungeon(const Dungeon& dungeon, const char* path);
+
 void get_dungeon_matrix(Dungeon* dungeon, int& width, int& height, int**& array);
 
 void get_dungeon_distances_graph(Dungeon* dungeon, int& width, int& height, int**& array);

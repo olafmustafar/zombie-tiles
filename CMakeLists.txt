@@ -14,6 +14,9 @@ add_library(zombietiles SHARED
   zombietiles_global.hpp
   zombietiles.hpp
   zombietiles.cpp
+  dungeonrepository.hpp
+  dungeonrepository.cpp
+  libs/json.hpp
   utils/randomgenerator.hpp
   utils/randomgenerator.cpp
   utils/logger.hpp

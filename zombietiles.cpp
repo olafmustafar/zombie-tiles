@@ -1,4 +1,5 @@
 #include "zombietiles.hpp"
+#include "dungeonrepository.hpp"
 #include "helpers/graphhelper.hpp"
 #include "helpers/roommaphelper.hpp"
 #include "models/dungeon.hpp"
@@ -143,4 +144,14 @@ void get_dungeon_distances_graph(Dungeon* dungeon, int& width, int& height, int*
         std::copy_n(row.begin(), row.size(), new_row);
         array[i++] = new_row;
     }
+}
+
+Dungeon* load_dungeon(const char* path)
+{
+    return DungeonRepository::load(path);
+}
+
+void save_dungeon(const Dungeon& dungeon, const char* path)
+{
+    DungeonRepository::save(dungeon, path);
 }
