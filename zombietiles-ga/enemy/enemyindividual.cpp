@@ -19,6 +19,7 @@ void EnemyIndividual::mutate()
 {
     get_chromosome()->mutate();
 }
+
 string EnemyIndividual::to_string() const
 {
     return get_chromosome()->to_string();

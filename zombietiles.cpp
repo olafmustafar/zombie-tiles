@@ -44,6 +44,9 @@ void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array)
     vector<Enemy> enemies;
 
     if (!dungeon->has_entities()) {
+        DungeonConfig& dungeon_config = DungeonConfig::get_instance();
+        dungeon_config.set_generations(300);
+        dungeon_config.set_population_size(400);
         EnemiesConfig& enemies_config = Singleton<EnemiesConfig>::get_instance();
         enemies_config.current_dungeon = dungeon;
         enemies_config.max_att_value = 100;
@@ -154,4 +157,9 @@ Dungeon* load_dungeon(const char* path)
 void save_dungeon(const Dungeon& dungeon, const char* path)
 {
     DungeonRepository::save(dungeon, path);
+}
+
+int ping()
+{
+    return 1;
 }

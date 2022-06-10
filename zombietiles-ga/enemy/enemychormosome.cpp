@@ -27,13 +27,15 @@ void EnemyChormosome::randomize()
 
 void EnemyChormosome::mutate()
 {
-    Enemy& e = enemies[Random::random_between(0, enemies.size() - 1)];
-    e.position.x = Random::random_between(0, dungeon.get_width() - 1);
-    e.position.y = Random::random_between(0, dungeon.get_height() - 1);
-    e.damage = Random::random_between(min, max);
-    e.health = Random::random_between(min, max);
-    e.velocity = Random::random_between(min, max);
-    e.attackCooldown = Random::random_between(min, max);
+    for (size_t i = 0; i < (enemies.size() * 0.2); i++) {
+        Enemy& e = enemies[Random::random_between(0, enemies.size() - 1)];
+        e.position.x = Random::random_between(0, dungeon.get_width() - 1);
+        e.position.y = Random::random_between(0, dungeon.get_height() - 1);
+        e.damage = Random::random_between(min, max);
+        e.health = Random::random_between(min, max);
+        e.velocity = Random::random_between(min, max);
+        e.attackCooldown = Random::random_between(min, max);
+    }
 }
 
 void EnemyChormosome::crossover(Chromosome* other)

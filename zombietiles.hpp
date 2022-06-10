@@ -1,11 +1,11 @@
 #pragma once
 
+#include "models/door.hpp"
+#include "models/dungeon.hpp"
+#include "models/wall.hpp"
 #include "zombietiles_global.hpp"
 #include <cstdint>
 #include <list>
-#include <models/door.hpp>
-#include <models/dungeon.hpp>
-#include <models/wall.hpp>
 
 extern "C" {
 
@@ -36,4 +36,6 @@ void free_dungeon(Dungeon* dungeon);
 void free_wall_array(Wall* array);
 
 void generate_dungeon_description(Dungeon* dungeon, int& size, char*& str);
+
+int ping();
 }
