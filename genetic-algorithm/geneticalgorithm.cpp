@@ -230,6 +230,6 @@ void GeneticAlgorithmImpl::report(int generation) const
 {
     Logger::doing("Reporting");
     cout << "generation: " << generation << "| best: " << m_best->get_fitness() << endl;
-
+    m_best->report();
     Logger::done();
 }

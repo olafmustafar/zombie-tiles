@@ -2,4 +2,8 @@ CMakeLists.txt.user
 CMakeLists.txt.user.*
 *.swp
 *.autosave
+.cache
 build
+
+
+

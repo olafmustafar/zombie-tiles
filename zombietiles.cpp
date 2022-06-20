@@ -21,13 +21,28 @@ Dungeon* generate_dungeon(const uint32_t width, const uint32_t height)
     DungeonConfig& dungeon_config = DungeonConfig::get_instance();
     dungeon_config.set_width(width);
     dungeon_config.set_height(height);
-    dungeon_config.set_rooms_count(10);
+    dungeon_config.set_rooms_count(5);
     dungeon_config.set_generations(100);
     dungeon_config.set_population_size(200);
 
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
     m_ga.run();
+    return new Dungeon(m_ga.get_best()->get_map());
+}
 
+Dungeon* generate_dungeon2(const uint32_t room_count, const uint32_t width, const uint32_t height)
+{
+    Logger::setLoggin(false);
+
+    DungeonConfig& dungeon_config = DungeonConfig::get_instance();
+    dungeon_config.set_width(width);
+    dungeon_config.set_height(height);
+    dungeon_config.set_rooms_count(room_count);
+    dungeon_config.set_generations(100);
+    dungeon_config.set_population_size(200);
+
+    GeneticAlgorithm<ZombieTilesIndividual> m_ga;
+    m_ga.run();
     return new Dungeon(m_ga.get_best()->get_map());
 }
 
@@ -157,6 +172,11 @@ Dungeon* load_dungeon(const char* path)
 void save_dungeon(const Dungeon& dungeon, const char* path)
 {
     DungeonRepository::save(dungeon, path);
+}
+
+DungeonMetadata generate_dungeon_metadata(Dungeon* dungeon)
+{
+    return RoomMapHelper::calculate_dungeon_metadata(*dungeon);
 }
 
 int ping()

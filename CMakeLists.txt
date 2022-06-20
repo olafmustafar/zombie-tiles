@@ -44,6 +44,8 @@ add_library(zombietiles SHARED
   models/entity.cpp
   models/enemy.hpp
   models/enemy.cpp
+  models/dungeonmetadata.hpp
+  models/enemiesmetadata.hpp
   helpers/dungeonmatrixhelper.hpp
   helpers/dungeonmatrixhelper.cpp
   helpers/roommaphelper.hpp

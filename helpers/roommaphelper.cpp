@@ -3,10 +3,13 @@
 #include "helpers/graphhelper.hpp"
 #include "models/direction.hpp"
 #include "models/dungeonconfig.hpp"
+#include "models/dungeonmatrix.hpp"
+#include "models/enemiesmetadata.hpp"
 #include "models/graph.hpp"
 #include "roomhelper.hpp"
 #include "utils/randomgenerator.hpp"
 #include <algorithm>
+#include <cassert>
 #include <functional>
 #include <iostream>
 #include <queue>
@@ -21,6 +24,57 @@ Dungeon RoomMapHelper::create_roommap()
     DungeonConfig dungeon_config = DungeonConfig::get_instance();
     Dungeon roommap(dungeon_config.get_width(), dungeon_config.get_height());
     return roommap;
+}
+
+DungeonMetadata RoomMapHelper::calculate_dungeon_metadata(Dungeon& dungeon)
+{
+    DungeonMetadata metadata;
+
+    const DungeonMatrix& dm = dungeon.get_matrix();
+    Graph graph = RoomMapHelper::to_graph(dm);
+
+    metadata.rooms_count = static_cast<double>(DungeonMatrixHelper::rooms_count_of(dm));
+    if( metadata.rooms_count == 0 ){
+        return metadata;
+    }
+
+    metadata.narrow_count = static_cast<double>(DungeonMatrixHelper::narrow_rooms_of(dm));
+    metadata.tiny_count = static_cast<double>(DungeonMatrixHelper::tiny_rooms_of(dm));
+    metadata.diameter = GraphHelper::diameter_of(graph);
+
+    double average_degree = GraphHelper::average_degree_of(graph);
+    metadata.average_degree = average_degree;
+    metadata.exp_degree = pow(M_E, -(pow(average_degree - 2, 2.00)));
+
+    return metadata;
+}
+
+EnemiesMetadata RoomMapHelper::calculate_enemies_metadata(const EnemiesConfig enemies_config, const std::vector<Enemy>& enemies)
+{
+    EnemiesMetadata metadata;
+    assert(enemies_config.current_dungeon);
+    metadata.enemies_config = enemies_config;
+    const Dungeon& dungeon = *enemies_config.current_dungeon;
+    const auto max_att = enemies_config.max_att_value;
+    metadata.enemy_count_by_room = std::vector<size_t>(enemies_config.current_dungeon->get_rooms().size(), 0);
+    metadata.total_att_by_room = std::vector<uint32_t>(enemies_config.current_dungeon->get_rooms().size(), 0);
+    metadata.enemy_metadata = std::vector<EnemyMetadata>(enemies.size());
+
+    int i = 0;
+    for (auto& enemy : enemies) {
+        metadata.enemy_count_by_room[dungeon[enemy.position]]++;
+        metadata.enemy_metadata[i].dmg_hlt_diff = std::max(1.0 - (std::fdim(enemy.damage, enemy.health) / max_att), 0.0);
+        metadata.enemy_metadata[i].cdw_vlt_diff = std::max(1.0 - (std::fdim(enemy.attackCooldown, enemy.velocity) / max_att), 0.0);
+
+        int room = dungeon[enemy.position];
+        if (room != Dungeon::EMPTY_ROOM) {
+            metadata.total_att_by_room[room] += enemy.damage + enemy.health + enemy.attackCooldown + enemy.velocity;
+        }
+
+        i++;
+    }
+
+    return metadata;
 }
 
 void RoomMapHelper::add_room_to(Dungeon& roommap, const Room& room)
@@ -252,7 +306,7 @@ vector<Wall> RoomMapHelper::walls_of(Dungeon& dungeon, const vector<Door>& doors
     unordered_set<Door> door_set { doors.cbegin(), doors.cend() };
 
     vector<Wall> walls {};
-    //Horizontal walls
+    // Horizontal walls
     for (size_t y = 0; y <= matrix.height(); ++y) {
         int origin = EMPTY;
         for (size_t x = 0; x <= matrix.width(); ++x) {
@@ -282,7 +336,7 @@ vector<Wall> RoomMapHelper::walls_of(Dungeon& dungeon, const vector<Door>& doors
         }
     }
 
-    //Vertical walls
+    // Vertical walls
     for (size_t x = 0; x <= matrix.width(); ++x) {
         int origin = EMPTY;
         for (size_t y = 0; y <= matrix.height(); ++y) {
@@ -351,8 +405,7 @@ DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const Dungeon& roommap)
     // searching unreachable rooms
     for (size_t i = 0; i < distances.size(); i++) {
         size_t j = 0;
-        if (std::all_of(distances[i].begin(), distances[i].end(),
-                [&](int d) { return j++ == i || d == -1; })) {
+        if (std::all_of(distances[i].begin(), distances[i].end(), [&](int d) { return j++ == i || d == -1; })) {
             unreachable_rooms.insert(i);
         }
     }

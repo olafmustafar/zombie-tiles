@@ -7,9 +7,10 @@
 #include <helpers/dungeonmatrixhelper.hpp>
 #include <helpers/graphhelper.hpp>
 #include <helpers/roommaphelper.hpp>
+#include <iostream>
+#include <models/dungeon.hpp>
 #include <models/dungeonmatrix.hpp>
 #include <models/graph.hpp>
-#include <models/dungeon.hpp>
 #include <utils/logger.hpp>
 #include <utils/randomgenerator.hpp>
 
@@ -39,47 +40,47 @@ string ZombieTilesIndividual::to_string() const
 
 Dungeon ZombieTilesIndividual::get_map() const
 {
-    Dungeon tilemap = RoomMapHelper::create_roommap();
+    Dungeon dungeon = RoomMapHelper::create_roommap();
+
     const vector<RoomGene>& genes = get_chromosome()->get_genes();
     for (const RoomGene& gene : genes) {
-        tilemap.add_room(gene.get_room());
+        dungeon.add_room(gene.get_room());
     }
-    return tilemap;
+
+    return dungeon;
 }
 
-double ZombieTilesIndividual::calculate_fitness() const
+double ZombieTilesIndividual::calculate_fitness()
 {
     using namespace std;
-    Dungeon tilemap = RoomMapHelper::create_roommap();
+    Dungeon dungeon = get_map();
+    m_metadata = RoomMapHelper::calculate_dungeon_metadata(dungeon);
 
-    ZombieTilesChromosome* chromosome = get_chromosome();
-
-    const vector<RoomGene>& genes = chromosome->get_genes();
-
-    for (const RoomGene& gene : genes) {
-        tilemap.add_room(gene.get_room());
-    }
-
-    DungeonMatrix dm = RoomMapHelper::generate_dungeon_matrix(tilemap);
-
+    DungeonMatrix dm = RoomMapHelper::generate_dungeon_matrix(dungeon);
     Graph graph = RoomMapHelper::to_graph(dm);
-    const double n_rooms = static_cast<double>(DungeonMatrixHelper::rooms_count_of(dm));
+
+    const double n_rooms = m_metadata.rooms_count;
 
     if (n_rooms == 0) {
         return 0;
     }
 
-    const double n_narrow = static_cast<double>(DungeonMatrixHelper::narrow_rooms_of(dm));
-    const double n_tiny = static_cast<double>(DungeonMatrixHelper::tiny_rooms_of(dm));
-
-    const double diameter = GraphHelper::diameter_of(graph);
-    const double average_degree = GraphHelper::average_degree_of(graph);
-
-    const double exp_degree = pow(M_E, -(pow(average_degree - 2, 2.00)));
-
     double fitness = 0;
-    fitness += (exp_degree * n_rooms * log(diameter))
-        / (log(M_E + n_narrow) * pow(10.0, n_tiny));
+    fitness += (m_metadata.exp_degree * m_metadata.rooms_count * log(m_metadata.diameter))
+        / (log(M_E + m_metadata.narrow_count) * pow(10.0, m_metadata.tiny_count));
 
     return fitness;
+}
+
+void ZombieTilesIndividual::report() const
+{
+    Dungeon d = get_map();
+    DungeonMetadata dmd = RoomMapHelper::calculate_dungeon_metadata(d);
+
+    std::cout << "rooms_count: " << dmd.rooms_count
+              << " | narrow_count: " << dmd.narrow_count
+              << " | tiny_count: " << dmd.tiny_count
+              << " | diameter: " << dmd.diameter
+              << " | average_degree: " << dmd.average_degree
+              << " | exp_degree: " << dmd.exp_degree << "\n";
 }

@@ -1,7 +1,9 @@
 #pragma once
 
+#include <string>
 #include "zombietileschromosome.hpp"
 #include <genetic-algorithm/individual.hpp>
+#include <models/dungeonmetadata.hpp>
 
 class ZombieTilesIndividual : public Individual<ZombieTilesChromosome> {
 public:
@@ -9,7 +11,10 @@ public:
     void mutate() override;
     string to_string() const override;
     Dungeon get_map() const;
-
+    void report() const override;
 private:
-    double calculate_fitness() const override;
+    std::string m_report;
+    DungeonMetadata m_metadata;
+
+    double calculate_fitness() override;
 };

@@ -60,6 +60,8 @@ void IndividualImpl::set_chromosome(Chromosome* chromosome)
     m_chromosome = chromosome;
 }
 
+void IndividualImpl::report() const { }
+
 string IndividualImpl::to_string() const
 {
     ostringstream sstream;

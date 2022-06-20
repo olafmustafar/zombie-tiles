@@ -1,10 +1,13 @@
 #pragma once
 
+#include "models/enemiesconfig.hpp"
 #include <cstdint>
 #include <models/door.hpp>
-#include <models/dungeonmatrix.hpp>
-#include <models/graph.hpp>
 #include <models/dungeon.hpp>
+#include <models/dungeonmatrix.hpp>
+#include <models/dungeonmetadata.hpp>
+#include <models/enemiesmetadata.hpp>
+#include <models/graph.hpp>
 #include <models/wall.hpp>
 #include <utility>
 #include <vector>
@@ -12,6 +15,9 @@
 class RoomMapHelper {
 public:
     static Dungeon create_roommap();
+
+    static DungeonMetadata calculate_dungeon_metadata(Dungeon& dungeon);
+    static EnemiesMetadata calculate_enemies_metadata(const EnemiesConfig enemies_config, const std::vector<Enemy>& enemies);
 
     static void add_room_to(Dungeon& tilemap, const Room& room);
     static void add_player_to(Dungeon& dungeon);

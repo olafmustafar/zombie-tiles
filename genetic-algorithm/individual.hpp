@@ -24,6 +24,7 @@ public:
     virtual string to_string() const;
     virtual void crossover(IndividualImpl* other) = 0;
     virtual void mutate() = 0;
+    virtual void report() const;
 
 private:
     Chromosome* m_chromosome;
@@ -31,7 +32,7 @@ private:
     double m_relative_fitness;
     double m_cumulative_fitness;
 
-    virtual double calculate_fitness() const = 0;
+    virtual double calculate_fitness() = 0;
     virtual Chromosome* create_cromossome() const = 0;
 };
 

@@ -1,5 +1,9 @@
 #include "enemyindividual.h"
+#include "helpers/roommaphelper.hpp"
+#include "models/enemiesmetadata.hpp"
+#include <cassert>
 #include <cmath>
+#include <iostream>
 #include <models/enemiesconfig.hpp>
 #include <utils/singleton.hpp>
 
@@ -25,8 +29,9 @@ string EnemyIndividual::to_string() const
     return get_chromosome()->to_string();
 }
 
-double EnemyIndividual::calculate_fitness() const
+double EnemyIndividual::calculate_fitness()
 {
+
     auto enemies = get_chromosome()->enemies;
 
     double fitness = 0;
@@ -41,55 +46,57 @@ double EnemyIndividual::calculate_fitness() const
         }
     }
 
-    fitness += position_fitness(allocated_enemies);
-
-    fitness += atributes_balance_fitness(allocated_enemies);
-
+    m_metadata = RoomMapHelper::calculate_enemies_metadata(enemies_config, allocated_enemies);
+    fitness += position_fitness(m_metadata);
+    fitness += atributes_balance_fitness(m_metadata);
     return fitness;
 }
 
-double EnemyIndividual::position_fitness(const std::vector<Enemy>& enemies) const
+double EnemyIndividual::position_fitness(const EnemiesMetadata& metadata) const
 {
-    auto& dungeon = *enemies_config.current_dungeon;
     double fitness = 0;
-
-    std::vector<size_t> enemy_count_by_room(dungeon.get_rooms().size(), 0);
-    for (auto& enemy : enemies) {
-        enemy_count_by_room[dungeon[enemy.position]]++;
-    }
-
-    for (auto& enemy_count : enemy_count_by_room) {
+    for (auto& enemy_count : metadata.enemy_count_by_room) {
         fitness += enemy_count >= enemies_config.enemy_count_by_room ? 2 : 0;
     }
-
     return fitness;
 }
 
-double EnemyIndividual::atributes_balance_fitness(const std::vector<Enemy>& enemies) const
+double EnemyIndividual::atributes_balance_fitness(const EnemiesMetadata& metadata) const
 {
     double fitness = 0;
 
-    auto& dungeon = *enemies_config.current_dungeon;
-
-    for (auto& enemy : enemies) {
-        auto dmg_hlt_diff = std::max(1.0 - (std::fdim(enemy.damage, enemy.health) / max_att), 0.0);
-        auto cdw_vlt_diff = std::max(1.0 - (std::fdim(enemy.attackCooldown, enemy.velocity) / max_att), 0.0);
-        fitness += std::fdim(dmg_hlt_diff, cdw_vlt_diff) * 2;
+    for (EnemyMetadata e : metadata.enemy_metadata) {
+        fitness += std::fdim(e.dmg_hlt_diff, e.cdw_vlt_diff) * 2;
     }
 
-    std::vector<uint> total_att_by_room(dungeon.get_rooms().size(), 0);
-    for (auto& enemy : enemies) {
-        int room = dungeon[enemy.position];
-        if (room == Dungeon::EMPTY_ROOM) {
-            continue;
-        }
-
-        total_att_by_room[room] += enemy.damage + enemy.health + enemy.attackCooldown + enemy.velocity;
-    }
-
-    for (auto sum : total_att_by_room) {
+    for (auto sum : metadata.total_att_by_room) {
         fitness += 1.0 - (fdim(max_att * 4, sum) / (max_att * 4));
     }
 
     return fitness;
+}
+
+void EnemyIndividual::report() const
+{
+    std::cout << "placed_enemies_count: " << m_metadata.enemy_metadata.size();
+
+    int i = 0;
+    for (auto enemy_metadata : m_metadata.enemy_metadata) {
+        std::cout << " | dmg_hlt_diff[" << i << "]: " << enemy_metadata.dmg_hlt_diff
+                  << " | cdw_vlt_diff[" << i << "]: " << enemy_metadata.cdw_vlt_diff;
+        i++;
+    }
+
+    for (auto total_att : m_metadata.total_att_by_room) {
+        std::cout << " | total_att_by_room[" << i << "]: " << total_att;
+        i++;
+    }
+
+    i = 0;
+    for (auto total_att : m_metadata.enemy_count_by_room) {
+        std::cout << " | enemy_count_by_room[" << i << "]: " << total_att;
+        i++;
+    }
+
+    std::cout << "\n";
 }

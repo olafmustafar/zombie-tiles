@@ -3,6 +3,7 @@
 #include "models/door.hpp"
 #include "models/dungeon.hpp"
 #include "models/wall.hpp"
+#include "models/dungeonmetadata.hpp"
 #include "zombietiles_global.hpp"
 #include <cstdint>
 #include <list>
@@ -10,6 +11,8 @@
 extern "C" {
 
 Dungeon* generate_dungeon(const uint32_t width, const uint32_t height);
+
+Dungeon* generate_dungeon2(const uint32_t room_count, const uint32_t width, const uint32_t height);
 
 Dungeon* load_dungeon(const char* path);
 
@@ -36,6 +39,8 @@ void free_dungeon(Dungeon* dungeon);
 void free_wall_array(Wall* array);
 
 void generate_dungeon_description(Dungeon* dungeon, int& size, char*& str);
+
+DungeonMetadata generate_dungeon_metadata(Dungeon* dungeon);
 
 int ping();
 }
