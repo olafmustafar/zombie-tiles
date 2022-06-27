@@ -8,7 +8,7 @@
 
 namespace {
 constexpr float MUTATION_CHANCE = 0.3;
-constexpr float CROSSOVER_CHANCE = 0.8;
+constexpr float CROSSOVER_CHANCE = 0.9;
 }
 
 GeneticAlgorithmImpl::GeneticAlgorithmImpl()

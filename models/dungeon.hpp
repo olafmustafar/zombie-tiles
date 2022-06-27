@@ -34,6 +34,7 @@ public:
     void set_player(const Entity& player);
 
     void add_enemy(const Enemy& enemy);
+    void set_enemies(const std::vector<Enemy>&& enemies);
     const vector<Enemy>& enemies() const;
     const vector<Enemy>& get_enemies() const;
 
@@ -50,6 +51,7 @@ public:
     string to_string() const;
 
     const DungeonMatrix& get_matrix();
+    std::optional<std::reference_wrapper<const DungeonMatrix>> get_matrix() const;
 
     bool has_entities() const;
 

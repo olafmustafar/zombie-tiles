@@ -31,10 +31,10 @@ DungeonMetadata RoomMapHelper::calculate_dungeon_metadata(Dungeon& dungeon)
     DungeonMetadata metadata;
 
     const DungeonMatrix& dm = dungeon.get_matrix();
-    Graph graph = RoomMapHelper::to_graph(dm);
+    Graph graph = RoomMapHelper::to_graph(dungeon);
 
     metadata.rooms_count = static_cast<double>(DungeonMatrixHelper::rooms_count_of(dm));
-    if( metadata.rooms_count == 0 ){
+    if (metadata.rooms_count == 0) {
         return metadata;
     }
 
@@ -49,7 +49,7 @@ DungeonMetadata RoomMapHelper::calculate_dungeon_metadata(Dungeon& dungeon)
     return metadata;
 }
 
-EnemiesMetadata RoomMapHelper::calculate_enemies_metadata(const EnemiesConfig enemies_config, const std::vector<Enemy>& enemies)
+EnemiesMetadata RoomMapHelper::calculate_enemiegenes_metadata(const EnemiesConfig enemies_config, const std::vector<Enemy>& enemies)
 {
     EnemiesMetadata metadata;
     assert(enemies_config.current_dungeon);
@@ -369,10 +369,12 @@ vector<Wall> RoomMapHelper::walls_of(Dungeon& dungeon, const vector<Door>& doors
     return walls;
 }
 
-DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const Dungeon& roommap)
+DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const Dungeon& dungeon)
 {
-    DungeonMatrix matrix(roommap.width(), roommap.height());
-    auto rooms = roommap.rooms();
+    DungeonMatrix matrix(dungeon.width(), dungeon.height());
+    auto rooms = dungeon.rooms();
+
+    std::unordered_set<int> allocated_rooms = {};
 
     // placing tiles
     size_t room_count = 0;
@@ -393,6 +395,7 @@ DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const Dungeon& roommap)
         }
 
         if (DungeonMatrixHelper::rooms_count_of(matrix_copy) == (room_count + 1)) {
+            allocated_rooms.insert(i);
             matrix = std::move(matrix_copy);
             room_count++;
         }
@@ -407,6 +410,7 @@ DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const Dungeon& roommap)
         size_t j = 0;
         if (std::all_of(distances[i].begin(), distances[i].end(), [&](int d) { return j++ == i || d == -1; })) {
             unreachable_rooms.insert(i);
+            allocated_rooms.erase(i);
         }
     }
 
@@ -419,6 +423,8 @@ DungeonMatrix RoomMapHelper::generate_dungeon_matrix(const Dungeon& roommap)
             }
         }
     }
+
+    matrix.set_allocated_rooms(allocated_rooms);
 
     return matrix;
 }
@@ -476,41 +482,40 @@ void RoomMapHelper::generate_entities(Dungeon& roommap)
     }
 }
 
-Graph RoomMapHelper::to_graph(const Dungeon& roommap)
+Graph RoomMapHelper::to_graph(const Dungeon& dungeon)
 {
-    const int w = roommap.get_width();
-    const int h = roommap.get_height();
-    const size_t size = roommap.get_rooms().size();
+    const size_t w = dungeon.width();
+    const size_t h = dungeon.height();
+    const size_t size = dungeon.rooms().size();
 
-    bool visited[w][h] {};
+    std::vector<std::vector<bool>> visited { w, std::vector<bool>(h, false) };
 
-    Graph graph(size, vector<int>(size, -1));
-
-    for (int i = 0; i < w; ++i) {
-        for (int j = 0; j < h; ++j) {
-            if (roommap[i][j] == Dungeon::EMPTY_ROOM || visited[i][j]) {
+    Graph graph(size, std::vector<int>(size, -1));
+    for (size_t i = 0; i < w; ++i) {
+        for (size_t j = 0; j < h; ++j) {
+            if (dungeon[i][j] == Dungeon::EMPTY_ROOM || visited[i][j]) {
                 continue;
             }
 
-            int current_room = roommap[i][j];
+            int current_room = dungeon[i][j];
             queue<pair<int, int>> to_visit {};
             to_visit.emplace(i, j);
 
             while (!to_visit.empty()) {
-                pair<int, int> pos = to_visit.front();
+                pair<size_t, size_t> pos = to_visit.front();
                 to_visit.pop();
 
-                const int x = pos.first;
-                const int y = pos.second;
+                const auto x = pos.first;
+                const auto y = pos.second;
 
                 if (x < 0 || y < 0 || x >= w || y >= h
-                    || roommap[x][y] == Dungeon::EMPTY_ROOM) {
+                    || dungeon[x][y] == Dungeon::EMPTY_ROOM) {
                     continue;
                 }
 
-                graph[current_room][roommap[x][y]] = 1;
+                graph[current_room][dungeon[x][y]] = 1;
 
-                if (roommap[x][y] == current_room
+                if (dungeon[x][y] == current_room
                     && !visited[x][y]) {
 
                     visited[x][y] = true;
@@ -522,6 +527,15 @@ Graph RoomMapHelper::to_graph(const Dungeon& roommap)
             }
         }
     }
+
+    for (size_t x = 0; x < graph.size(); x++) {
+        for (size_t y = 0; y < graph[x].size(); y++) {
+            if (graph[x][y] != -1) {
+                graph[x][y] = RoomHelper::distance(dungeon.rooms()[x], dungeon.rooms()[y]);
+            }
+        }
+    }
+
     return graph;
 }
 

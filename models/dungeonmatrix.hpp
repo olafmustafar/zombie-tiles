@@ -2,6 +2,7 @@
 
 #include "point.hpp"
 #include <cstdint>
+#include <unordered_set>
 
 struct DungeonMatrix {
 public:
@@ -24,11 +25,16 @@ public:
     size_t max_index() const;
     void set_max_index(size_t max_index);
 
+    const std::unordered_set<int>& allocated_rooms();
+    void set_allocated_rooms(const std::unordered_set<int>& allocated_rooms);
+
     int** data() const;
 
 private:
     size_t m_width;
     size_t m_height;
     size_t m_max_index;
+    std::unordered_set<int> m_allocated_rooms;
     int** m_data;
+
 };

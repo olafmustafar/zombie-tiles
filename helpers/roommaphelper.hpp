@@ -17,7 +17,7 @@ public:
     static Dungeon create_roommap();
 
     static DungeonMetadata calculate_dungeon_metadata(Dungeon& dungeon);
-    static EnemiesMetadata calculate_enemies_metadata(const EnemiesConfig enemies_config, const std::vector<Enemy>& enemies);
+    static EnemiesMetadata calculate_enemiegenes_metadata(const EnemiesConfig enemies_config, const std::vector<Enemy>& enemies);
 
     static void add_room_to(Dungeon& tilemap, const Room& room);
     static void add_player_to(Dungeon& dungeon);

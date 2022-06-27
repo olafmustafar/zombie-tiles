@@ -61,6 +61,6 @@ public:
     }
 
 private:
-    virtual void crossover(IndividualImpl* other) = 0;
+    virtual void crossover(IndividualImpl* other) override = 0;
     Chromosome* create_cromossome() const override { return new ChromosomeType; }
 };

@@ -28,12 +28,14 @@ void swap(DungeonMatrix& first, DungeonMatrix& second)
     std::swap(first.m_width, second.m_width);
     std::swap(first.m_data, second.m_data);
     std::swap(first.m_max_index, second.m_max_index);
+    std::swap(first.m_allocated_rooms, second.m_allocated_rooms);
 }
 
 DungeonMatrix::DungeonMatrix(const DungeonMatrix& other)
     : DungeonMatrix { other.width(), other.height() }
 {
     set_max_index(other.m_max_index);
+    set_allocated_rooms(other.m_allocated_rooms);
     for (uint32_t i = 0; i < m_width; ++i) {
         for (uint32_t j = 0; j < m_height; ++j) {
             m_data[i][j] = other[i][j];
@@ -86,4 +88,14 @@ void DungeonMatrix::set_max_index(size_t max_index)
 int** DungeonMatrix::data() const
 {
     return m_data;
+}
+
+const std::unordered_set<int>& DungeonMatrix::allocated_rooms()
+{
+    return m_allocated_rooms;
+}
+
+void DungeonMatrix::set_allocated_rooms(const std::unordered_set<int>& allocated_rooms)
+{
+    m_allocated_rooms = allocated_rooms;
 }

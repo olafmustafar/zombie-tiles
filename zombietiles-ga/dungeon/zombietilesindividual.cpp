@@ -56,12 +56,7 @@ double ZombieTilesIndividual::calculate_fitness()
     Dungeon dungeon = get_map();
     m_metadata = RoomMapHelper::calculate_dungeon_metadata(dungeon);
 
-    DungeonMatrix dm = RoomMapHelper::generate_dungeon_matrix(dungeon);
-    Graph graph = RoomMapHelper::to_graph(dm);
-
-    const double n_rooms = m_metadata.rooms_count;
-
-    if (n_rooms == 0) {
+    if (m_metadata.rooms_count == 0  || m_metadata.diameter == 0) {
         return 0;
     }
 

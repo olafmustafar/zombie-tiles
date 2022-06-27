@@ -4,11 +4,14 @@
 
 struct Point {
     Point();
+    Point(size_t x, size_t y);
     Point(int x, int y);
     Point(uint32_t x, uint32_t y);
 
     bool operator==(const Point& other) const;
     bool operator!=(const Point& other) const;
+
+    friend Point operator-(const Point& point, const Point& other);
 
     int x;
     int y;

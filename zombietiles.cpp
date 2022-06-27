@@ -22,7 +22,7 @@ Dungeon* generate_dungeon(const uint32_t width, const uint32_t height)
     dungeon_config.set_width(width);
     dungeon_config.set_height(height);
     dungeon_config.set_rooms_count(5);
-    dungeon_config.set_generations(100);
+    dungeon_config.set_generations(300);
     dungeon_config.set_population_size(200);
 
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
@@ -38,7 +38,7 @@ Dungeon* generate_dungeon2(const uint32_t room_count, const uint32_t width, cons
     dungeon_config.set_width(width);
     dungeon_config.set_height(height);
     dungeon_config.set_rooms_count(room_count);
-    dungeon_config.set_generations(100);
+    dungeon_config.set_generations(300);
     dungeon_config.set_population_size(200);
 
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
@@ -70,13 +70,9 @@ void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array)
         GeneticAlgorithm<EnemyIndividual> enemy_ga;
         enemy_ga.run();
 
-        std::vector<Enemy> enemies = std::move(enemy_ga.get_best()->get_chromosome()->enemies);
+        std::vector<Enemy> enemies = enemy_ga.get_best()->get_chromosome()->to_enemies(dungeon->get_matrix());
 
-        for (auto& enemy : enemies) {
-            if ((*dungeon)[enemy.position] != Dungeon::EMPTY_ROOM) {
-                dungeon->add_enemy(enemy);
-            }
-        }
+        dungeon->set_enemies( std::move(enemies) );//TEST
     }
 
     enemies = dungeon->get_enemies();

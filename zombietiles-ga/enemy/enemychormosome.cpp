@@ -1,40 +1,52 @@
 #include "enemychormosome.h"
+#include "models/dungeonmatrix.hpp"
+#include "models/point.hpp"
 
 #include <models/dungeonconfig.hpp>
 #include <models/enemiesconfig.hpp>
+#include <sstream>
+#include <unordered_set>
 #include <utils/randomgenerator.hpp>
 #include <utils/singleton.hpp>
 
+namespace {
+constexpr double MUTATION_RATE = 0.2;
+}
+
 EnemyChormosome::EnemyChormosome()
-    : dungeon { *Singleton<EnemiesConfig>().get_instance().current_dungeon }
-    , enemies { std::vector<Enemy> { DungeonConfig::get_instance().get_rooms_count() * 2, Enemy {} } }
-    , min { Singleton<EnemiesConfig>().get_instance().min_att_value }
-    , max { Singleton<EnemiesConfig>().get_instance().max_att_value }
+    : m_config { Singleton<EnemiesConfig>().get_instance() }
+    , m_dungeon { *m_config.current_dungeon }
+    , m_enemies_count { DungeonConfig::get_instance().get_rooms_count() * m_config.enemy_count_by_room }
+    , m_min { m_config.min_att_value }
+    , m_max { m_config.max_att_value }
+    , m_genes { std::vector<EnemyGene> { m_enemies_count, EnemyGene {} } }
 {
 }
 
 void EnemyChormosome::randomize()
 {
-    for (auto& e : enemies) {
-        e.position.x = Random::random_between(0, dungeon.get_width() - 1);
-        e.position.y = Random::random_between(0, dungeon.get_height() - 1);
-        e.damage = Random::random_between(min, max);
-        e.health = Random::random_between(min, max);
-        e.velocity = Random::random_between(min, max);
-        e.attackCooldown = Random::random_between(min, max);
+    for (auto& g : m_genes) {
+        g.room = Random::random_between(0, m_dungeon.rooms().size() - 1);
+        g.damage = Random::random_between(m_min, m_max);
+        g.health = Random::random_between(m_min, m_max);
+        g.velocity = Random::random_between(m_min, m_max);
+        g.attackCooldown = Random::random_between(m_min, m_max);
     }
 }
 
 void EnemyChormosome::mutate()
 {
-    for (size_t i = 0; i < (enemies.size() * 0.2); i++) {
-        Enemy& e = enemies[Random::random_between(0, enemies.size() - 1)];
-        e.position.x = Random::random_between(0, dungeon.get_width() - 1);
-        e.position.y = Random::random_between(0, dungeon.get_height() - 1);
-        e.damage = Random::random_between(min, max);
-        e.health = Random::random_between(min, max);
-        e.velocity = Random::random_between(min, max);
-        e.attackCooldown = Random::random_between(min, max);
+    size_t count = (m_enemies_count * MUTATION_RATE);
+    size_t begin = Random::random_between(0, m_genes.size() - count - 1);
+    size_t end = begin + count + 1;
+
+    for (size_t i = begin; i < end; i++) {
+        EnemyGene& g = m_genes[i];
+        g.room = Random::random_between(0, m_dungeon.rooms().size() - 1);
+        g.damage = Random::random_between(m_min, m_max);
+        g.health = Random::random_between(m_min, m_max);
+        g.velocity = Random::random_between(m_min, m_max);
+        g.attackCooldown = Random::random_between(m_min, m_max);
     }
 }
 
@@ -42,19 +54,66 @@ void EnemyChormosome::crossover(Chromosome* other)
 {
     EnemyChormosome* o_enemy = static_cast<EnemyChormosome*>(other);
 
-    for (size_t i = 0; i < enemies.size(); i++) {
+    for (size_t i = 0; i < m_genes.size(); i++) {
         if (i % 2 == 0) {
-            swap(enemies[i], o_enemy->enemies[i]);
+            swap(m_genes[i], o_enemy->m_genes[i]);
         }
     }
 }
 
 string EnemyChormosome::to_string() const
 {
-    std::string str = "enemyChormosome(";
-    for (const auto& e : enemies) {
-        str += e.to_string();
+    std::stringstream ss;
+    ss << "enemyChormosome(";
+    for (const auto& g : m_genes) {
+        ss << "room: " << g.room;
+        ss << "health" << g.health;
+        ss << "damage" << g.damage;
+        ss << "attackCooldown" << g.attackCooldown;
+        ss << "velocity" << g.velocity;
     }
-    str += ")";
-    return str;
+    ss << ")";
+    return ss.str();
+}
+
+std::vector<Enemy> EnemyChormosome::to_enemies(const DungeonMatrix& dm) const
+{
+    std::vector<Enemy> enemies = {};
+    enemies.reserve(m_dungeon.rooms().size() * Singleton<EnemiesConfig>().get_instance().enemy_count_by_room);
+
+    std::vector<std::vector<Point>> positions_per_room = { m_dungeon.rooms().size(), std::vector<Point> {} };
+
+    for (size_t x = 0; x < dm.width(); x++) {
+        for (size_t y = 0; y < dm.height(); y++) {
+            Point pos = { x, y };
+            if (dm[pos] == DungeonMatrix::EMPTY) {
+                continue;
+            }
+            positions_per_room[dm[pos]].push_back(pos);
+        }
+    }
+
+    std::unordered_set<Point> used_positions {};
+    for (auto& gene : m_genes) {
+        auto& available_positions = positions_per_room[gene.room];
+        if( available_positions.empty() ){
+            continue;
+        }
+
+        Point pos = {};
+        do {
+            pos = available_positions[Random::random_between(0, available_positions.size() - 1)];
+        } while (used_positions.contains(pos));
+
+        used_positions.insert(pos);
+
+        enemies.push_back(Enemy { pos, gene.health, gene.damage, gene.attackCooldown, gene.velocity });
+    }
+
+    return enemies;
+}
+
+const std::vector<EnemyGene>& EnemyChormosome::genes() const
+{
+    return m_genes;
 }

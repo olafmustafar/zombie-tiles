@@ -1,8 +1,10 @@
 #include "dungeon.hpp"
 #include <algorithm>
+#include <functional>
 #include <helpers/roomhelper.hpp>
 #include <helpers/roommaphelper.hpp>
 #include <iostream>
+#include <optional>
 
 using namespace std;
 
@@ -111,6 +113,11 @@ void Dungeon::add_enemy(const Enemy& enemy)
     m_has_enemies = true;
 }
 
+void Dungeon::set_enemies(const std::vector<Enemy>&& enemies){
+    m_enemies = enemies;
+    m_has_enemies = true;
+}
+
 const vector<Enemy>& Dungeon::enemies() const { return m_enemies; }
 
 const vector<Enemy>& Dungeon::get_enemies() const { return m_enemies; }
@@ -156,6 +163,14 @@ const DungeonMatrix& Dungeon::get_matrix()
         m_has_matrix = true;
     }
     return m_matrix2;
+}
+
+std::optional<std::reference_wrapper<const DungeonMatrix>> Dungeon::get_matrix() const
+{
+    if( m_has_matrix ){
+        return m_matrix2;
+    } 
+    return std::nullopt;
 }
 
 const Entity& Dungeon::get_player() const { return m_player; }

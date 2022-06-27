@@ -1,5 +1,6 @@
 #include "roomhelper.hpp"
 #include <algorithm>
+#include <cmath>
 #include <functional>
 #include <utility>
 #include <utils/logger.hpp>
@@ -103,4 +104,13 @@ bool RoomHelper::check_if_point_collides(const Room& room, const Point& p)
 {
     return room.get_x() >= p.x && room.get_x2() <= p.x
         && room.get_y() >= p.y && room.get_y2() <= p.y;
+}
+
+double RoomHelper::distance(const Room& a, const Room& b)
+{
+    Point a_mid = { a.x + (a.width / 2), a.y + (a.height / 2) };
+    Point b_mid = { b.x + (b.width / 2), b.y + (b.height / 2) };
+    Point diff = a_mid - b_mid;
+
+    return std::sqrt(std::pow(diff.x,2) + std::pow(diff.y,2));
 }
