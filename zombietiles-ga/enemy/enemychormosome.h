@@ -24,7 +24,6 @@ public:
     string to_string() const override;
     const std::vector<EnemyGene>& genes() const;
 
-
 private:
     const EnemiesConfig& m_config;
     const Dungeon& m_dungeon;

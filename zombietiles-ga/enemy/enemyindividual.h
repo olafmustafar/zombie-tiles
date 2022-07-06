@@ -15,10 +15,12 @@ struct EnemyGeneMetadata {
 };
 
 struct EnemieGenesMetadata {
-    EnemiesConfig enemies_config;
     std::vector<EnemyGeneMetadata> enemy_metadata;
     std::vector<uint32_t> total_att_by_room;
     std::vector<size_t> enemy_count_by_room;
+    double fitness_from_postition;
+    double fitness_from_individual_att_balance;
+    double fitness_from_room_att_balance;
 };
 
 struct EnemyIndividual : Individual<EnemyChormosome> {
@@ -36,7 +38,10 @@ private:
 
     double calculate_fitness() override;
 
-    double position_fitness(const EnemieGenesMetadata& metadata) const;
-    double atributes_balance_fitness(const EnemieGenesMetadata& metadata) const;
+    double fitness_from_position(EnemieGenesMetadata& metadata) const;
+    double fitness_from_individual_balance(EnemieGenesMetadata& metadata) const;
+    double fitness_from_room_balance(EnemieGenesMetadata& metadata) const;
+
     EnemieGenesMetadata calculate_enemie_genes_metadata(const EnemiesConfig& enemies_config, const std::vector<EnemyGene>& genes);
+    static double positive_difference(double a, double b);
 };

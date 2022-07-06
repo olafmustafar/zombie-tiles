@@ -53,7 +53,7 @@ public:
     const DungeonMatrix& get_matrix();
     std::optional<std::reference_wrapper<const DungeonMatrix>> get_matrix() const;
 
-    bool has_entities() const;
+    bool has_enemies() const;
 
     bool has_player() const;
     void set_has_player(bool has_player);
@@ -68,7 +68,6 @@ private:
     vector<Enemy> m_enemies;
     vector<Room> m_rooms;
 
-    bool m_has_enemies;
     bool m_has_player;
     bool m_has_matrix;
 

@@ -1,5 +1,4 @@
 #include "randomgenerator.hpp"
-
 std::default_random_engine Random::random_engine = std::default_random_engine(0123456);
 
 Random::Random() { }
@@ -14,7 +13,7 @@ int Random::random()
     return this->random_engine();
 }
 
-bool Random::randomBool()
+bool Random::random_bool()
 {
     return std::uniform_int_distribution<int>(0, 1)(random_engine);
 }

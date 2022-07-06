@@ -16,7 +16,6 @@ Dungeon::Dungeon(const uint32_t width, const uint32_t height)
     , m_doors {}
     , m_enemies {}
     , m_rooms {}
-    , m_has_enemies { false }
     , m_has_player { false }
     , m_has_matrix { false }
 {
@@ -110,12 +109,10 @@ const vector<Room>& Dungeon::rooms() const { return m_rooms; }
 void Dungeon::add_enemy(const Enemy& enemy)
 {
     m_enemies.push_back(enemy);
-    m_has_enemies = true;
 }
 
 void Dungeon::set_enemies(const std::vector<Enemy>&& enemies){
     m_enemies = enemies;
-    m_has_enemies = true;
 }
 
 const vector<Enemy>& Dungeon::enemies() const { return m_enemies; }
@@ -181,7 +178,7 @@ void Dungeon::set_player(const Entity& player)
     m_has_player = true;
 }
 
-bool Dungeon::has_entities() const { return m_has_enemies; }
+bool Dungeon::has_enemies() const { return !m_enemies.empty(); }
 
 bool Dungeon::has_player() const { return m_has_player; }
 

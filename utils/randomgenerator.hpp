@@ -9,7 +9,7 @@ public:
 
     static void set_seed(int seed);
     int random();
-    bool randomBool();
+    static bool random_bool();
 
     template <typename T>
     static T random_between(T min, std::type_identity_t<T> max)

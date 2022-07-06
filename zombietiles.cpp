@@ -38,7 +38,7 @@ Dungeon* generate_dungeon2(const uint32_t room_count, const uint32_t width, cons
     dungeon_config.set_width(width);
     dungeon_config.set_height(height);
     dungeon_config.set_rooms_count(room_count);
-    dungeon_config.set_generations(300);
+    dungeon_config.set_generations(1000);
     dungeon_config.set_population_size(200);
 
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
@@ -56,12 +56,18 @@ void get_dungeon_matrix(Dungeon* dungeon, int& width, int& height, int**& array)
 
 void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array)
 {
+    Logger::setLoggin(false);
+
     vector<Enemy> enemies;
 
-    if (!dungeon->has_entities()) {
+    if (!dungeon->has_enemies()) {
         DungeonConfig& dungeon_config = DungeonConfig::get_instance();
+        dungeon_config.set_width(dungeon->width());
+        dungeon_config.set_height(dungeon->height());
+        dungeon_config.set_rooms_count(dungeon->rooms().size());
         dungeon_config.set_generations(300);
         dungeon_config.set_population_size(400);
+
         EnemiesConfig& enemies_config = Singleton<EnemiesConfig>::get_instance();
         enemies_config.current_dungeon = dungeon;
         enemies_config.max_att_value = 100;
