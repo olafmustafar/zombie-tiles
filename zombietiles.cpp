@@ -14,6 +14,16 @@
 #include <utils/singleton.hpp>
 #include <vector>
 
+void set_population_size(size_t size)
+{
+    DungeonConfig::get_instance().population_size = size;
+}
+
+void set_number_of_iterations(size_t number_of_iterations)
+{
+    DungeonConfig::get_instance().number_of_iterations = number_of_iterations;
+}
+
 Dungeon* generate_dungeon(const uint32_t width, const uint32_t height)
 {
     Logger::setLoggin(false);
@@ -22,8 +32,8 @@ Dungeon* generate_dungeon(const uint32_t width, const uint32_t height)
     dungeon_config.set_width(width);
     dungeon_config.set_height(height);
     dungeon_config.set_rooms_count(5);
-    dungeon_config.set_generations(300);
-    dungeon_config.set_population_size(200);
+    dungeon_config.number_of_iterations = 300;
+    dungeon_config.population_size = 200;
 
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
     m_ga.run();
@@ -38,8 +48,8 @@ Dungeon* generate_dungeon2(const uint32_t room_count, const uint32_t width, cons
     dungeon_config.set_width(width);
     dungeon_config.set_height(height);
     dungeon_config.set_rooms_count(room_count);
-    dungeon_config.set_generations(1000);
-    dungeon_config.set_population_size(200);
+    dungeon_config.set_height(height);
+    dungeon_config.iterations_without_change_limit = -1;
 
     GeneticAlgorithm<ZombieTilesIndividual> m_ga;
     m_ga.run();
@@ -65,7 +75,7 @@ void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array)
         dungeon_config.set_width(dungeon->width());
         dungeon_config.set_height(dungeon->height());
         dungeon_config.set_rooms_count(dungeon->rooms().size());
-        dungeon_config.set_generations(300);
+        dungeon_config.number_of_iterations = 300;
         dungeon_config.set_population_size(400);
 
         EnemiesConfig& enemies_config = Singleton<EnemiesConfig>::get_instance();

@@ -2,13 +2,17 @@
 
 #include "models/door.hpp"
 #include "models/dungeon.hpp"
-#include "models/wall.hpp"
 #include "models/dungeonmetadata.hpp"
+#include "models/wall.hpp"
 #include "zombietiles_global.hpp"
 #include <cstdint>
 #include <list>
 
 extern "C" {
+
+void set_population_size(size_t size);
+
+void set_number_of_iterations(size_t number_of_iterations);
 
 Dungeon* generate_dungeon(const uint32_t width, const uint32_t height);
 

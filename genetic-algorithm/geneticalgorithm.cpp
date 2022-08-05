@@ -30,22 +30,34 @@ GeneticAlgorithmImpl::~GeneticAlgorithmImpl()
 void GeneticAlgorithmImpl::run()
 
 {
-    uint32_t generations = DungeonConfig::get_instance().get_generations();
-
+    const uint32_t generations = DungeonConfig::get_instance().number_of_iterations;
+    const uint32_t limit = DungeonConfig::get_instance().iterations_without_change_limit;
     Logger::log() << "Running for " << generations << " generations";
 
     initialize();
     evaluate();
     keep_best();
 
+    uint32_t limit_counter = 0;
+    double last_fitness = 0;
     for (uint32_t i = 0; i < generations; ++i) {
         Logger::log() << "---------generation:" << i << "---------";
         select();
         crossover();
         mutate();
         report(i);
+
+        limit_counter++;
+        if ( std::fabs( last_fitness - m_best->get_fitness() ) > 0.0001 ) {
+            last_fitness = m_best->get_fitness();
+            limit_counter = 0;
+        } else if (limit_counter == limit) {
+            break;
+        }
+
         evaluate();
         elitist();
+
     }
 
     Logger::log() << "Best: " << m_best->to_string();
