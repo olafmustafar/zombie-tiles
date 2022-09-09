@@ -50,7 +50,7 @@ double EnemyIndividual::fitness_from_position(EnemieGenesMetadata& metadata) con
     double enemy_count_by_room = St<EnemiesConfig>.enemy_count_by_room;
     double room_fitness_sum = 0;
     for (auto enemy_count : metadata.enemy_count_by_room) {
-        room_fitness_sum += enemy_count >= ( enemy_count_by_room / 2 ) ? 1: 0;
+        room_fitness_sum += (enemy_count <= enemy_count_by_room + 1) && (enemy_count >= enemy_count_by_room - 1) ? 1 : 0;
     }
 
     const double possible_total = DungeonConfig::get_instance().get_rooms_count();
@@ -98,26 +98,17 @@ double EnemyIndividual::fitness_from_individual_balance(EnemieGenesMetadata& met
 
 double EnemyIndividual::fitness_from_room_balance(EnemieGenesMetadata& metadata) const
 {
-    const double total_allowed_per_enemy = max_att * 4;
-/*     const double total_allowed_per_enemy = max_att * 4; */
-    const double total_desired_per_room = ( total_allowed_per_enemy * enemies_config.enemy_count_by_room ) / 2;
+    const double tot_all_en = max_att * 4;
+    const double tot_des_ro = (tot_all_en / 2) * enemies_config.enemy_count_by_room;
+    const size_t rooms_count = metadata.total_att_by_room.size();
 
     double fitness = 0;
-    for (size_t i = 0; i < metadata.total_att_by_room.size(); i++) {
-        const double enemy_count = metadata.enemy_count_by_room[i];
-
-        //soma total dos atributos de cada inimigo e a soma total dos atributos desejados
-        const double total_att_per_enemy = metadata.total_att_by_room[i] / enemy_count;
-        const double total_desired_per_enemy = total_desired_per_room / enemy_count;
-
-        //a diferenca entre os atributos desejados e o disponivel
-        const double desired_and_actual_att_diference_per_enemy = positive_difference(total_att_per_enemy, total_desired_per_enemy);
-
-        //diferenca total dividida pelo total possivel
-        fitness += 1 - (desired_and_actual_att_diference_per_enemy / total_allowed_per_enemy);
+    for (size_t i = 0; i < rooms_count; i++) {
+        // a diferenca entre os atributos desejados e o disponivel
+        fitness += positive_difference(metadata.total_att_by_room[i], tot_des_ro);
     }
 
-    fitness = fitness / metadata.total_att_by_room.size();
+    fitness = ( rooms_count * tot_des_ro - fitness ) / ( rooms_count * tot_des_ro );
 
     metadata.fitness_from_room_att_balance = fitness;
 
@@ -160,42 +151,25 @@ void EnemyIndividual::report() const
 {
     std::cout << "placed_enemies_count: " << m_metadata.enemy_metadata.size();
 
-    /* double total_cdw_vlt_diff = 0; */
-    /* for (auto enemy_metadata : m_metadata.enemy_metadata) { */
-    /*     if (!enemy_metadata.is_allocated) { */
-    /*         std::cout << " | dmg_hlt_diff[" << i << "]: not allocated" */
-    /*                   << " | cdw_vlt_diff[" << i << "]: not allocated"; */
-    /*     } */
-    /*     std::cout << " | dmg_hlt_diff[" << i << "]: " << enemy_metadata.dmg_hlt_diff */
-    /*               << " | cdw_vlt_diff[" << i << "]: " << enemy_metadata.cdw_vlt_diff; */
-
-    /*     total_dmg_hlt_diff += enemy_metadata.dmg_hlt_diff; */
-    /*     total_cdw_vlt_diff += enemy_metadata.cdw_vlt_diff; */
+    /* double total_att_count = 0; */
+    int i = 0;
+    /* for (auto total_att : m_metadata.total_att_by_room) { */
+    /*     total_att_count += total_att; */
     /*     i++; */
     /* } */
-    /* std::cout << " | dmg_hlt_diff (average): " << total_dmg_hlt_diff / m_metadata.enemy_metadata.size() */
-    /*           << " | cdw_vlt_diff (average): " << total_cdw_vlt_diff / m_metadata.enemy_metadata.size(); */
-
-    double total_att_count = 0;
-    int i = 0;
-    for (auto total_att : m_metadata.total_att_by_room) {
-        std::cout << " | total_att_by_room[" << i << "] : " << total_att;
-        total_att_count += total_att;
-        i++;
-    }
-    std::cout << " | total_att_by_room (average): " << total_att_count / m_metadata.total_att_by_room.size();
+    /* std::cout << " | total_att_by_room (average): " << total_att_count / m_metadata.total_att_by_room.size(); */
 
     double total_enemies_count = 0;
     i = 0;
     for (auto enemy_count : m_metadata.enemy_count_by_room) {
-        std::cout << " | enemy_count_by_room[" << i << "]: " << enemy_count;
+        std::cout << " | enemy_count_by_room (" << i << "): " << enemy_count;
         total_enemies_count += enemy_count;
         i++;
     }
     std::cout << " | enemy_count_by_room (average): " << total_enemies_count / m_metadata.enemy_count_by_room.size();
 
     std::cout << " | fitness_from_postition " << m_metadata.fitness_from_postition;
-    std::cout << " | fitness_from_room_att_balance " << m_metadata.fitness_from_room_att_balance;
+    /* std::cout << " | fitness_from_room_att_balance " << m_metadata.fitness_from_room_att_balance; */
 
     std::cout << "\n";
 }

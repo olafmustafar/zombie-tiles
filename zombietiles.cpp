@@ -24,6 +24,11 @@ void set_number_of_iterations(size_t number_of_iterations)
     DungeonConfig::get_instance().number_of_iterations = number_of_iterations;
 }
 
+void set_number_of_iterations_without_change_limit(size_t number_of_iterations)
+{
+    DungeonConfig::get_instance().iterations_without_change_limit = number_of_iterations;
+}
+
 Dungeon* generate_dungeon(const uint32_t width, const uint32_t height)
 {
     Logger::setLoggin(false);
@@ -75,8 +80,6 @@ void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array)
         dungeon_config.set_width(dungeon->width());
         dungeon_config.set_height(dungeon->height());
         dungeon_config.set_rooms_count(dungeon->rooms().size());
-        dungeon_config.number_of_iterations = 300;
-        dungeon_config.set_population_size(400);
 
         EnemiesConfig& enemies_config = Singleton<EnemiesConfig>::get_instance();
         enemies_config.current_dungeon = dungeon;

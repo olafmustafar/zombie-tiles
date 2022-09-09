@@ -14,6 +14,8 @@ void set_population_size(size_t size);
 
 void set_number_of_iterations(size_t number_of_iterations);
 
+void set_number_of_iterations_without_change_limit(size_t number_of_iterations);
+
 Dungeon* generate_dungeon(const uint32_t width, const uint32_t height);
 
 Dungeon* generate_dungeon2(const uint32_t room_count, const uint32_t width, const uint32_t height);
