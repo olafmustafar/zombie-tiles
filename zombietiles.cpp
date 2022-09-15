@@ -5,6 +5,7 @@
 #include "models/dungeon.hpp"
 #include "models/dungeonconfig.hpp"
 #include "models/enemiesconfig.hpp"
+#include "models/enemypool.hpp"
 #include "utils/logger.hpp"
 #include "utils/randomgenerator.hpp"
 #include "zombietiles-ga/dungeon/zombietilesga.hpp"
@@ -13,6 +14,7 @@
 #include <helpers/roommaphelper.hpp>
 #include <utils/singleton.hpp>
 #include <vector>
+#include <zombietiles-ga/enemy-v2/enemyindividualv2.hpp>
 
 void set_population_size(size_t size)
 {
@@ -83,18 +85,48 @@ void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array)
 
         EnemiesConfig& enemies_config = Singleton<EnemiesConfig>::get_instance();
         enemies_config.current_dungeon = dungeon;
-        enemies_config.max_att_value = 100;
-        enemies_config.min_att_value = 1;
+        enemies_config.max_att = 100;
+        enemies_config.min_att = 1;
 
         GeneticAlgorithm<EnemyIndividual> enemy_ga;
         enemy_ga.run();
 
         std::vector<Enemy> enemies = enemy_ga.get_best()->get_chromosome()->to_enemies(dungeon->get_matrix());
 
-        dungeon->set_enemies( std::move(enemies) );//TEST
+        dungeon->set_enemies(std::move(enemies));
     }
 
     enemies = dungeon->get_enemies();
+
+    size = enemies.size();
+    array = new Enemy[size];
+    std::move(enemies.begin(), enemies.end(), array);
+}
+
+void generate_dungeon_enemies_v2(Dungeon* dungeon, int& size, Enemy*& array, size_t pool_size)
+{
+    Logger::setLoggin(false);
+
+    if (!dungeon->has_enemies()) {
+        DungeonConfig& dungeon_config = DungeonConfig::get_instance();
+        dungeon_config.set_width(dungeon->width());
+        dungeon_config.set_height(dungeon->height());
+        dungeon_config.set_rooms_count(dungeon->rooms().size());
+
+        EnemiesConfig& enemies_config = St<EnemiesConfig>;
+        enemies_config.current_dungeon = dungeon;
+        enemies_config.max_att = 100;
+        enemies_config.min_att = 1;
+
+        St<EnemyPool> = EnemyPool::make_enemy_pool(pool_size);
+
+        GeneticAlgorithm<V2::EnemyIndividual> enemy_ga;
+        enemy_ga.run();
+
+        dungeon->set_enemies(std::move(enemy_ga.get_best()->to_enemies(dungeon->get_matrix())));
+    }
+
+    std::vector<Enemy> enemies = dungeon->get_enemies();
 
     size = enemies.size();
     array = new Enemy[size];

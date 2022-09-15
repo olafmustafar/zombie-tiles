@@ -12,8 +12,8 @@
 
 EnemyIndividual::EnemyIndividual()
     : enemies_config(Singleton<EnemiesConfig>::get_instance())
-    , min_att { enemies_config.min_att_value }
-    , max_att { enemies_config.max_att_value }
+    , min_att { enemies_config.min_att }
+    , max_att { enemies_config.max_att }
 {
 }
 

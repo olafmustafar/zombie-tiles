@@ -13,9 +13,9 @@ int Random::random()
     return this->random_engine();
 }
 
-bool Random::random_bool()
+bool Random::random_bool(float chance)
 {
-    return std::uniform_int_distribution<int>(0, 1)(random_engine);
+    return random_between(0.0, 1.0) < chance;
 }
 
 template <>

@@ -16,6 +16,11 @@ Enemy::Enemy(Point point, uint32_t health, uint32_t damage, uint32_t attackCoold
 {
 }
 
+Enemy::Enemy(uint32_t health, uint32_t damage, uint32_t attackCooldown, uint32_t velocity)
+    : Enemy(Point { 0, 0 }, health, damage, attackCooldown, velocity)
+{
+}
+
 std::string Enemy::to_string() const
 {
     std::ostringstream ss;

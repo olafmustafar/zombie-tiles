@@ -46,6 +46,8 @@ add_library(zombietiles SHARED
   models/enemy.cpp
   models/dungeonmetadata.hpp
   models/enemiesmetadata.hpp
+  models/enemypool.hpp
+  models/enemypool.cpp
   helpers/dungeonmatrixhelper.hpp
   helpers/dungeonmatrixhelper.cpp
   helpers/roommaphelper.hpp
@@ -72,7 +74,12 @@ add_library(zombietiles SHARED
   zombietiles-ga/enemy/enemyindividual.cpp
   zombietiles-ga/enemy/enemychormosome.h
   zombietiles-ga/enemy/enemychormosome.cpp
+  zombietiles-ga/enemy-v2/enemychromosomev2.hpp
+  zombietiles-ga/enemy-v2/enemychromosomev2.cpp
+  zombietiles-ga/enemy-v2/enemyindividualv2.hpp
+  zombietiles-ga/enemy-v2/enemyindividualv2.cpp
 )
+
 
 set_target_properties(zombietiles PROPERTIES PUBLIC_HEADER "zombietiles.hpp;zombietiles_global.hpp;")
 INSTALL(TARGETS zombietiles

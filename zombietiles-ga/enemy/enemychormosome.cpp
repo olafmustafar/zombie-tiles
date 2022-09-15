@@ -19,8 +19,8 @@ EnemyChormosome::EnemyChormosome()
     : m_config { Singleton<EnemiesConfig>().get_instance() }
     , m_dungeon { *m_config.current_dungeon }
     , m_enemies_count { DungeonConfig::get_instance().get_rooms_count() * m_config.enemy_count_by_room }
-    , m_min { m_config.min_att_value }
-    , m_max { m_config.max_att_value }
+    , m_min { m_config.min_att }
+    , m_max { m_config.max_att }
     , m_genes { std::vector<EnemyGene> { m_enemies_count, EnemyGene {} } }
 {
 }

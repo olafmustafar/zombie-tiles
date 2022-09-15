@@ -32,6 +32,8 @@ void generate_dungeon_rooms(Dungeon* dungeon, int& size, Room*& array);
 
 void generate_dungeon_enemies(Dungeon* dungeon, int& size, Enemy*& array);
 
+void generate_dungeon_enemies_v2(Dungeon* dungeon, int& size, Enemy*& array, size_t pool_size);
+
 void generate_dungeon_player(Dungeon* dungeon, Entity*& player);
 
 void generate_dungeon_walls(Dungeon* dungeon, int& size, Wall*& array);

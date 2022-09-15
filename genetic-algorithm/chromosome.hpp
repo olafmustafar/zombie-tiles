@@ -12,3 +12,14 @@ public:
     virtual void crossover(Chromosome* other) = 0;
     virtual string to_string() const = 0;
 };
+
+template <typename T>
+class ChromosomeImpl : public Chromosome {
+public:
+    void crossover(Chromosome* other) override
+    {
+        crossover(static_cast<T*>(other));
+    }
+
+    virtual void crossover(T* other) = 0;
+};

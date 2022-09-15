@@ -55,7 +55,7 @@ EnemiesMetadata RoomMapHelper::calculate_enemiegenes_metadata(const EnemiesConfi
     assert(enemies_config.current_dungeon);
     metadata.enemies_config = enemies_config;
     const Dungeon& dungeon = *enemies_config.current_dungeon;
-    const auto max_att = enemies_config.max_att_value;
+    const auto max_att = enemies_config.max_att;
     metadata.enemy_count_by_room = std::vector<size_t>(enemies_config.current_dungeon->get_rooms().size(), 0);
     metadata.total_att_by_room = std::vector<uint32_t>(enemies_config.current_dungeon->get_rooms().size(), 0);
     metadata.enemy_metadata = std::vector<EnemyMetadata>(enemies.size());
