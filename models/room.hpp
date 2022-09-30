@@ -18,6 +18,7 @@ public:
     uint32_t width;
     uint32_t height;
     PlacementType placement_type;
+    bool is_placed;
 
     uint32_t get_x() const;
     void set_x(uint32_t value);

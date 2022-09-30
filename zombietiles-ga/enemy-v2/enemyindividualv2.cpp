@@ -5,6 +5,7 @@
 #include "models/enemypool.hpp"
 #include "utils/randomgenerator.hpp"
 #include "utils/singleton.hpp"
+#include <cmath>
 #include <iostream>
 
 namespace V2 {
@@ -30,8 +31,9 @@ double EnemyIndividual::calculate_fitness()
     double fitness = 0;
     int i = 0;
     for (int att_sum : att_sums) {
-        fitness += att_sum < desired ? desired - att_sum : att_sum - desired;
-        log_data.desired_diff[i++] = att_sum < desired ? desired - att_sum : att_sum - desired;
+        auto diff = std::abs(desired - att_sum);
+        fitness += diff;
+        log_data.desired_diff[i++] = diff;
     }
 
     fitness = ((dungeon_size * desired) - fitness) / (dungeon_size * desired);
@@ -78,7 +80,7 @@ std::vector<Enemy> EnemyIndividual::to_enemies(const DungeonMatrix& dm) const
     std::unordered_set<Point> used_positions {};
     for (size_t i = 0; i < St<EnemyPool>.size(); i++) {
         int gene = get_chromosome()->genes()[i];
-        if ( gene == -1 || positions_per_room[gene].empty()) {
+        if (gene == -1 || positions_per_room[gene].empty()) {
             continue;
         }
 

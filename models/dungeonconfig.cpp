@@ -8,9 +8,10 @@ DungeonConfig::DungeonConfig()
 }
 
 DungeonConfig::DungeonConfig(const uint32_t width, const uint32_t height)
-    : width(width)
-    , height(height)
-    , number_of_iterations(300)
+    : width { width }
+    , height { height }
+    , number_of_iterations { 300 }
+    , population_size { 0 }
     , iterations_without_change_limit { 50 }
 {
 }

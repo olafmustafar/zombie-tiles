@@ -201,21 +201,24 @@ int RoomMapHelper::tiny_rooms_of(const Dungeon& roommap)
     return tiny_rooms_count;
 }
 
-vector<Door> RoomMapHelper::generate_doors(const Dungeon& roommap)
+vector<Door> RoomMapHelper::generate_doors(Dungeon& dungeon)
 {
 
-    vector<bool> visited(roommap.get_rooms().size(), false);
+    using namespace std;
+    vector<bool> visited(dungeon.get_rooms().size(), false);
     set<pair<int, int>> placed_doors {};
     vector<vector<vector<Door>>> doors_by_rooms {
-        roommap.get_rooms().size(),
+        dungeon.get_rooms().size(),
         vector<vector<Door>> {
-            roommap.get_rooms().size(),
+            dungeon.get_rooms().size(),
             vector<Door> {} }
     };
 
-    for (uint32_t y = 0; y < roommap.get_height(); ++y) {
-        for (uint32_t x = 0; x < roommap.get_width(); ++x) {
-            int curr_room = roommap[x][y];
+    auto dm = dungeon.get_matrix();
+
+    for (uint32_t y = 0; y < dm.height(); ++y) {
+        for (uint32_t x = 0; x < dm.width(); ++x) {
+            int curr_room = dm[x][y];
             if (curr_room == Dungeon::EMPTY_ROOM || visited[curr_room]) {
                 continue;
             }
@@ -245,36 +248,36 @@ vector<Door> RoomMapHelper::generate_doors(const Dungeon& roommap)
 
                 if (next.x < 0
                     || next.y < 0
-                    || next.x == static_cast<int>(roommap.get_height())
-                    || next.y == static_cast<int>(roommap.get_width())
-                    || roommap[next] == Dungeon::EMPTY_ROOM
-                    || (placed_doors.find(pair<int, int> { curr_room, roommap[next] }) != placed_doors.cend()
-                        && visited[roommap[next]])) {
+                    || next.x == static_cast<int>(dm.height())
+                    || next.y == static_cast<int>(dm.width())
+                    || dm[next] == Dungeon::EMPTY_ROOM
+                    || (placed_doors.find(pair<int, int> { curr_room, dm[next] }) != placed_doors.cend()
+                        && visited[dm[next]])) {
                     direction.turn_right();
                     continue;
                 }
 
-                if (roommap[next] == curr_room) {
+                if (dm[next] == curr_room) {
                     curr = next;
                     direction.turn_left();
 
                 } else {
                     switch (direction) {
                     case Direction::UP:
-                        doors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::horizontal);
+                        doors_by_rooms[curr_room][dm[next]].emplace_back(curr, Door::horizontal);
                         break;
                     case Direction::RIGHT:
-                        doors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::vertical);
+                        doors_by_rooms[curr_room][dm[next]].emplace_back(next, Door::vertical);
                         break;
                     case Direction::LEFT:
-                        doors_by_rooms[curr_room][roommap[next]].emplace_back(curr, Door::vertical);
+                        doors_by_rooms[curr_room][dm[next]].emplace_back(curr, Door::vertical);
                         break;
                     case Direction::DOWN:
-                        doors_by_rooms[curr_room][roommap[next]].emplace_back(next, Door::horizontal);
+                        doors_by_rooms[curr_room][dm[next]].emplace_back(next, Door::horizontal);
                         break;
                     }
-                    placed_doors.emplace(curr_room, roommap[next]);
-                    placed_doors.emplace(roommap[next], curr_room);
+                    placed_doors.emplace(curr_room, dm[next]);
+                    placed_doors.emplace(dm[next], curr_room);
                     direction.turn_right();
                 }
 
@@ -442,7 +445,11 @@ void RoomMapHelper::add_player_to(Dungeon& dungeon)
         }
     }
 
-    vector<Point> player_room { Random::take_random_element(tiles_by_rooms) };
+    vector<Point> player_room {};
+    do {
+        player_room = Random::take_random_element(tiles_by_rooms);
+    } while (player_room.empty());
+
     dungeon.set_player({ EntityType::PLAYER, Random::random_element(player_room) });
 }
 

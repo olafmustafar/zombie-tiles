@@ -28,6 +28,7 @@ public:
 
     void add_room(const Room& room);
     const vector<Room>& rooms() const;
+    vector<Room>& rooms();
     const vector<Room>& get_rooms() const;
 
     const Entity& get_player() const;

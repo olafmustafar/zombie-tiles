@@ -7,6 +7,7 @@ Room::Room()
     , width(0)
     , height(0)
     , placement_type(PlacementType::T)
+    , is_placed(false)
 {
 }
 
@@ -17,6 +18,7 @@ Room::Room(
     , width(width)
     , height(height)
     , placement_type(placement_type)
+    , is_placed(false)
 {
 }
 

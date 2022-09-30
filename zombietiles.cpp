@@ -107,8 +107,8 @@ void generate_dungeon_enemies_v2(Dungeon* dungeon, int& size, Enemy*& array, siz
 {
     Logger::setLoggin(false);
 
-    if (!dungeon->has_enemies()) {
-        DungeonConfig& dungeon_config = DungeonConfig::get_instance();
+    DungeonConfig& dungeon_config = DungeonConfig::get_instance();
+    if (!dungeon->has_enemies() && dungeon_config.population_size) {
         dungeon_config.set_width(dungeon->width());
         dungeon_config.set_height(dungeon->height());
         dungeon_config.set_rooms_count(dungeon->rooms().size());
@@ -184,12 +184,24 @@ void generate_dungeon_description(Dungeon* dungeon, int& size, char*& str)
 {
     std::string description = dungeon->to_string();
     size = description.length();
-    str = new char[size];
-    std::copy_n(description.begin(), size, str);
+    str = new char[size + 1];
+    std::copy_n(description.c_str(), size + 1, str);
 }
 
 void generate_dungeon_rooms(Dungeon* dungeon, int& size, Room*& array)
 {
+    auto& matrix = dungeon->get_matrix();
+    auto& rooms = dungeon->rooms();
+
+    for (size_t x = 0; x < matrix.width(); x++) {
+        for (size_t y = 0; y < matrix.height(); y++) {
+            if (matrix[x][y] == DungeonMatrix::EMPTY) {
+                continue;
+            }
+            rooms[matrix[x][y]].is_placed = true;
+        }
+    }
+
     size = dungeon->get_rooms().size();
     array = new Room[size];
     std::copy_n(dungeon->get_rooms().begin(), size, array);

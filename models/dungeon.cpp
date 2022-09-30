@@ -105,6 +105,7 @@ void Dungeon::add_room(const Room& new_room)
 }
 
 const vector<Room>& Dungeon::rooms() const { return m_rooms; }
+vector<Room>& Dungeon::rooms() { return m_rooms; }
 
 void Dungeon::add_enemy(const Enemy& enemy)
 {

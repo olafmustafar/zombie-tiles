@@ -28,7 +28,7 @@ public:
     static vector<Wall> walls_of(Dungeon& roommap, const vector<Door>& doors);
 
     static DungeonMatrix generate_dungeon_matrix(const Dungeon& roommap);
-    static vector<Door> generate_doors(const Dungeon& roommap);
+    static vector<Door> generate_doors(Dungeon& roommap);
 
     [[deprecated("Substituido pela ga")]] static void generate_entities(Dungeon& roommap);
 
